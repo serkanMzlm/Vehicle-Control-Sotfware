@@ -25,7 +25,7 @@ simulation_model_path = Path(land_vehicle_path, "models")
 #             ),
 
 simulation = ExecuteProcess(
-    cmd=["ign", "gazebo", "-r", simulation_world_path],
+    cmd=["gz", "sim", "-r", simulation_world_path],
     output="screen"
 )
 
