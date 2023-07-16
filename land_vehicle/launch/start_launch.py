@@ -37,9 +37,25 @@ lidar = Node(
             executable="parameter_bridge",
             arguments=[
                 # "/lidar@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan"  # Sadece bir ekseni veriyor
-                "/lidar/points@sensor_msgs/msg/PointCloud2@gz.msgs.PointCloudPacked"
+                "/lidar/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked"
             ],
             remappings=[("/lidar/points","/lidar")],
+          )
+
+camera = Node(
+            package="ros_gz_bridge",
+            executable="parameter_bridge",
+            arguments=[
+                "/camera@sensor_msgs/msg/Image[gz.msgs.Image"
+            ]
+          )
+
+imu = Node(
+            package="ros_gz_bridge",
+            executable="parameter_bridge",
+            arguments=[
+                "/imu@sensor_msgs/msg/Imu[gz.msgs.IMU"
+            ]
           )
 
 shutdown = RegisterEventHandler(
@@ -54,5 +70,7 @@ def generate_launch_description():
           simulation,
           control,
           lidar,
+          camera,
+          imu,
           shutdown        
     ]) 

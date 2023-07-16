@@ -2,21 +2,28 @@
 <sdf version="1.7">
   <world name="land_vehicle">
     
-    <physics name="1ms" type="dart">
-      <max_step_size>0.01</max_step_size> <!-- 1 millisaniye -->
+    <physics name="4ms" type="dart">
+      <max_step_size>0.004</max_step_size> <!-- 1 millisaniye -->
       <real_time_factor>1.05</real_time_factor>
+      <!-- <real_time_update_rate>250</real_time_update_rate> -->
     </physics>
 
-    <plugin filename="gz-sim-physics-system"  name="gz::sim::systems::Physics"> </plugin>
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"> </plugin>
     <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"> </plugin>
-    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"> </plugin>
-    <plugin filename="gz-sim-altimeter-system" name="gz::sim::systems::Altimeter"></plugin>
-    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors"> 
-      <render_engine>ogre2</render_engine>
+    <plugin filename='gz-sim-scene-broadcaster-system' name='gz::sim::systems::SceneBroadcaster'> </plugin>
+    <plugin filename="gz-sim-contact-system" name="gz::sim::systems::Contact"></plugin>
+    <!-- <plugin filename="gz-sim-altimeter-system" name="gz::sim::systems::Altimeter"></plugin> -->
+    <plugin filename="gz-sim-imu-system"  name="gz::sim::systems::Imu"></plugin>
+    <!-- <plugin filename="gz-sim-air-pressure-system" name="gz::sim::systems::AirPressure"> </plugin>  -->
+    <plugin name='gz::sim::systems::Sensors' filename='gz-sim-sensors-system'>
+       <render_engine>ogre2</render_engine> 
     </plugin>
 
     <gui fullscreen="0">
-      <plugin filename="MinimalScene" name="3D View">
+      <!-- <gravity>0 0 -9.8</gravity>
+      <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
+      <atmosphere type='standard'/> adiabatic, standard, gradient, none -->
+      <plugin filename="GzScene3D" name="3D View">
         <gz-gui>
           <title>3D View</title>
           <property key="showTitleBar" type="bool">false</property>
@@ -27,45 +34,7 @@
         <ambient_light>0.4 0.4 0.4</ambient_light>
         <background_color>0.8 0.8 0.8</background_color>
         <camera_pose>-6 0 6 0 0.5 0</camera_pose>
-      </plugin>
-
-      <!-- Plugins that add functionality to the scene -->
-      <plugin filename="EntityContextMenuPlugin" name="Entity Context Menu">
-        <gz-gui>
-          <property key="state" type="string">floating</property>
-          <property key="width" type="double">5</property>
-          <property key="height" type="double">5</property>
-          <property key="showTitleBar" type="bool">false</property>
-        </gz-gui>
-      </plugin>
-      <!-- Ekranda bulunan kare zemini oluşturur -->
-      <plugin filename="GzSceneManager" name="Scene Manager">
-        <gz-gui>
-          <property key="resizable" type="bool">false</property>
-          <property key="width" type="double">5</property>
-          <property key="height" type="double">5</property>
-          <property key="state" type="string">floating</property>
-          <property key="showTitleBar" type="bool">false</property>
-        </gz-gui>
-      </plugin>
-      <!-- Ekran kontrolünün yapılmasını sağlar. (Yakınlaştırma - uzaklaştırma...-->
-      <plugin filename="InteractiveViewControl" name="Interactive View Control">
-        <gz-gui>
-          <property key="resizable" type="bool">true</property>
-          <property key="width" type="double">5</property>
-          <property key="height" type="double">5</property>
-          <property key="state" type="string">floating</property>
-          <property key="showTitleBar" type="bool">false</property>
-        </gz-gui>
-      </plugin>
-      <plugin filename="CameraTracking" name="Camera Tracking">
-        <gz-gui>
-          <property key="resizable" type="bool">true</property>
-          <property key="width" type="double">5</property>
-          <property key="height" type="double">5</property>
-          <property key="state" type="string">floating</property>
-          <property key="showTitleBar" type="bool">false</property>
-        </gz-gui>
+        <!-- <horizontal_fov>42,97</horizontal_fov> -->
       </plugin>
 
       <!-- World control -->
@@ -86,7 +55,10 @@
         <play_pause>true</play_pause>
         <step>true</step>
         <start_paused>true</start_paused>
-        <use_event>true</use_event>
+        <use_event>false</use_event>
+        <start_paused>true</start_paused>
+        <!-- <service>/world/world_demo/control</service>
+        <stats_topic>/world/world_demo/stats</stats_topic> -->
       </plugin>
 
       <!-- World statistics -->
@@ -104,8 +76,8 @@
             <line own="bottom" target="bottom"/>
           </anchors>
         </gz-gui>
-        <sim_time>true</sim_time>
-        <real_time>true</real_time>
+        <sim_time>false</sim_time>
+        <real_time>false</real_time>
         <real_time_factor>true</real_time_factor>
         <iterations>true</iterations>
       </plugin>

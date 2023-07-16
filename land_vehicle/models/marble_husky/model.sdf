@@ -181,7 +181,7 @@
 
     
     
-      <sensor name="tof_left" type="depth_camera">
+      <!-- <sensor name="tof_left" type="depth_camera">
         <pose>0.527 0.015 0.429 -1.344521 0.4763404 0.4653087</pose>
         <always_on>1</always_on>
         <update_rate>1</update_rate>
@@ -190,12 +190,9 @@
             <horizontal_fov>1.0821</horizontal_fov>
             <lens>
                 <intrinsics>
-                    <!-- fx = fy = width / ( 2 * tan (hfov / 2 ) ) -->
                     <fx>186.4</fx>
                     <fy>186.4</fy>
-                    <!-- cx = ( width + 1 ) / 2 -->
                     <cx>112.5</cx>
-                    <!-- cy = ( height + 1 ) / 2 -->
                     <cy>86</cy>
                     <s>0</s>
                 </intrinsics>
@@ -230,9 +227,9 @@
                 <stddev>0.007</stddev>
             </noise>
         </camera>
-      </sensor>
+      </sensor> -->
 
-      <sensor name="tof_right" type="depth_camera">
+      <!-- <sensor name="tof_right" type="depth_camera">
         <pose>0.527 -0.015 0.429 -1.7970717 0.4763404 -0.4653087</pose>
         <always_on>1</always_on>
         <update_rate>1</update_rate>
@@ -278,7 +275,7 @@
                 <stddev>0.007</stddev>
             </noise>
         </camera>
-      </sensor>
+      </sensor> -->
 
       <visual name="sensor_head_visual">
         <pose>0.4379 0 .54818 0 0 0</pose>
@@ -346,82 +343,82 @@
       </collision>
       <sensor name="imu_sensor" type="imu">
         <always_on>1</always_on>
-        <update_rate>450</update_rate>
+        <update_rate>500</update_rate>
         <topic>imu</topic>
         <imu>
-                  <enable_orientation>0</enable_orientation>
-                  <angular_velocity>
-                      <x>
-                          <noise type="gaussian">
-                              <mean>0</mean>
-                              <stddev>0.009</stddev>
-                              <bias_mean>0.00075</bias_mean>
-                              <bias_stddev>0.005</bias_stddev>
-                              <dynamic_bias_stddev>0.00002</dynamic_bias_stddev>
-                              <dynamic_bias_correlation_time>400.0</dynamic_bias_correlation_time>
-                              <precision>0.00025</precision>
-                          </noise>
-                      </x>
-                      <y>
-                          <noise type="gaussian">
-                              <mean>0</mean>
-                              <stddev>0.009</stddev>
-                              <bias_mean>0.00075</bias_mean>
-                              <bias_stddev>0.005</bias_stddev>
-                              <dynamic_bias_stddev>0.00002</dynamic_bias_stddev>
-                              <dynamic_bias_correlation_time>400.0</dynamic_bias_correlation_time>
-                              <precision>0.00025</precision>
-                          </noise>
-                      </y>
-                      <z>
-                          <noise type="gaussian">
-                              <mean>0</mean>
-                              <stddev>0.009</stddev>
-                              <bias_mean>0.00075</bias_mean>
-                              <bias_stddev>0.005</bias_stddev>
-                              <dynamic_bias_stddev>0.00002</dynamic_bias_stddev>
-                              <dynamic_bias_correlation_time>400.0</dynamic_bias_correlation_time>
-                              <precision>0.00025</precision>
-                          </noise>
-                      </z>
-                  </angular_velocity>
-                  <linear_acceleration>
-                      <x>
-                          <noise type="gaussian">
-                              <mean>0</mean>
-                              <stddev>0.021</stddev>
-                              <bias_mean>0.05</bias_mean>
-                              <bias_stddev>0.0075</bias_stddev>
-                              <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
-                              <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
-                              <precision>0.005</precision>
-                          </noise>
-                      </x>
-                      <y>
-                          <noise type="gaussian">
-                              <mean>0</mean>
-                              <stddev>0.021</stddev>
-                              <bias_mean>0.05</bias_mean>
-                              <bias_stddev>0.0075</bias_stddev>
-                              <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
-                              <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
-                              <precision>0.005</precision>
-                          </noise>
-                      </y>
-                      <z>
-                          <noise type="gaussian">
-                              <mean>0</mean>
-                              <stddev>0.021</stddev>
-                              <bias_mean>0.05</bias_mean>
-                              <bias_stddev>0.0075</bias_stddev>
-                              <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
-                              <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
-                              <precision>0.005</precision>
-                          </noise>
-                      </z>
-                  </linear_acceleration>
-              </imu>
-      </sensor>
+                <enable_orientation>0</enable_orientation>
+                <angular_velocity>
+                    <x>
+                        <noise type="gaussian">
+                            <mean>0</mean>
+                            <stddev>0.009</stddev>
+                            <bias_mean>0.00075</bias_mean>
+                            <bias_stddev>0.005</bias_stddev>
+                            <dynamic_bias_stddev>0.00002</dynamic_bias_stddev>
+                            <dynamic_bias_correlation_time>400.0</dynamic_bias_correlation_time>
+                            <precision>0.00025</precision>
+                        </noise>
+                    </x>
+                    <y>
+                        <noise type="gaussian">
+                            <mean>0</mean>
+                            <stddev>0.009</stddev>
+                            <bias_mean>0.00075</bias_mean>
+                            <bias_stddev>0.005</bias_stddev>
+                            <dynamic_bias_stddev>0.00002</dynamic_bias_stddev>
+                            <dynamic_bias_correlation_time>400.0</dynamic_bias_correlation_time>
+                            <precision>0.00025</precision>
+                        </noise>
+                    </y>
+                    <z>
+                        <noise type="gaussian">
+                            <mean>0</mean>
+                            <stddev>0.009</stddev>
+                            <bias_mean>0.00075</bias_mean>
+                            <bias_stddev>0.005</bias_stddev>
+                            <dynamic_bias_stddev>0.00002</dynamic_bias_stddev>
+                            <dynamic_bias_correlation_time>400.0</dynamic_bias_correlation_time>
+                            <precision>0.00025</precision>
+                        </noise>
+                    </z>
+                </angular_velocity>
+                <linear_acceleration>
+                    <x>
+                        <noise type="gaussian">
+                            <mean>0</mean>
+                            <stddev>0.021</stddev>
+                            <bias_mean>0.05</bias_mean>
+                            <bias_stddev>0.0075</bias_stddev>
+                            <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
+                            <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
+                            <precision>0.005</precision>
+                        </noise>
+                    </x>
+                    <y>
+                        <noise type="gaussian">
+                            <mean>0</mean>
+                            <stddev>0.021</stddev>
+                            <bias_mean>0.05</bias_mean>
+                            <bias_stddev>0.0075</bias_stddev>
+                            <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
+                            <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
+                            <precision>0.005</precision>
+                        </noise>
+                    </y>
+                    <z>
+                        <noise type="gaussian">
+                            <mean>0</mean>
+                            <stddev>0.021</stddev>
+                            <bias_mean>0.05</bias_mean>
+                            <bias_stddev>0.0075</bias_stddev>
+                            <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
+                            <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
+                            <precision>0.005</precision>
+                        </noise>
+                    </z>
+                </linear_acceleration>
+          </imu>
+      </sensor> 
 
         <!-- Bottom cylinder of Ouster/Velodyne 3D Lidar -->
         <visual name="base_link_fixed_joint_lump__velodyne_base_link_visual_10">
@@ -457,7 +454,7 @@
         <!-- OS1-64 3D Laser Configuration (10x2048 or 10x1024 or 20x1024 or 20x512 as possible (rate) x (hor. res.) configs)-->
       <sensor name="front_laser" type="gpu_lidar">
         <visualize>true</visualize>
-        <update_rate>5</update_rate>
+        <update_rate>3</update_rate>
         <topic>lidar</topic>
         <lidar>
           <scan>
@@ -517,7 +514,7 @@
             <camera>
                 <horizontal_fov>1.089</horizontal_fov>
                 <image>
-                  <width>480</width>
+                  <width>360</width>
                   <height>360</height>
                   <format>R8G8B8</format>
                 </image>
@@ -527,7 +524,7 @@
                 </clip>
             </camera>
             <always_on>1</always_on>
-            <update_rate>20.0</update_rate>
+            <update_rate>15.0</update_rate>
             <visualize>true</visualize>
             <topic>camera</topic>
         </sensor>
