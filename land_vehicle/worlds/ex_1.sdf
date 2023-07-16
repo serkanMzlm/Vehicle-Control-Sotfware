@@ -148,9 +148,9 @@
     </include>
 
     <include>
-      <uri>../models/first_model</uri> 
+      <uri>../models/ground</uri> 
       <!-- 
-        Eğer model yolu IGN_GAZEBO_RESOURCE_PATH değişkenine bildirildi ise sadece first_model
+        Eğer model yolu IGN_GAZEBO_RESOURCE_PATH değişkenine bildirildi ise sadece ground
         yeterlidir.
        -->
     </include>

@@ -23,9 +23,6 @@ find_package(ros_ign_gazebo REQUIRED)
 #   sensor_msgs geometry_msgs action_msgs
 # )
 
-
-
-
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
 # install(
@@ -34,9 +31,11 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 #   DESTINATION lib/${PROJECT_NAME}
 # )
 
-
-install(DIRECTORY launch DESTINATION share/${PROJECT_NAME}/)
-install(DIRECTORY worlds DESTINATION share/${PROJECT_NAME}/)
-install(DIRECTORY models DESTINATION share/${PROJECT_NAME}/)
+install(
+  DIRECTORY 
+  launch worlds models 
+  DESTINATION  
+  share/${PROJECT_NAME}/
+)
 
 ament_package()
