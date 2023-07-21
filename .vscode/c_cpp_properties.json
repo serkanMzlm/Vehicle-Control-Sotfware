@@ -8,6 +8,7 @@
       "includePath": [
         "/opt/ros/humble/include/**",
         "/home/serkan/Desktop/github/land_vehicle/src/land_vehicle/include/**",
+        "${workspaceFolder}/**",
         "/usr/include/**"
       ],
       "name": "ROS",

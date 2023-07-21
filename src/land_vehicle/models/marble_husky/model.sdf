@@ -870,7 +870,7 @@
       </plugin>
 
        <!-- Moving Forward: W -->
-      <plugin filename="gz-sim-triggered-publisher-system"
+      <!-- <plugin filename="gz-sim-triggered-publisher-system"
               name="gz::sim::systems::TriggeredPublisher">
           <input type="gz.msgs.Int32" topic="/keyboard/keypress">
               <match field="data">87</match>
@@ -878,10 +878,10 @@
           <output type="gz.msgs.Twist" topic="/cmd_vel">
               linear: {x: 2.0}, angular: {z: 0.0}
           </output>
-      </plugin>
+      </plugin> -->
 
       <!-- Moving Backward: X -->
-      <plugin filename="gz-sim-triggered-publisher-system"
+      <!-- <plugin filename="gz-sim-triggered-publisher-system"
               name="gz::sim::systems::TriggeredPublisher">
           <input type="gz.msgs.Int32" topic="/keyboard/keypress">
               <match field="data">88</match>
@@ -889,10 +889,10 @@
           <output type="gz.msgs.Twist" topic="/cmd_vel">
               linear: {x: -2.0}, angular: {z: 0.0}
           </output>
-      </plugin>
+      </plugin> -->
 
       <!-- Rotating right: D -->
-      <plugin filename="gz-sim-triggered-publisher-system"
+      <!-- <plugin filename="gz-sim-triggered-publisher-system"
               name="gz::sim::systems::TriggeredPublisher">
           <input type="gz.msgs.Int32" topic="/keyboard/keypress">
               <match field="data">68</match>
@@ -900,10 +900,10 @@
           <output type="gz.msgs.Twist" topic="/cmd_vel">
               linear: {x: 0.0}, angular: {z: -0.5}
           </output>
-      </plugin>
+      </plugin> -->
 
       <!--Rotating left: A -->
-      <plugin filename="gz-sim-triggered-publisher-system"
+      <!-- <plugin filename="gz-sim-triggered-publisher-system"
               name="gz::sim::systems::TriggeredPublisher">
           <input type="gz.msgs.Int32" topic="/keyboard/keypress">
               <match field="data">65</match>
@@ -911,10 +911,10 @@
           <output type="gz.msgs.Twist" topic="/cmd_vel">
               linear: {x: 0.0}, angular: {z: 0.5}
           </output>
-      </plugin>
+      </plugin> -->
 
       <!--Stop: S -->
-      <plugin filename="gz-sim-triggered-publisher-system"
+      <!-- <plugin filename="gz-sim-triggered-publisher-system"
               name="gz::sim::systems::TriggeredPublisher">
           <input type="gz.msgs.Int32" topic="/keyboard/keypress">
               <match field="data">83</match>
@@ -931,10 +931,10 @@
           <output type="gz.msgs.Twist" topic="/cmd_vel">
               linear: {x: 2.0}, angular: {z: 0.0}
           </output>
-      </plugin>
+      </plugin> -->
 
       <!-- Moving Backward: X -->
-      <plugin filename="gz-sim-triggered-publisher-system"
+      <!-- <plugin filename="gz-sim-triggered-publisher-system"
               name="gz::sim::systems::TriggeredPublisher">
           <input type="gz.msgs.Int32" topic="/keyboard/keypress">
               <match field="data">88</match>
@@ -942,10 +942,10 @@
           <output type="gz.msgs.Twist" topic="/cmd_vel">
               linear: {x: -2.0}, angular: {z: 0.0}
           </output>
-      </plugin>
+      </plugin> -->
 
       <!-- Rotating right: D -->
-      <plugin filename="gz-sim-triggered-publisher-system"
+      <!-- <plugin filename="gz-sim-triggered-publisher-system"
               name="gz::sim::systems::TriggeredPublisher">
           <input type="gz.msgs.Int32" topic="/keyboard/keypress">
               <match field="data">68</match>
@@ -953,10 +953,10 @@
           <output type="gz.msgs.Twist" topic="/cmd_vel">
               linear: {x: 0.0}, angular: {z: -0.5}
           </output>
-      </plugin>
+      </plugin> -->
 
       <!--Rotating left: A -->
-      <plugin filename="gz-sim-triggered-publisher-system"
+      <!-- <plugin filename="gz-sim-triggered-publisher-system"
               name="gz::sim::systems::TriggeredPublisher">
           <input type="gz.msgs.Int32" topic="/keyboard/keypress">
               <match field="data">65</match>
@@ -964,10 +964,10 @@
           <output type="gz.msgs.Twist" topic="/cmd_vel">
               linear: {x: 0.0}, angular: {z: 0.5}
           </output>
-      </plugin>
+      </plugin> -->
 
       <!--Stop: S -->
-      <plugin filename="gz-sim-triggered-publisher-system"
+      <!-- <plugin filename="gz-sim-triggered-publisher-system"
               name="gz::sim::systems::TriggeredPublisher">
           <input type="gz.msgs.Int32" topic="/keyboard/keypress">
               <match field="data">83</match>
@@ -975,7 +975,7 @@
           <output type="gz.msgs.Twist" topic="/cmd_vel">
               linear: {x: 0.0}, angular: {z: 0.0}
           </output>
-      </plugin>
+      </plugin> -->
 
   </model>
 </sdf>

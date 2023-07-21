@@ -25,7 +25,18 @@ control = Node(
             package="ros_gz_bridge",                                               # ros_ign_bridge eski versiyonda kullanılır.
             executable="parameter_bridge",
             arguments=[
-                "/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist"
+                "/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist"
+            ],
+            # ros_arguments=["/cmd_vel:=/cmd_vel_ros"]  remapping ile aynı
+            # remappings=[("/cmd_vel","/cmd_vel_ros")],
+            output="screen"
+          )
+
+command = Node(
+            package="command",                                               # ros_ign_bridge eski versiyonda kullanılır.
+            executable="command_node",
+            arguments=[
+                "--log-level Command_node:=debug"
             ],
             # ros_arguments=["/cmd_vel:=/cmd_vel_ros"]  remapping ile aynı
             # remappings=[("/cmd_vel","/cmd_vel_ros")],
@@ -53,9 +64,10 @@ camera = Node(
 imu = Node(
             package="ros_gz_bridge",
             executable="parameter_bridge",
-            arguments=[
-                "/imu@sensor_msgs/msg/Imu[gz.msgs.IMU"
-            ]
+            ros_arguments=[
+                "--log-level", "my_talker:=debug",
+                "--remap", "cpp_topic_int:=my_talker_cp"
+            ],
           )
 
 shutdown = RegisterEventHandler(
@@ -72,5 +84,6 @@ def generate_launch_description():
           lidar,
           camera,
           imu,
+          # command,
           shutdown        
     ]) 

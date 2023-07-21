@@ -4,7 +4,7 @@
     {
       "label": "build",
       "type": "shell",
-      "command": "source /opt/ros/humble/setup.bash && colcon build"
+      "command": "colcon build"
     },
   ]
 }
