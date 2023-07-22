@@ -21,6 +21,11 @@ simulation = ExecuteProcess(
     # output="screen"
 )
 
+rviz = ExecuteProcess(
+    cmd=["rviz2"],
+    # output="screen"
+)
+
 control = Node(
             package="ros_gz_bridge",                                               # ros_ign_bridge eski versiyonda kullanılır.
             executable="parameter_bridge",
@@ -35,8 +40,9 @@ control = Node(
 command = Node(
             package="command",                                               # ros_ign_bridge eski versiyonda kullanılır.
             executable="command_node",
-            arguments=[
-                "--log-level Command_node:=debug"
+            ros_arguments=[
+                "--log-level", "my_talker:=debug",
+                "--remap", "cpp_topic_int:=my_talker_cp"
             ],
             # ros_arguments=["/cmd_vel:=/cmd_vel_ros"]  remapping ile aynı
             # remappings=[("/cmd_vel","/cmd_vel_ros")],
@@ -64,10 +70,9 @@ camera = Node(
 imu = Node(
             package="ros_gz_bridge",
             executable="parameter_bridge",
-            ros_arguments=[
-                "--log-level", "my_talker:=debug",
-                "--remap", "cpp_topic_int:=my_talker_cp"
-            ],
+            arguments=[
+                "/imu@sensor_msgs/msg/Imu[gz.msgs.IMU"
+            ]
           )
 
 shutdown = RegisterEventHandler(
@@ -85,5 +90,6 @@ def generate_launch_description():
           camera,
           imu,
           # command,
+          rviz,
           shutdown        
     ]) 

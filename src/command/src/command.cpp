@@ -25,6 +25,7 @@ void Teleop::keyLoop(){
 
   while (true){
     if(::read(kfd, &c, 1) < 0){
+    RCLCPP_DEBUG(this->get_logger(), "None None");
       perror("read():");
       exit(-1);
     }

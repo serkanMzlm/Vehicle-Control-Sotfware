@@ -13,3 +13,7 @@ ros2 run command  command_node --ros-args --log-level Command_node:=debug
 
 - Launch dosyasını çalıştırmak için:
 `ros2 launch land_vehicle start_launch.py`
+
+### Çalıştırmak İçin 
+`ros2 launch land_vehicle start_launch.py`
+`ros2 run command  command_node`
