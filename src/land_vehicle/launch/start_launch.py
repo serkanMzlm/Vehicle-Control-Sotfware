@@ -75,6 +75,11 @@ imu = Node(
             ]
           )
 
+pointCloud = Node(
+            package="sensor_reader",
+            executable="sensor_reader_node",
+          )
+
 shutdown = RegisterEventHandler(
             event_handler=OnProcessExit(
               target_action=simulation,
@@ -89,6 +94,7 @@ def generate_launch_description():
           lidar,
           camera,
           imu,
+          pointCloud,
           # command,
           rviz,
           shutdown        

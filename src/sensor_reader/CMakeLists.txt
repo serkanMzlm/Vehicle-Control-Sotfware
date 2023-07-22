@@ -9,28 +9,32 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
+find_package(OpenCV REQUIRED)
+find_package(tf2_ros REQUIRED)
+find_package(PCL 1.3 REQUIRED)
+find_package(pcl_ros REQUIRED )
+find_package(pcl_conversions REQUIRED )
 
-if(BUILD_TESTING)
-  find_package(ament_lint_auto REQUIRED)
-  # the following line skips the linter which checks for copyrights
-  # comment the line when a copyright and license is added to all source files
-  set(ament_cmake_copyright_FOUND TRUE)
-  # the following line skips cpplint (only works in a git repo)
-  # comment the line when this package is in a git repo and when
-  # a copyright and license is added to all source files
-  set(ament_cmake_cpplint_FOUND TRUE)
-  ament_lint_auto_find_test_dependencies()
-endif()
-
+include_directories(include ${PCL_INCLUDE_DIRS})
 include_directories(${PROJECT_SOURCE_DIR}/include)
+
+link_directories(${PCL_LIBRARY_DIRS})
+add_definitions(${PCL_DEFINITIONS})
+
 
 set(SOURCE_CODE src/sensors_reader.cpp)
 
 add_executable(sensor_reader_node ${SOURCE_CODE})
 
+target_link_libraries(sensor_reader_node ${PCL_LIBRARIES} )
+
 ament_target_dependencies(sensor_reader_node 
   rclcpp
   sensor_msgs
+  tf2_ros
+  pcl_ros
+  pcl_conversions
+  OpenCV
 )
 
 install(TARGETS
