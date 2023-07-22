@@ -12,9 +12,9 @@ find_package(geometry_msgs REQUIRED)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
-set(CONTROL src/command.cpp)
+set(SOURCE_CODE src/command.cpp)
 
-add_executable(command_node ${CONTROL})
+add_executable(command_node ${SOURCE_CODE})
 
 ament_target_dependencies(command_node 
   rclcpp

@@ -3,10 +3,10 @@
 int kfd = 0;
 
 Teleop::Teleop(): Node("Command_node"){
-  linear_  = 0.0f;
-  angular_ = 0.0f;
-  l_scale_ = 2.0f;
-  a_scale_ = 0.5f;
+  speed.data[LINEAR] = 0.0f;
+  speed.data[ANGULAR] = 0.0f;
+  speed.data[L_SCALE] = 1.0f;
+  speed.data[A_SCALE] = 0.2f;
   twist_pub_ = this->create_publisher<twistMsg>("cmd_vel",2);
   RCLCPP_INFO(this->get_logger(), "Command Node Started.");
 }
@@ -30,28 +30,28 @@ void Teleop::keyLoop(){
       exit(-1);
     }
 
-    linear_ = 0;
-    angular_ = 0;
+    speed.data[LINEAR] = 0;
+    speed.data[ANGULAR] = 0;
 
     switch(c){
       case KEYCODE_L:
         RCLCPP_DEBUG(this->get_logger(), "LEFT");
-        angular_ = 1.0;
+        speed.data[ANGULAR] = 1.0;
         dirty = true;
         break;
       case KEYCODE_R:
         RCLCPP_DEBUG(this->get_logger(), "RIGHT");
-        angular_ = -1.0;
+        speed.data[ANGULAR] = -1.0;
         dirty = true;
         break;
       case KEYCODE_U:
         RCLCPP_DEBUG(this->get_logger(), "UP");
-        linear_ = 1.0;
+        speed.data[LINEAR] = 1.0;
         dirty = true;
         break;
       case KEYCODE_D:
         RCLCPP_DEBUG(this->get_logger(), "DOWN");
-        linear_ = -1.0;
+        speed.data[LINEAR] = -1.0;
         dirty = true;
         break;
       default:
@@ -61,8 +61,8 @@ void Teleop::keyLoop(){
     }
 
     RCLCPP_DEBUG(this->get_logger(), "c: %x", c);
-    msg.angular.z = a_scale_ * angular_;
-    msg.linear.x  = l_scale_ * linear_;
+    msg.angular.z = speed.data[A_SCALE] * speed.data[ANGULAR];
+    msg.linear.x  = speed.data[L_SCALE] * speed.data[LINEAR];
 
     if(dirty ==true){
       twist_pub_->publish(msg);    
