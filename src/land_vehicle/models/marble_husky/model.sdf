@@ -455,12 +455,11 @@
       <sensor name="front_laser" type="gpu_lidar">
         <visualize>true</visualize>
         <update_rate>3</update_rate>
-        <frameName>front_laser</frameName>
         <topic>lidar</topic>
         <lidar>
           <scan>
             <horizontal>
-              <samples>64</samples>
+              <samples>360</samples>
               <resolution>1</resolution>
               <min_angle>-3.14159</min_angle>
               <max_angle>3.14159</max_angle>
@@ -870,7 +869,6 @@
         <topic>cmd_vel</topic>
       </plugin>
 
-<!--       
       <plugin filename="gz-sim-triggered-publisher-system"
               name="gz::sim::systems::TriggeredPublisher">
           <input type="gz.msgs.Int32" topic="/keyboard/keypress">
@@ -968,7 +966,7 @@
           <output type="gz.msgs.Twist" topic="/cmd_vel">
               linear: {x: 0.0}, angular: {z: 0.0}
           </output>
-      </plugin> -->
+      </plugin> 
 
   </model>
 </sdf>

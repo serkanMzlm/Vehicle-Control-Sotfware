@@ -96,7 +96,7 @@
           <!-- <property key="state" type="string">docked_collapsed</property> --> 
         </gz-gui>
       </plugin>
-      <!-- <plugin filename="KeyPublisher" name="Key publisher">
+      <plugin filename="KeyPublisher" name="Key publisher">
         <gz-gui>
           <anchors target="3D View">
             <line own="right" target="right"/>
@@ -108,7 +108,7 @@
           <property key="state" type="string">floating</property>
           <property key="showTitleBar" type="bool">false</property>
         </gz-gui>
-      </plugin> -->
+      </plugin>
     </gui>
 
     <include>

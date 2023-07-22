@@ -18,12 +18,10 @@ simulation_model_path = Path(land_vehicle_path, "models")
 
 simulation = ExecuteProcess(
     cmd=["gz", "sim", "-r", simulation_world_path],
-    # output="screen"
 )
 
 rviz = ExecuteProcess(
     cmd=["rviz2"],
-    # output="screen"
 )
 
 control = Node(
@@ -41,11 +39,9 @@ command = Node(
             package="command",                                               # ros_ign_bridge eski versiyonda kullanılır.
             executable="command_node",
             ros_arguments=[
-                "--log-level", "my_talker:=debug",
-                "--remap", "cpp_topic_int:=my_talker_cp"
+                "--log-level", "Command_node:=debug",
+                # "--remap", "Command_node:=my_command_node"
             ],
-            # ros_arguments=["/cmd_vel:=/cmd_vel_ros"]  remapping ile aynı
-            # remappings=[("/cmd_vel","/cmd_vel_ros")],
             output="screen"
           )
 
@@ -78,6 +74,9 @@ imu = Node(
 pointCloud = Node(
             package="sensor_reader",
             executable="sensor_reader_node",
+            # ros_arguments=[
+            #     "--log-level", "sensor_reader_node:=debug",
+            # ],
           )
 
 shutdown = RegisterEventHandler(
