@@ -12,7 +12,7 @@ ros2 run command  command_node --ros-args --log-level command_node:=debug
 ```
 - `command` klavyede bulunan **ok tuşları** ile hareket ettirilir.
 <div class="warning" style="background-color: #f8f3e6; color: #cc7a00; padding: 20px; border: 5px solid #f5dba6;">
-  <b>Not:</b> "[node_name]:=debug" kısmına node adı yazılmalıdır. Executable dosyanın adı yazılmamalıdır. Örnek kısmında executable ile node adı aynıdır.  
+  <b>Not:</b> `[node_name]:=debug` kısmına node adı yazılmalıdır. Executable dosyanın adı yazılmamalıdır. Örnek kısmında executable ile node adı aynıdır.  
 </div>
 
 ---
@@ -40,18 +40,15 @@ ros2 launch land_vehicle start_launch.py
 ```
 - `config_file\config\params.yaml` kısmında bulunan `a_scale` ve `l_scale` değişkenleri ile aracın **linear** ve **angular** hızları ayarlanır.
 <div class="warning" style="background-color: #d1ecf1; color: #0c5460; padding: 20px; border: 10px solid #bee5eb;">
-  <b>Not: </b> "a_scale" ve "l_scale" birer katsayıdır. Çok büyük değerler verilmemelidir.
+  <b>Not: </b> `a_scale` ve `l_scale birer katsayıdır. Çok büyük değerler verilmemelidir.
 </div>
+
+
 <div class="warning" style="background-color: #d4edda; color: #155724; padding: 20px; border: 10px solid #c3e6cb;">
-  <b>Not: </b>Build işlemi " --symlink-install " parametresiyle yapılırsa "params.yaml" dosyasında yapılan değişiklik direkt etki eder. " --symlink-install " komutu src içinde bulunan paketleri install kısmına linklenmesini sağlar.
-</div>
-<div class="warning" style="background-color: #f8f3e6; color: #cc7a00; padding: 20px; border: 10px solid #f5dba6;">
-  <b>Not: </b> Eğer "params.yaml" dosyasında değişiklik yapılıp build işleminde " --symlink-install " parametresi kullanılmadıysa "land_vehicle" paketi build edilmelidir.
-  <pre style="margin: 0">
-    <code>
-       colcon build --packages-select land_vehicle
-    </code>
-  </pre>
+  <b>Not: </b>Build işlemi `--symlink-install` parametresiyle yapılırsa "params.yaml" dosyasında yapılan değişiklik direkt etki eder. `--symlink-install` komutu src içinde bulunan paketleri install kısmına linklenmesini sağlar. Eğer "params.yaml" dosyasında değişiklik yapılıp build işleminde `--symlink-install` parametresi kullanılmadıysa "land_vehicle" paketi build edilmelidir.
+  ```
+  colcon build --packages-select land_vehicle
+  ```
 </div>
 
 ---
