@@ -2,7 +2,7 @@
 
 int kfd = 0;
 
-Teleop::Teleop(): Node("Command_node"){
+Teleop::Teleop(): Node("command_node"){
   speed.data[LINEAR] = 0.0f;
   speed.data[ANGULAR] = 0.0f;
   speed.data[L_SCALE] = 1.0f;

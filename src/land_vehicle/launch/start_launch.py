@@ -119,7 +119,7 @@ def generate_launch_description():
           simulation,
           sensor_reader,
           controller,
-          # rviz,
+          rviz,
           # command,
           shutdown        
     ]) 
