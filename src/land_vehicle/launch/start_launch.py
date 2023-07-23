@@ -17,14 +17,14 @@ simulation_world_path = Path(land_vehicle_path, "worlds", "land_vehicle.sdf")
 simulation_model_path = Path(land_vehicle_path, "models")
 
 simulation = ExecuteProcess(
-    cmd=["gz", "sim", "-r", simulation_world_path],
+    cmd=["gz", "sim", "-r", simulation_world_path]
 )
 
 rviz = ExecuteProcess(
-    cmd=["rviz2"],
+    cmd=["rviz2"]
 )
 
-control = Node(
+bridge_control = Node(
             package="ros_gz_bridge",                                               # ros_ign_bridge eski versiyonda kullanılır.
             executable="parameter_bridge",
             arguments=[
@@ -33,6 +33,49 @@ control = Node(
             # ros_arguments=["/cmd_vel:=/cmd_vel_ros"]  remapping ile aynı
             # remappings=[("/cmd_vel","/cmd_vel_ros")],
             output="screen"
+          )
+
+bridge_keyboard = Node(
+            package="ros_gz_bridge",                                               # ros_ign_bridge eski versiyonda kullanılır.
+            executable="parameter_bridge",
+            arguments=[
+                "/keyboard/keypress@std_msgs/msg/Int32[gz.msgs.Int32"
+            ],
+            remappings=[("/keyboard/keypress","/input_cmd")],
+            output="screen"
+          )
+
+bridge_lidar = Node(
+            package="ros_gz_bridge",
+            executable="parameter_bridge",
+            arguments=[
+                # "/lidar@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan"  # Sadece bir ekseni veriyor
+                "/lidar/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked"
+            ],
+            remappings=[("/lidar/points","/lidar")],
+          )
+
+
+
+bridge_camera = Node(
+            package="ros_gz_bridge",
+            executable="parameter_bridge",
+            arguments=[
+                "/camera@sensor_msgs/msg/Image[gz.msgs.Image"
+            ]
+          )
+
+bridge_imu = Node(
+            package="ros_gz_bridge",
+            executable="parameter_bridge",
+            arguments=[
+                "/imu@sensor_msgs/msg/Imu[gz.msgs.IMU"
+            ]
+          )
+
+sensor_reader = Node(
+            package="sensor_reader",
+            executable="sensor_reader_node",
           )
 
 command = Node(
@@ -45,40 +88,6 @@ command = Node(
             output="screen"
           )
 
-lidar = Node(
-            package="ros_gz_bridge",
-            executable="parameter_bridge",
-            arguments=[
-                # "/lidar@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan"  # Sadece bir ekseni veriyor
-                "/lidar/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked"
-            ],
-            remappings=[("/lidar/points","/lidar")],
-          )
-
-camera = Node(
-            package="ros_gz_bridge",
-            executable="parameter_bridge",
-            arguments=[
-                "/camera@sensor_msgs/msg/Image[gz.msgs.Image"
-            ]
-          )
-
-imu = Node(
-            package="ros_gz_bridge",
-            executable="parameter_bridge",
-            arguments=[
-                "/imu@sensor_msgs/msg/Imu[gz.msgs.IMU"
-            ]
-          )
-
-pointCloud = Node(
-            package="sensor_reader",
-            executable="sensor_reader_node",
-            # ros_arguments=[
-            #     "--log-level", "sensor_reader_node:=debug",
-            # ],
-          )
-
 shutdown = RegisterEventHandler(
             event_handler=OnProcessExit(
               target_action=simulation,
@@ -88,13 +97,14 @@ shutdown = RegisterEventHandler(
 
 def generate_launch_description():
     return LaunchDescription([
+          bridge_control,
+          bridge_keyboard,
+          bridge_lidar,
+          bridge_camera,
+          bridge_imu,
           simulation,
-          control,
-          lidar,
-          camera,
-          imu,
-          pointCloud,
-          # command,
+          sensor_reader,
           rviz,
+          # command,
           shutdown        
     ]) 
