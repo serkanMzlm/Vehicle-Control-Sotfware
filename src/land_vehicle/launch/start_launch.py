@@ -1,3 +1,4 @@
+import os
 from launch import LaunchDescription
 from launch_ros.actions import Node
 from launch.actions import ExecuteProcess, IncludeLaunchDescription, SetEnvironmentVariable
@@ -10,11 +11,15 @@ from launch.actions import RegisterEventHandler, EmitEvent
 from launch.event_handlers import OnProcessExit
 from launch.events import Shutdown
 
-
-ign_ros_pkg_path      = get_package_share_directory("ros_ign_gazebo")
 land_vehicle_path     = get_package_share_directory("land_vehicle")
 simulation_world_path = Path(land_vehicle_path, "worlds", "land_vehicle.sdf")
 simulation_model_path = Path(land_vehicle_path, "models")
+
+config_file = os.path.join(
+        get_package_share_directory('config_file'),
+        'config',
+        'params.yaml'
+    )
 
 simulation = ExecuteProcess(
     cmd=["gz", "sim", "-r", simulation_world_path]
@@ -89,10 +94,11 @@ command = Node(
 controller = Node(
             package="controller",                                               # ros_ign_bridge eski versiyonda kullanılır.
             executable="controller_node",
-            ros_arguments=[
-                "--log-level", "controller_node:=debug",
+            # ros_arguments=[
+                # "--log-level", "controller_node:=debug",
                 # "--remap", "Command_node:=my_command_node"
-            ],
+            # ],
+            parameters=[config_file],
             output="screen"
           )
 

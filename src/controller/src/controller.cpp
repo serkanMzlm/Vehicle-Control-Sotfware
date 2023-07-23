@@ -2,13 +2,13 @@
 using namespace std::placeholders;
 
 Controller::Controller(): Node("controller_node"), is_ready(true){
-  // this->declare_parameter("a_scale", 0.1);
-  // this->declare_parameter("l_scale", 1);
+  this->declare_parameter<double>("a_scale", 0.2);
+  this->declare_parameter<double>("l_scale", 1.0);
   
-  speed.data[A_SCALE] = 1.0;
-  speed.data[L_SCALE] = 1.0;
-  // speed.data[A_SCALE] = this->get_parameter("a_scale").as_double();
-  // speed.data[L_SCALE] = this->get_parameter("l_scale").as_double();
+  // speed.data[A_SCALE] = 1.0;
+  // speed.data[L_SCALE] = 1.0;
+  speed.data[A_SCALE] = (float)this->get_parameter("a_scale").as_double();
+  speed.data[L_SCALE] = (float)this->get_parameter("l_scale").as_double();
   speed.data[ANGULAR] = 0;
   speed.data[LINEAR]  = 0;
 
@@ -19,7 +19,7 @@ Controller::Controller(): Node("controller_node"), is_ready(true){
 
 void Controller::joyCallback(const int32Msg msg){
   twistMsg data;
-  RCLCPP_INFO(this->get_logger(), "------");
+  RCLCPP_INFO(this->get_logger(), "%f - %f", speed.data[A_SCALE], speed.data[L_SCALE]);
 
   speed.data[LINEAR] = 0;
   speed.data[ANGULAR] = 0;
