@@ -30,8 +30,6 @@ bridge_control = Node(
             arguments=[
                 "/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist"
             ],
-            # ros_arguments=["/cmd_vel:=/cmd_vel_ros"]  remapping ile aynı
-            # remappings=[("/cmd_vel","/cmd_vel_ros")],
             output="screen"
           )
 
@@ -88,6 +86,16 @@ command = Node(
             output="screen"
           )
 
+controller = Node(
+            package="controller",                                               # ros_ign_bridge eski versiyonda kullanılır.
+            executable="controller_node",
+            ros_arguments=[
+                "--log-level", "controller_node:=debug",
+                # "--remap", "Command_node:=my_command_node"
+            ],
+            output="screen"
+          )
+
 shutdown = RegisterEventHandler(
             event_handler=OnProcessExit(
               target_action=simulation,
@@ -104,7 +112,8 @@ def generate_launch_description():
           bridge_imu,
           simulation,
           sensor_reader,
-          rviz,
+          controller,
+          # rviz,
           # command,
           shutdown        
     ]) 
