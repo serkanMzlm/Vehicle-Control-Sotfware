@@ -5,10 +5,10 @@ ___
 - **ROS2 Humble**
 - **Gazebo Garden**
 ___
-- `command` paketi doğrudan klavyeden basılan tuşlara göre `cmd_vel` komutu çalıştırmasını sağlar.
+- `command_node` paketi doğrudan klavyeden basılan tuşlara göre `cmd_vel` komutu çalıştırmasını sağlar.
 - Sadece bir paketi çalıştırmak istediğimizde ve `RCLCPP_DEBUG` kısımlarının terminalde gözükmesini istersek `--ros-args --log-level [node_name]:=debug` yazılmalıdır. Aynı şekilde ERROR, WARN... içinde aynısı yapılabilir.
 ```
-ros2 run command  command_node --ros-args --log-level command_node:=debug
+ros2 run controller  command_node --ros-args --log-level command_node:=debug
 ```
 - `command` klavyede bulunan **ok tuşları** ile hareket ettirilir.
 
