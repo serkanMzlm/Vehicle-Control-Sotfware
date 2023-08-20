@@ -6,7 +6,7 @@ ___
 - **Gazebo Garden**
 ___
 - `command_node` paketi doğrudan klavyeden basılan tuşlara göre `cmd_vel` komutu çalıştırmasını sağlar.
-- Sadece bir paketi çalıştırmak istediğimizde ve `RCLCPP_DEBUG` kısımlarının terminalde gözükmesini istersek `--ros-args --log-level [node_name]:=debug` yazılmalıdır. Aynı şekilde ERROR, WARN... içinde aynısı yapılabilir.
+- Sadece bir paketi çalıştırmak istediğimizde ve `RCLCPP_DEBUG` kısımlarının terminalde gözükmesini istersek `--ros-args --log-level [node_name]:=debug` yazılmalıdır. Aynı şekilde ERROR, WARN içinde aynısı yapılabilir.
 ```
 ros2 run controller  command_node --ros-args --log-level command_node:=debug
 ```
@@ -39,7 +39,7 @@ ros2 launch land_vehicle start_launch.py
 ```
 - `config_file\config\params.yaml` kısmında bulunan `a_scale` ve `l_scale` değişkenleri ile aracın **linear** ve **angular** hızları ayarlanır.
 
-**Not:** `a_scale` ve `l_scale birer katsayıdır. Çok büyük değerler verilmemelidir.
+**Not:** `a_scale` ve `l_scale` birer katsayıdır. Çok büyük değerler verilmemelidir.
 
 **Not:** Build işlemi `--symlink-install` parametresiyle yapılırsa "params.yaml" dosyasında yapılan değişiklik direkt etki eder. `--symlink-install` komutu src içinde bulunan paketleri install kısmına linklenmesini sağlar. Eğer "params.yaml" dosyasında değişiklik yapılıp build işleminde `--symlink-install` parametresi kullanılmadıysa "land_vehicle" paketi build edilmelidir.
   ```
@@ -68,3 +68,10 @@ PointCloud2 -> Axis = X
 #### `RQT`
 ![Açıklama](image/rosgraph.png)
 - `rqt` uygulamasında paketler arsındaki ilişkiyi görmek için `Plugins -> Node Graph` kısmından incelenebilir.
+---
+## Paket Görevleri:
+- **camera_recorder:** Bu paket similasyon programında bulunan kamera verisini kaydedilmesini sağlar.
+- **config_file:** Projenin değiştirilmesi kolay olası gereken değişkenlerin bulunduğu paket.
+- **controller:** Aracın hareket etmesini sağlayan pakettir.
+- **land_vehicle:** Simülasyon için gerekli pakettir.
+- **sensor_reader:** Sensör verilerinin düzeltilmesini sağlar.
