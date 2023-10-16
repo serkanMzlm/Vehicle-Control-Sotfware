@@ -113,7 +113,7 @@
 
     <include>
       <pose>0 0 0.5 0 0 0</pose>
-      <uri>../models/marble_husky</uri> 
+      <uri>marble_husky/model.sdf</uri> 
     </include>
 
     <include>

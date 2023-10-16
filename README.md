@@ -16,6 +16,8 @@ ros2 run controller  command_node --ros-args --log-level command_node:=debug
 
 ---
 ### Build
+- Yapılan modellerin `GZ_SIM_RESOURCE_PATH` değişkenine belirtilmesi lazım. 
+- `GZ_SIM_RESOURCE_PATH` değişkeni kullanılmayacaksa modellerin direkt yeri yazılmalıdır.
 ```
 git clone git@github.com:serkanMzlm/Land_Vehicle.git
 
@@ -68,6 +70,7 @@ PointCloud2 -> Axis = X
 #### `RQT`
 ![Açıklama](image/rosgraph.png)
 - `rqt` uygulamasında paketler arsındaki ilişkiyi görmek için `Plugins -> Node Graph` kısmından incelenebilir.
+
 ---
 ## Paket Görevleri:
 - **camera_recorder:** Bu paket similasyon programında bulunan kamera verisini kaydedilmesini sağlar.
