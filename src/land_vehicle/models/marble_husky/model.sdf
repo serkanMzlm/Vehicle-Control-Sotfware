@@ -764,7 +764,6 @@
       </axis>
     </joint>
 
-
     <plugin
         filename="gz-sim-diff-drive-system"
         name="gz::sim::systems::DiffDrive">
@@ -776,6 +775,6 @@
         <wheel_radius>0.3</wheel_radius>
         <odom_publish_frequency>1</odom_publish_frequency>  
         <topic>cmd_vel</topic>
-      </plugin>
+	</plugin>
   </model>
 </sdf>
