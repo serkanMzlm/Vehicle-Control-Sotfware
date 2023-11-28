@@ -11,7 +11,7 @@ from launch.actions import RegisterEventHandler, EmitEvent
 from launch.event_handlers import OnProcessExit
 from launch.events import Shutdown
 
-land_vehicle_path     = get_package_share_directory("land_vehicle")
+land_vehicle_path     = get_package_share_directory("simulation")
 simulation_world_path = Path(land_vehicle_path, "worlds", "land_vehicle.sdf")
 simulation_model_path = Path(land_vehicle_path, "models")
 
@@ -119,7 +119,7 @@ def generate_launch_description():
           simulation,
           sensor_reader,
           controller,
-          rviz,
+          # rviz,
           # command,
           shutdown        
     ]) 
