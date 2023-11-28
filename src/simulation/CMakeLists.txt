@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(land_vehicle)
+project(simulation)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -24,12 +24,6 @@ find_package(ros_ign_gazebo REQUIRED)
 # )
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
-
-# install(
-#   TARGETS
-
-#   DESTINATION lib/${PROJECT_NAME}
-# )
 
 install(
   DIRECTORY 
