@@ -1,0 +1,5 @@
+controller_node:
+  ros__parameters:
+    a_scale: 0.2
+    l_scale: 2.0
+
