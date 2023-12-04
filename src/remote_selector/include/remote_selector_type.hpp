@@ -1,0 +1,4 @@
+#ifndef __REMOTE_SELECTOR_TYPE_HPP__
+#define __REMOTE_SELECTOR_TYPE_HPP__
+
+#endif

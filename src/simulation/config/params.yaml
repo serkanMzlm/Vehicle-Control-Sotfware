@@ -3,3 +3,6 @@ controller_node:
     a_scale: 0.2
     l_scale: 2.0
 
+remote_selector_node:
+  ros__parameters:
+    control_unit: "keyboard" # joy, esp8266, keyboard
