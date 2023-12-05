@@ -8,7 +8,7 @@
 #define FOOTHER_    71
 #define HEADER_LEN  1
 #define FOOTHER_LEN 1
-#define PAYLOAD_LEN 4
+#define PAYLOAD_LEN 6
 
 #define KEYBOARD_W 87 
 #define KEYBOARD_A 65
@@ -16,17 +16,20 @@
 #define KEYBOARD_D 68
 #define KEYBOARD_X 88
 
+#define OFFSET 0.1
+
 #define BAUDRATE B9600
 
+
 typedef enum {
-    S_HEADER, S_LX, S_LY, S_RX, 
-    S_RY, S_PWR, S_FOOTHER, S_ALL
-}Serial_e;
+    S_HEADER, S_LX, S_LY, S_RX, S_RY, 
+    S_PWR, UNDEFINED, S_FOOTHER, S_ALL
+} Serial_e;
 
 typedef struct{
-    std::string file_name;
+    std::string name;
     int port;
-} device_t;
+} Device_t;
 
 typedef struct{
     int button[2];
@@ -34,7 +37,7 @@ typedef struct{
     int state = 0;
     uint8_t curr_byte;
     uint8_t prev_byte;
-    // uint8_t buffer[S_ALL];
-} rx_t;
+    uint8_t buffer[S_ALL];
+} Rx_t;
 
 #endif

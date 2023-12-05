@@ -6,3 +6,4 @@ controller_node:
 remote_selector_node:
   ros__parameters:
     control_unit: "keyboard" # joy, esp8266, keyboard
+    device_name: "/dev/ttyUSB0"
