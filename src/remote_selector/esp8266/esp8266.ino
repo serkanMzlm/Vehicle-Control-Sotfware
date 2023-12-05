@@ -13,8 +13,8 @@
 #define DELAY  10
 
 typedef enum {
-    S_HEADER, S_LX, S_LY, S_RX, 
-    S_RY, S_PWR, S_FOOTHER, S_ALL
+    S_HEADER, S_LX, S_LY, S_RX, S_RY, 
+    S_PWR, UNDEFINED, S_FOOTHER, S_ALL
 }Serial_e;
 
 // RemoteXY configurate  
@@ -80,4 +80,5 @@ void updateData(){
   buffer[S_RX] = (uint8_t)map(RemoteXY.right_joy_x ,-100, 100, 0, 200);
   buffer[S_RY] = (uint8_t)map(RemoteXY.right_joy_y ,-100, 100, 0, 200);
   buffer[S_PWR] = RemoteXY.power;
+  buffer[UNDEFINED] = 0;
 }

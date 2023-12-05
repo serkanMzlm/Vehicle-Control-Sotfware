@@ -18,14 +18,10 @@
 
 #define BAUDRATE B9600
 
-typedef enum{
-
+typedef enum {
+    S_HEADER, S_LX, S_LY, S_RX, 
+    S_RY, S_PWR, S_FOOTHER, S_ALL
 }Serial_e;
-
-// typedef enum {
-//     S_HEADER, S_JOY_X, S_JOY_Y, S_BUTTON1, 
-//     S_BUTTON2, S_FOOTHER, S_ALL
-// } Serial_e;
 
 typedef struct{
     std::string file_name;
