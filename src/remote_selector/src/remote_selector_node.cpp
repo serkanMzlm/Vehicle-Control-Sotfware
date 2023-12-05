@@ -37,7 +37,7 @@ void RemoteSelector::controlSelection(){
     }else{
         std::cout << "control off" << std::endl;
     }
-    pub.joy = this->create_publisher<joyMsg>("controller_data", 10);
+    pub.joy = this->create_publisher<joyMsg>("control_data", 10);
 }
 
 int main(int argc, char* argv[]){
