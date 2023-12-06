@@ -11,11 +11,10 @@ find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 
-set(SOURCE_CODE src/controller.cpp)
+FILE(GLOB_RECURSE SRC_FILE src/*.cpp)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
-add_executable(controller_node src/controller.cpp)
-add_executable(command_node src/command.cpp)
+add_executable(controller_node ${SRC_FILE})
 
 ament_target_dependencies(controller_node 
   rclcpp
@@ -23,15 +22,8 @@ ament_target_dependencies(controller_node
   geometry_msgs
 )
 
-ament_target_dependencies(command_node 
-  rclcpp
-  std_msgs
-  geometry_msgs
-)
-
 install(TARGETS
   controller_node
-  command_node
   DESTINATION lib/${PROJECT_NAME}
 )
 
