@@ -2,7 +2,10 @@
 
 RemoteSelector::RemoteSelector(): Node("remote_selector_node"){
     initParam();
+    std::cout << "______________________________________" << std::endl;
+
     memset(rx_data.buffer, 0, sizeof(rx_data.buffer));
+    controlSelection();
 }
 
 RemoteSelector::~RemoteSelector(){
@@ -20,11 +23,14 @@ void RemoteSelector::initParam(){
 }
 
 void RemoteSelector::controlSelection(){
+        std::cout << "***************************"<<std::endl;
+
     if(control_unit == "joy"){
         sub.joy = this->create_subscription<joyMsg>("joy", 10, std::bind(
                 &RemoteSelector::joyCallback, this, std::placeholders::_1));
     }else if(control_unit == "keyboard"){
-        sub.keyboard = this->create_subscription<int32Msg>("/keypress", 10, std::bind(
+        std::cout << "ksdfjsaşfsaf"<<std::endl;
+        sub.keyboard = this->create_subscription<int32Msg>("input_cmd", 10, std::bind(
             &RemoteSelector::keyboardCallback, this, std::placeholders::_1));
         timer.keyboard = this->create_wall_timer(std::chrono::milliseconds(100), 
                                         std::bind(&RemoteSelector::timeOutKeyboard, this));

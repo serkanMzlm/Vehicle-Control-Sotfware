@@ -31,10 +31,10 @@ sensor_reader = Node(
           )
 
 command = Node(
-            package="command",                                               # ros_ign_bridge eski versiyonda kullanılır.
-            executable="command_node",
-            ros_arguments=[ # "--remap", "Command_node:=my_command_node"
-                "--log-level", "Command_node:=debug"],
+            package="remote_selector",                                               # ros_ign_bridge eski versiyonda kullanılır.
+            executable="remote_selector_node",
+            # ros_arguments=[ "--remap", "Command_node:=my_command_node"
+                # "--log-level", "Command_node:=debug"],
             output="screen"
           )
 
@@ -99,7 +99,8 @@ def generate_launch_description():
           bridge_imu,
           simulation,
           sensor_reader,
-          controller,
+          command,
+          # controller,
           # rviz,
           # command,
           shutdown        
