@@ -12,7 +12,7 @@ void Controller::commandCallback(const joyMsg msg){
 }
 
 void Controller::initTopic(){
-  sub.joy = this->create_subscription<joyMsg>("command_data", 10, std::bind(
+  sub.joy = this->create_subscription<joyMsg>("control_data", 10, std::bind(
                                 &Controller::commandCallback, this, _1));
 
   pub.joy = this->create_publisher<twistMsg>("cmd_vel", 10);

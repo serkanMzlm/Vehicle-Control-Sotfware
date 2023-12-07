@@ -12,7 +12,6 @@
 #include "std_msgs/msg/int32.hpp"
 
 #include "remote_selector_type.hpp"
-#include "geometry_utils.hpp"
 
 using joyMsg = sensor_msgs::msg::Joy;
 using int32Msg = std_msgs::msg::Int32;

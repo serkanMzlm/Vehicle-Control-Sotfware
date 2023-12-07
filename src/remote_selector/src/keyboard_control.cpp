@@ -39,6 +39,7 @@ void RemoteSelector::timeOutKeyboard(){
     elapsed_time = current_time - last_msg_timestamp_;
 
     if (elapsed_time.count() > 100000000) {
+        std::cout << "zman: " << elapsed_time.count() <<std::endl;
         pub.joy->publish(joy_data);
     } 
 }

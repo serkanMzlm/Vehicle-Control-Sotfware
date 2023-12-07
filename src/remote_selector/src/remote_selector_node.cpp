@@ -2,8 +2,6 @@
 
 RemoteSelector::RemoteSelector(): Node("remote_selector_node"){
     initParam();
-    std::cout << "______________________________________" << std::endl;
-
     memset(rx_data.buffer, 0, sizeof(rx_data.buffer));
     controlSelection();
 }
@@ -23,14 +21,11 @@ void RemoteSelector::initParam(){
 }
 
 void RemoteSelector::controlSelection(){
-        std::cout << "***************************"<<std::endl;
-
     if(control_unit == "joy"){
         sub.joy = this->create_subscription<joyMsg>("joy", 10, std::bind(
                 &RemoteSelector::joyCallback, this, std::placeholders::_1));
     }else if(control_unit == "keyboard"){
-        std::cout << "ksdfjsaşfsaf"<<std::endl;
-        sub.keyboard = this->create_subscription<int32Msg>("input_cmd", 10, std::bind(
+        sub.keyboard = this->create_subscription<int32Msg>("/keypress", 10, std::bind(
             &RemoteSelector::keyboardCallback, this, std::placeholders::_1));
         timer.keyboard = this->create_wall_timer(std::chrono::milliseconds(100), 
                                         std::bind(&RemoteSelector::timeOutKeyboard, this));
@@ -44,6 +39,10 @@ void RemoteSelector::controlSelection(){
         std::cout << "control off" << std::endl;
     }
     pub.joy = this->create_publisher<joyMsg>("control_data", 10);
+}
+
+double map(double data, double in_min, double in_max, double out_min, double out_max){   
+  return ((((data - in_min)*(out_max - out_min))/(in_max - in_min)) + out_min);
 }
 
 int main(int argc, char* argv[]){

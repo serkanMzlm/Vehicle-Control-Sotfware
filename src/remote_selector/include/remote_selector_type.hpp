@@ -2,6 +2,7 @@
 #define __REMOTE_SELECTOR_TYPE_HPP__
 
 #include <string>
+#include <cmath>
 #include <cstdint>
 
 #define HEADER_     27
@@ -19,6 +20,7 @@
 #define OFFSET 0.1
 
 #define BAUDRATE B9600
+#define OFFSET_EXCEPTION(X) (abs(X) > OFFSET ? X : 0.0f) 
 
 
 typedef enum {
@@ -39,5 +41,7 @@ typedef struct{
     uint8_t prev_byte;
     uint8_t buffer[S_ALL];
 } Rx_t;
+
+double map(double data, double in_min, double in_max, double out_min, double out_max);
 
 #endif
