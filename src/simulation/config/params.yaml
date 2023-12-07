@@ -5,6 +5,11 @@ remote_selector_node:
     
 controller_node:
   ros__parameters:
-    a_scale: 0.2
-    l_scale: 2.0
-
+    rules:
+      - 5.00   # Threshold Distance
+      - 3.00   # Safety Distance
+      - 0.60   # Vehicle Radius
+      - 0.30   # Vehicle Width 
+    sensor:
+      - 3.0    # Max Range
+      - 0.1    # Min Range

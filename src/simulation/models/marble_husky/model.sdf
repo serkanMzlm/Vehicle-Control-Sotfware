@@ -403,7 +403,7 @@
         <!-- OS1-64 3D Laser Configuration (10x2048 or 10x1024 or 20x1024 or 20x512 as possible (rate) x (hor. res.) configs)-->
       <sensor name="front_laser" type="gpu_lidar">
         <visualize>true</visualize>
-        <update_rate>3</update_rate>
+        <update_rate>10</update_rate>
         <topic>lidar</topic>
         <lidar>
           <scan>
@@ -414,15 +414,15 @@
               <max_angle>3.14159</max_angle>
             </horizontal>
             <vertical>
-              <samples>6</samples>
+              <samples>3</samples>
               <resolution>1</resolution>
-              <min_angle>-0.1</min_angle>
-              <max_angle>0.1</max_angle>
+              <min_angle>-0.05</min_angle>
+              <max_angle>0.05</max_angle>
             </vertical>
           </scan>
           <range>
             <min>0.2</min>
-            <max>6</max>
+            <max>3</max>
             <resolution>0.1</resolution>
           </range>
           <noise>
@@ -463,8 +463,8 @@
             <camera>
                 <horizontal_fov>1.089</horizontal_fov>
                 <image>
-                  <width>360</width>
-                  <height>360</height>
+                  <width>720</width>
+                  <height>720</height>
                   <format>R8G8B8</format>
                 </image>
                 <clip>
@@ -473,7 +473,7 @@
                 </clip>
             </camera>
             <always_on>1</always_on>
-            <update_rate>15.0</update_rate>
+            <update_rate>30.0</update_rate>
             <visualize>true</visualize>
             <topic>camera</topic>
         </sensor>
