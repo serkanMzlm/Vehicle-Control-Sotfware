@@ -478,24 +478,25 @@
             <topic>camera</topic>
         </sensor>
 
-      <light name="flash" type="spot">
-        <cast_shadows>true</cast_shadows>
-        <pose>0.2179 0 0.83718 3.14159 1.5709 0</pose>
-        <attenuation>
-          <range>20</range>
-          <linear>0.1</linear>
-          <constant>0.1</constant>
-          <quadratic>0.0025</quadratic>
-        </attenuation>
-        <diffuse>0.8 0.8 0.5 1</diffuse>
-        <specular>0.8 0.8 0.5 1</specular>
-        <spot>
-          <inner_angle>0.9</inner_angle>
-          <outer_angle>1.0</outer_angle>
-          <falloff>1</falloff>
-        </spot>
-        <direction>0 0 -1</direction>
-      </light>
+        <light name="flash" type="spot">
+          <pose>0.55 0 0.5 3.14159 1.5709 0</pose>
+          <cast_shadows>1</cast_shadows>
+          <visualize>false</visualize>
+          <attenuation>
+            <range>10</range>
+            <linear>0.1</linear>
+            <constant>0.1</constant>
+            <quadratic>0.0025</quadratic>
+          </attenuation>
+          <diffuse>0.8 0.8 0.5 1</diffuse>
+          <specular>0.8 0.8 0.5 1</specular>
+          <spot>
+            <inner_angle>0.9</inner_angle>
+            <outer_angle>1.0</outer_angle>
+            <falloff>1</falloff>
+          </spot>
+          <direction>0 0 -1</direction>
+        </light>
     </link>
     
 
