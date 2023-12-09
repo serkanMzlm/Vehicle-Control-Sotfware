@@ -6,16 +6,18 @@ void ObstacleAvoidance::updateSetpoint(double & linear_x, double & linear_w){
     for(int theta = 0; theta < VERTICAL; theta++){
         for(int phi = 0; phi < HORIZONTAL; phi++){
             int angle = phi % 15;
-            if((histogram[angle][theta] < 0.90f) || (histogram[359 - angle][theta] < 0.90f) ){
+            if((histogram[angle][theta] < 0.3f) || (histogram[359 - angle][theta] < 0.3f) ){
+                // std::cout << "distance: " <<  histogram[angle][theta]
+                // << " angle: " << angle << " theta: " << theta << std::endl;
                 linear_x = 0.0;
                 int left_force = 0.0f;
                 int right_force = 0.0f;
-                for(int i = 70; i < 100; i++){
+                for(int i = 60; i < 110; i++){
                     left_force += histogram[i][theta];
                     right_force += histogram[360 - i][theta];
                 }
                 linear_w = left_force >= right_force ?  0.5 : -0.5;
-                linear_x = -1.0;
+                linear_x = 0.0;
             }
             if(histogram[phi][theta] < calculateDistance(rules[VEHICLE_WIDTH], phi)){  
                 continue;

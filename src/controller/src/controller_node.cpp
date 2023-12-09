@@ -9,7 +9,10 @@ Controller::Controller(): Node("controller_node"){
 void Controller::commandCallback(const joyMsg msg){
   data.linear.x = msg.axes[0];
   data.angular.z = msg.axes[1];
+  std::cout << "x: " << data.linear.x << " z: " << data.angular.z << std::endl;
   obstacleAvoidance();
+  std::cout << "x: " << data.linear.x << " z: " << data.angular.z << std::endl;
+  std::cout << "_____________________________\n";
   pub.joy->publish(data);
 }
 

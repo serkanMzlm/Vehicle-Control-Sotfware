@@ -402,6 +402,7 @@
 
         <!-- OS1-64 3D Laser Configuration (10x2048 or 10x1024 or 20x1024 or 20x512 as possible (rate) x (hor. res.) configs)-->
       <sensor name="front_laser" type="gpu_lidar">
+        <pose>0.4379 0 0.67018 0 0 0</pose>
         <visualize>true</visualize>
         <update_rate>10</update_rate>
         <topic>lidar</topic>
@@ -421,7 +422,7 @@
             </vertical>
           </scan>
           <range>
-            <min>0.2</min>
+            <min>0.1</min>
             <max>3</max>
             <resolution>0.1</resolution>
           </range>
@@ -431,7 +432,6 @@
             <stddev>0.01</stddev>
           </noise>
         </lidar>
-        <pose>0.4379 0 0.67018 0 -0 0</pose>
       </sensor>
 
       <gravity>1</gravity>
