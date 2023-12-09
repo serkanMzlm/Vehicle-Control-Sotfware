@@ -1,80 +1,87 @@
-### LAND VEHICLE
-___
-#### Program Çalıştığı Ortam
+## SAFE DRIVE
+
+### System Requirements
 - **Ubuntu 22.04**
 - **ROS2 Humble**
 - **Gazebo Garden**
-___
-- `command_node` paketi doğrudan klavyeden basılan tuşlara göre `cmd_vel` komutu çalıştırmasını sağlar.
-- Sadece bir paketi çalıştırmak istediğimizde ve `RCLCPP_DEBUG` kısımlarının terminalde gözükmesini istersek `--ros-args --log-level [node_name]:=debug` yazılmalıdır. Aynı şekilde ERROR, WARN içinde aynısı yapılabilir.
+
+### Install
 ```
-ros2 run controller  command_node --ros-args --log-level command_node:=debug
+cd ~
+git clone git@github.com:serkanMzlm/safe-drive.git
 ```
-- `command` klavyede bulunan **ok tuşları** ile hareket ettirilir.
-
-**Not:** `[node_name]:=debug` kısmına node adı yazılmalıdır. Executable dosyanın adı yazılmamalıdır. Örnek kısmında executable ile node adı aynıdır.  
-
----
-### Build
-- Yapılan modellerin `GZ_SIM_RESOURCE_PATH` değişkenine belirtilmesi lazım. 
-- `GZ_SIM_RESOURCE_PATH` değişkeni kullanılmayacaksa modellerin direkt yeri yazılmalıdır.
+### Compile
+- The path to the model should be added to the GZ_SIM_RESOURCE_PAT environment variable
 ```
-git clone git@github.com:serkanMzlm/Land_Vehicle.git
+echo "export GZ_VERSION=garden" >> ~/.bashrc
 
-cd Land_Vehicle
+echo "export GZ_SIM_RESOURCE_PATH=/home/${USER}/safe-drive/src/simulation/models" >> ~/.bashrc 
 
-colcon build
+source ~/.bashrc  #or bash or simply restart the terminal
 ```
+- When using the 'bash' command to reload the terminal, it restarts the terminal session, while 'source ~/.bashrc' reloads the .bashrc file, applying the changes for the current session
+```
+source /opt/ros/humble/setup.bash
 
+cd ~/safe-drive
+
+#Builds all files in the project.
+colcon build  
+
+#Or only build a specific package.
+colcon build --packages-select [package_name]
+```
 ### Run
-- Paketler `ros2 run` komutu ile tek tek çalıştırılabiliriz ya da launch dosyasını direkt çalıştırarak bütün paketlerin çalışması sağlanır.
 ```
-source [Land_vehicle_Path]/install/setup.bash
-
-ros2 launch land_vehicle start_launch.py
+source /opt/ros/humble/setup.bash
+source ~/safe-drive/install/setup.bash
 ```
-- Klavyede bulunan akfif tuşlar.
+- To avoid entering the `~/safe-drive/install/setup.bash` command every time a new terminal is opened, these commands are written to the `~/.bashrc` file.
 ```
-     W
-  A  S  D
-     X
+echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
+echo "source /home/${USER}/safe-drive/install/setup.bash" >> ~/.bashrc
 ```
-- `config_file\config\params.yaml` kısmında bulunan `a_scale` ve `l_scale` değişkenleri ile aracın **linear** ve **angular** hızları ayarlanır.
+- The control method is specified in the 'control_unit' variable in the params file to control the vehicle. By default, it is set to keyboard control. If desired, it can also be controlled using a joystick or an ESP8266
 
-**Not:** `a_scale` ve `l_scale` birer katsayıdır. Çok büyük değerler verilmemelidir.
+1. **Keyboard controls are as follows:**
+    - 'w' for forward
+    - 's' to stop
+    - 'x' for backward
+    - 'a' for left
+    - 'd' for right
 
-**Not:** Build işlemi `--symlink-install` parametresiyle yapılırsa "params.yaml" dosyasında yapılan değişiklik direkt etki eder. `--symlink-install` komutu src içinde bulunan paketleri install kısmına linklenmesini sağlar. Eğer "params.yaml" dosyasında değişiklik yapılıp build işleminde `--symlink-install` parametresi kullanılmadıysa "land_vehicle" paketi build edilmelidir.
-  ```
-  colcon build --packages-select land_vehicle
-  ```
----
-### GZ - RVIZ2 - RQT
-
-#### `Gz Sim`
-![Açıklama](image/gz_sim.png)
-- `gz sim` simülasyon programında GUI düzenlemelerini `src\land_vehile\worlds\land_vehicle.sdf` dosyasından düzeltilir.
-- Lidar mesafeleri GUI üzerinde göstermek için lidar plagin kısmında lidarın adı belirtilmelidir. Ek olarak `Show Non Hitting Rays` kısmı seçilerek sadece algıladığı nesne kısımları görünmesi sağlanır.
-- Lidar, kamera, imu gibi araçların ayarlamaları `src\land_vehile\models\marble_husky\model.sdf` dosyası üzerinde oynamalar yapılarak sensörler düzeltilebilir.  
-
-#### `RViz2`
-![Açıklama](image/rviz2.png)
-- `Global Options -> Fixed Frame` kısmına `vehicle` yazılmalıdır.
-- Image ve PointCloud2 eklemek için `add -> By topic -> Image` ve `add -> By topic -> /merge_cloud` kısımları eklenebilir.
-- `PointCloud2` kısmında noktalar daha belirgin ve düzenli olması için alt kısımda bulunan ayarlamalar yapılmalıdır.
 ```
-PointCloud2 -> Selectable = Points
-PointCloud2 -> Size(Pixels) = 4
-PointCloud2 -> Color Transformer = AxisColor
-PointCloud2 -> Axis = X
+    w
+a   s    d
+    x
 ```
-#### `RQT`
-![Açıklama](image/rosgraph.png)
-- `rqt` uygulamasında paketler arsındaki ilişkiyi görmek için `Plugins -> Node Graph` kısmından incelenebilir.
+2. **Joystick control:** Control is achieved using the left joystick.
+3. **ESP8266 control:** Joy data is sent to the computer's serial port via an interface prepared using [RemoteXY](https://remotexy.com/en/).
+    - To connect to the ESP8266 board, it is necessary to write the port to which the board is connected in the `device_name` variable in the params file. By default, it is `/dev/ttyUSB0`
+    - The RemoteXY application is downloaded to the phone, and to connect to the access point broadcasted by ESP8266, you connect to `joy` in the Wi-Fi section. The password is `safe_drive`.
 
----
-## Paket Görevleri:
-- **camera_recorder:** Bu paket similasyon programında bulunan kamera verisini kaydedilmesini sağlar.
-- **config_file:** Projenin değiştirilmesi kolay olası gereken değişkenlerin bulunduğu paket.
-- **controller:** Aracın hareket etmesini sağlayan pakettir.
-- **land_vehicle:** Simülasyon için gerekli pakettir.
-- **sensor_reader:** Sensör verilerinin düzeltilmesini sağlar.
+
+- Instead of running each code individually, the launch file is executed.
+```
+ros2 launch simulation start_launch.py
+```
+- If files are to be launched individually, the path to the params file should be provided during the launch.
+```
+ros2 run controller controller_node --ros-args --params-file /home/${USER}/safe-drive/src/simulation/config/params.yaml
+```
+### Project
+The project aims to create a semi-autonomous ground vehicle capable of navigating its environment and avoiding obstacles. The robot will use sensors such as Lidar. In the later stages, it will maintain its direction with the help of an IMU (Inertial Measurement Unit).
+- **Gazebo Garden:** Simulation settings can be modified by assigning the topic name `lidar` for the `lidar` window to display Lidar data. If it is desired to hide areas where detection is not performed, unchecking the `show non-hitting` rays option is recommended
+
+![gazebo](image/gazebo.png)
+
+- **Rviz2:** The Lidar sensor data is visualized in conjunction with the camera at the front of the vehicle, as well as the data from the joystick and the error information from obstacle avoidance.
+    - The **RED** arrow represents the linear velocity.
+    - The **GREEN** arrow represents the angular velocity.
+    - The **BLUE** arrow represents the result vector.
+
+- **RQT:** 
+
+![rqt](image/rqt.png)
+
+### Result
