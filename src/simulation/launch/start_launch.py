@@ -100,8 +100,8 @@ def generate_launch_description():
           simulation,
           sensor_reader,
           remote_selector,
-          # controller,
-          # camera_recorder,
+        # controller,
+        # camera_recorder,
 
           bridge_control,
           bridge_keyboard,
