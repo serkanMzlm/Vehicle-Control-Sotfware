@@ -63,15 +63,15 @@
 
 <link name="base_link">
     <visual>
-        <geometry>
-            <box size="${base_width} ${base_length} ${base_height} "/>
-        </geometry>
         <origin rpy="0 0 0" xyz="0 0 ${base_height/2}"/>
+        <geometry>
+            <box size="${base_length} ${base_width} ${base_height} "/>
+        </geometry>
         <material name="purple"/>
     </visual>
     <collision>
         <geometry>
-            <box size="${base_width} ${base_length} ${base_height} "/>
+            <box size="${base_length} ${base_width} ${base_height} "/>
         </geometry>
         <origin rpy="0 0 0" xyz="0 0 ${base_height/2}"/>
     </collision>
