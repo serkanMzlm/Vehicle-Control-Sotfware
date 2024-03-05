@@ -83,6 +83,13 @@ bridge_lidar = Node(
     remappings=[("/lidar/points","/lidar")],
 )
 
+bridge_laser_scan = Node(
+    package="ros_gz_bridge",
+    executable="parameter_bridge",
+    arguments=["/lidar@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan"],
+    remappings=[("/lidar","/scan")],
+)
+
 bridge_camera = Node(
     package="ros_gz_bridge",
     executable="parameter_bridge",
@@ -98,16 +105,17 @@ bridge_imu = Node(
 def generate_launch_description():
     return LaunchDescription([
           simulation,
-          sensor_reader,
-          remote_selector,
+        #   sensor_reader,
+        #   remote_selector,
           # controller,
           # camera_recorder,
 
-          bridge_control,
-          bridge_keyboard,
-          bridge_lidar,
-          bridge_camera,
-          bridge_imu,
+        #   bridge_control,
+        #   bridge_keyboard,
+          bridge_laser_scan,
+          #bridge_lidar,
+        #   bridge_camera,
+        #   bridge_imu,
           # rviz,
           shutdown        
     ]) 
