@@ -16,12 +16,11 @@ class FilterScan(Node):
 
         self.publishers_ = self.create_publisher(LaserScan, "scan2", 10)
         self.subscription = self.create_subscription(LaserScan, 'scan', self.scan_callback, 10)
-        self.get_logger().info("Filter Started...")
+        self.get_logger().info("Filter Distance Started...")
 
     def scan_callback(self, msg):
         self.filter_msg = LaserScan()
 
-        # İki scan verisinde de ortak veriler
         self.filter_msg.header = msg.header
         self.filter_msg.scan_time = msg.scan_time
         self.filter_msg.range_min = msg.range_min
@@ -30,6 +29,7 @@ class FilterScan(Node):
         self.filter_msg.time_increment = msg.time_increment
         self.filter_msg.angle_min = msg.angle_min
         self.filter_msg.angle_max = msg.angle_max
+
         for distance in msg.ranges:
             if self.min_distance <= distance and distance <= self.max_distance:
                 self.filter_msg.ranges.append(distance)
@@ -38,10 +38,8 @@ class FilterScan(Node):
                     self.filter_msg.ranges.append(distance)
                 else:
                     self.filter_msg.ranges.append(np.nan)
-        # self.filter_msg.ranges = msg.ranges
         self.publishers_.publish(self.filter_msg)
     
-
 def main(args=None):
     rclpy.init(args=args)
     node = FilterScan()
