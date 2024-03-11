@@ -5,8 +5,10 @@ remote_selector_node:
     
 filter_scan_node:
   ros__parameters:
-    max_angle: 180
-    min_angle: -160
+    max_angle: 25
+    min_angle: -25
+    max_distance: 1.0
+    min_distance: 0.0
 
 controller_node:
   ros__parameters:

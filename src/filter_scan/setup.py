@@ -20,7 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'filter_scan_node = filter_scan.filter_scan:main'
+            'filter_angle_scan_node = filter_scan.filter_angle_scan:main',
+            'filter_distance_scan_node = filter_scan.filter_distance_scan:main'
         ],
     },
 )
