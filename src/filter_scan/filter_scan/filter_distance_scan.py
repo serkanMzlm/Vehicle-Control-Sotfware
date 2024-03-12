@@ -16,6 +16,10 @@ class FilterScan(Node):
 
         self.publishers_ = self.create_publisher(LaserScan, "scan2", 10)
         self.subscription = self.create_subscription(LaserScan, 'scan', self.scan_callback, 10)
+
+        self.get_logger().info("min distance: %.2f"%self.min_distance)
+        self.get_logger().info("max distance: %.2f"%self.max_distance)
+
         self.get_logger().info("Filter Distance Started...")
 
     def scan_callback(self, msg):
