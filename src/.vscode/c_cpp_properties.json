@@ -1,0 +1,27 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/serkan/ros_gz/install/ros_ign_interfaces/include/**",
+        "/home/serkan/ros_gz/install/ros_gz_sim/include/**",
+        "/home/serkan/ros_gz/install/ros_gz_bridge/include/**",
+        "/home/serkan/ros_gz/install/ros_gz_interfaces/include/**",
+        "/opt/ros/humble/include/**",
+        "/home/serkan/source_code/safe-drive/src/controller/include/**",
+        "/home/serkan/source_code/safe-drive/src/remote_selector/include/**",
+        "/home/serkan/source_code/safe-drive/src/sensor_reader/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

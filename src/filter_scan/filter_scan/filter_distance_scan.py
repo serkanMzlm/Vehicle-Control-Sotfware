@@ -7,7 +7,7 @@ from sensor_msgs.msg import LaserScan
 
 class FilterScan(Node):
     def __init__(self):
-        super().__init__("filter_scan_node")
+        super().__init__("filter_distance_node")
     
         self.declare_parameter("max_distance", 2.0)
         self.declare_parameter("min_distance", 0.0)          

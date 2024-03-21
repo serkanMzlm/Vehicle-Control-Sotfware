@@ -6,7 +6,7 @@ from sensor_msgs.msg import LaserScan
 
 class FilterScan(Node):
     def __init__(self):
-        super().__init__("filter_scan_node")
+        super().__init__("filter_angle_node")
         
         self.declare_parameter("max_angle", 30)
         self.declare_parameter("min_angle", 10)          
