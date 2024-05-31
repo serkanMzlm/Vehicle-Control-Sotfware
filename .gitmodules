@@ -1,0 +1,4 @@
+[submodule "src/drivers"]
+	path = src/drivers
+	url = https://github.com/serkanMzlm/Sensor-Drivers.git
+	branch = main
