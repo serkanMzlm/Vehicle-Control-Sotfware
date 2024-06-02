@@ -9,7 +9,16 @@ find_package(ament_cmake REQUIRED)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 add_library(time_utility ${PROJECT_SOURCE_DIR}/src/tic_toc.cpp)
-ament_export_targets(time_utility HAS_LIBRARY_TARGET)
+
+target_include_directories(time_utility PUBLIC 
+                            "$<INSTALL_INTERFACE:include>"
+                            ${PROJECT_SOURCE_DIR}/include/
+                            "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>")
+
+# ament_export_targets(time_utility HAS_LIBRARY_TARGET)
+
+ament_target_dependencies(time_utility)
+ament_export_libraries(time_utility)
 
 install(
   DIRECTORY include
@@ -25,4 +34,5 @@ install(
   INCLUDES DESTINATION include
 )
 
+ament_export_include_directories(include)
 ament_package()
