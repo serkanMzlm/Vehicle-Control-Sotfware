@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             'recorder_node = camera_streamer.recorder:main',
+            'player_node = camera_streamer.player:main',
         ],
     },
 )
