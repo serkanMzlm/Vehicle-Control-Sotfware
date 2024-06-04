@@ -1,23 +1,22 @@
 cmake_minimum_required(VERSION 3.8)
-project(time_utility)
+project(num_tools)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+# find dependencies
 find_package(ament_cmake REQUIRED)
 
-include_directories(${PROJECT_SOURCE_DIR}/include)
-add_library(time_utility ${PROJECT_SOURCE_DIR}/src/tic_toc.cpp)
+include_directories(include)
+add_library(num_tools ${PROJECT_SOURCE_DIR}/src/num_tools.cpp)
 
-target_include_directories(time_utility PUBLIC 
-                            "$<INSTALL_INTERFACE:include>"
+target_include_directories(num_tools PUBLIC 
+                            "$<INSTALL_INTERFACE:include/>"
                             "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>")
 
-# ament_export_targets(time_utility HAS_LIBRARY_TARGET)
-
-ament_target_dependencies(time_utility)
-ament_export_libraries(time_utility)
+ament_target_dependencies(num_tools)
+ament_export_libraries(num_tools)
 
 install(
   DIRECTORY include/
@@ -25,8 +24,8 @@ install(
 )
 
 install(
-  TARGETS time_utility
-  EXPORT time_utility
+  TARGETS num_tools
+  EXPORT num_tools
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
   RUNTIME DESTINATION bin
@@ -34,4 +33,5 @@ install(
 )
 
 ament_export_include_directories(include)
+
 ament_package()
