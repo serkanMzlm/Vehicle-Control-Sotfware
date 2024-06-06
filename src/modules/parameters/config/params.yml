@@ -1,0 +1,22 @@
+/**:                      # Allows it to be used on all nodes
+  ros__parameters:
+    max_angle: 15
+    min_angle: -10
+    max_distance: 1.0
+    min_distance: 0.0
+
+remote_selector_node:
+  ros__parameters:
+    control_unit: "keyboard" # joy, esp8266, keyboard
+    device_name: "/dev/ttyUSB0"
+
+control_unit:
+  ros__parameters:
+    rules:
+      - 5.00   # Threshold Distance
+      - 3.00   # Safety Distance
+      - 0.60   # Vehicle Radius
+      - 0.30   # Vehicle Width 
+    sensor:
+      - 3.0    # Max Range
+      - 0.1    # Min Range

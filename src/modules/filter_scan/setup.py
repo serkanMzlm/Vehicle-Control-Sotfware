@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'camera_streamer'
+package_name = 'filter_scan'
 
 setup(
     name=package_name,
@@ -20,8 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'recorder_node = camera_streamer.recorder_node:main',
-            'player_node = camera_streamer.player_node:main',
+            'angle_scan_node = filter_scan.angle_scan_node:main',
+            'distance_scan_node = filter_scan.distance_scan_node:main'
         ],
     },
 )
