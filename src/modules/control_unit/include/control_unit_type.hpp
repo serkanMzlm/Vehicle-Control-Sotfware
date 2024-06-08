@@ -5,7 +5,7 @@
 #include <cmath>
 #include <cstdint>
 
-// Serial Comm
+// Serial communication keys
 #define HEADER_     27
 #define FOOTHER_    71
 #define HEADER_LEN  1

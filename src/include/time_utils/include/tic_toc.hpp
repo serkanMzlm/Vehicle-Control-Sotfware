@@ -12,14 +12,10 @@
 class TicToc
 {
 public:
-    /**
-     * @brief Constructor that initializes the timer.
-     */
+    /// @brief Constructor that initializes the timer.
     TicToc();
 
-    /**
-     * @brief Starts or restarts the timer.
-     */
+    /// @brief Starts or restarts the timer.
     void tic();
 
     /**

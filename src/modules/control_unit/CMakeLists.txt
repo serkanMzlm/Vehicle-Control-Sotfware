@@ -11,7 +11,7 @@ find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(num_tools REQUIRED)
-find_package(time_utility REQUIRED)
+find_package(time_utils REQUIRED)
 
 file(GLOB_RECURSE SRC_FILE src/*.cpp)
 include_directories(include)
@@ -22,7 +22,7 @@ ament_target_dependencies(
   rclcpp
   std_msgs
   sensor_msgs
-  time_utility
+  time_utils
   num_tools
 )
 

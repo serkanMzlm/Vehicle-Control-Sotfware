@@ -15,7 +15,7 @@ class Recorder(Node):
     def __init__(self):
         super().__init__("recorder_node")
         self.camera_sub = self.create_subscription(Image, "camera", self.cameraCallback, 10)
-        self.parameters_path =  get_package_share_directory('parameters')
+        self.parameters_path =  get_package_share_directory('secure_drive_vehicle')
         self.video_path = os.path.join(self.parameters_path + "/video", "front_camera.avi")
         
         fourcc = cv2.VideoWriter_fourcc(*'MJPG')
