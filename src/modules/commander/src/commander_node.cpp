@@ -11,36 +11,31 @@ void Commander::commandCallback(const joyMsg msg)
 {
   data.linear.x = msg.axes[0];
   data.angular.z = msg.axes[1];
-  // std::cout << "x: " << data.linear.x << " z: " << data.angular.z << std::endl;
   obstacleAvoidance();
-  // std::cout << "x: " << data.linear.x << " z: " << data.angular.z << std::endl;
-  // std::cout << "_____________________________\n";
   pub.joy->publish(data);
 }
 
 void Commander::obstacleAvoidance()
 {
-  updateSetpoint(data.linear.x, data.angular.z);
+  updateVelocity(data.linear.x, data.angular.z);
   makerCallback();
-  pub.markers->publish(marker_array);
-  pub.joy->publish(data);
 }
 
 void Commander::pointCloudCallback(const pointCloudMsg &msg)
 {
-  pcl_conversions::toPCL(msg, pcl_data.merged);
-  pcl::fromPCLPointCloud2(pcl_data.merged, pcl_data.cloud);
-  for (size_t i = 0; i < pcl_data.cloud.size(); i++)
+  pcl_conversions::toPCL(msg, pcl_data.cloud);
+  pcl::fromPCLPointCloud2(pcl_data.cloud, pcl_data.xyz_cloud);
+  for (size_t i = 0; i < pcl_data.xyz_cloud.size(); i++)
   {
-    if (std::isinf(std::abs(pcl_data.cloud.points[i].x)) ||
-        std::isnan(std::abs(pcl_data.cloud.points[i].x)))
+    if (std::isinf(std::abs(pcl_data.xyz_cloud.points[i].x)) ||
+        std::isnan(std::abs(pcl_data.xyz_cloud.points[i].x)))
     {
-      pcl_data.cloud.points[i].x = 0.0f;
-      pcl_data.cloud.points[i].y = 0.0f;
-      pcl_data.cloud.points[i].z = 0.0f;
+      pcl_data.xyz_cloud.points[i].x = 0.0f;
+      pcl_data.xyz_cloud.points[i].y = 0.0f;
+      pcl_data.xyz_cloud.points[i].z = 0.0f;
     }
   }
-  detectObject(pcl_data.cloud);
+  detectObject(pcl_data.xyz_cloud);
 }
 
 void Commander::makerCallback()
@@ -65,6 +60,8 @@ void Commander::makerCallback()
     marker_array.markers.push_back(marker);
     marker.action = markerMsg::DELETEALL;
   }
+
+  pub.markers->publish(marker_array);
 }
 
 void Commander::declareParameters()
@@ -83,7 +80,7 @@ void Commander::declareParameters()
 
 void Commander::initTopic()
 {
-  sub.joy = this->create_subscription<joyMsg>("control_data", 10, std::bind(&Commander::commandCallback, this, _1));
+  sub.joy = this->create_subscription<joyMsg>("velocity", 10, std::bind(&Commander::commandCallback, this, _1));
   sub.cloud = this->create_subscription<pointCloudMsg>("lidar", 100, std::bind(&Commander::pointCloudCallback, this, _1));
 
   pub.joy = this->create_publisher<twistMsg>("cmd_vel", 10);

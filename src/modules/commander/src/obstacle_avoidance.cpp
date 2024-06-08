@@ -1,6 +1,6 @@
 #include "obstacle_avoidance.hpp"
 
-void ObstacleAvoidance::updateSetpoint(double & linear_x, double & linear_w){
+void ObstacleAvoidance::updateVelocity(double & linear_x, double & linear_w){
     float error = 0.0f;
     bool is_change = false;
     for(int theta = 0; theta < VERTICAL; theta++){

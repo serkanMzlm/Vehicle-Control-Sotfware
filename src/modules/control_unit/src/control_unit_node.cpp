@@ -55,7 +55,7 @@ void ControlUnit::controlSelection()
         RCLCPP_WARN(this->get_logger(), "Invalid control unit specified.");
     }
 
-    pub.joy = this->create_publisher<joyMsg>("control_data", 10);
+    pub.joy = this->create_publisher<joyMsg>("velocity", 10);
 }
 
 // Serial (ESP8266)
