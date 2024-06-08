@@ -63,6 +63,4 @@ public:
     int buttonChange(int button_data);
 };
 
-
-
 #endif

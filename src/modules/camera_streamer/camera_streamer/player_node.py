@@ -19,7 +19,6 @@ class Player(Node):
         self.video_path = os.path.join(self.parameters_path + "/video", "front_camera.avi")
 
         self.camera_pub = self.create_publisher(Image, 'camera', 10)
-        # self.timer = self.create_timer(1.0 / 15, self.cameraCallback)
 
         self.bridge = CvBridge()
         self.cameraCallback()
@@ -48,7 +47,6 @@ class Player(Node):
 def main(args = None):
 	rclpy.init(args=args)
 	player = Player()
-	# rclpy.spin(player)    
 	rclpy.shutdown()
 
 if __name__ == '__main__':
