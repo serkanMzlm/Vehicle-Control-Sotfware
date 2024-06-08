@@ -29,7 +29,7 @@ void ObstacleAvoidance::updateVelocity(double & linear_x, double & linear_w){
         }
     }
     // std::cout << " ERROR: " << error << "\n_______________________" << std::endl;
-    if(abs(linear_x) > OFSET  && abs(error) > OFSET){
+    if(abs(linear_x) > OFFSET  && abs(error) > OFFSET){
         linear_w = error;
     }
 

@@ -45,7 +45,7 @@ def main(args = None):
     
     recorder.out_video.release()
     cv2.destroyAllWindows()
-
+    recorder.destroy_node()
     rclpy.shutdown()
 
 if __name__ == '__main__':

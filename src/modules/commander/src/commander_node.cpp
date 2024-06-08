@@ -9,16 +9,16 @@ Commander::Commander() : Node("commander_node")
 
 void Commander::commandCallback(const joyMsg msg)
 {
-  data.linear.x = msg.axes[0];
-  data.angular.z = msg.axes[1];
+  data.linear.x = OFFSET_EXCEPTION(msg.axes[0]);
+  data.angular.z = OFFSET_EXCEPTION(msg.axes[1]);
   obstacleAvoidance();
-  pub.joy->publish(data);
 }
 
 void Commander::obstacleAvoidance()
 {
   updateVelocity(data.linear.x, data.angular.z);
   makerCallback();
+  pub.joy->publish(data);
 }
 
 void Commander::pointCloudCallback(const pointCloudMsg &msg)

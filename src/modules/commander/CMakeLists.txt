@@ -19,6 +19,7 @@ find_package(visualization_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(PCL 1.3 REQUIRED)
 find_package(num_tools REQUIRED)
+find_package(geometry_utils REQUIRED)
 
 FILE(GLOB_RECURSE SRC_FILE src/*.cpp)
 
@@ -34,7 +35,7 @@ ament_target_dependencies(
     visualization_msgs                
     sensor_msgs
     geometry_msgs
-    num_tools
+    geometry_utils
 )
 
 install(TARGETS

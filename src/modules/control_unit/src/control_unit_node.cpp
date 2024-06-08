@@ -177,17 +177,25 @@ void ControlUnit::keyboardCallback(const int32Msg msg)
     switch (msg.data)
     {
     case KEYBOARD_W:
+        RCLCPP_DEBUG(this->get_logger(), "W");
         joy_data.axes[0] = 1.0;
+        is_ready = true;
         break;
     case KEYBOARD_A:
+        RCLCPP_DEBUG(this->get_logger(), "A");
         joy_data.axes[1] = 0.5;
+        is_ready = true;
         break;
     case KEYBOARD_S:
         break;
     case KEYBOARD_D:
+        RCLCPP_DEBUG(this->get_logger(), "D");
         joy_data.axes[1] = -0.5;
+        is_ready = true;
         break;
     case KEYBOARD_X:
+        RCLCPP_DEBUG(this->get_logger(), "X");
+        is_ready = true;
         joy_data.axes[0] = -1.0;
         break;
     default:
@@ -205,7 +213,7 @@ void ControlUnit::keyboardCallback(const int32Msg msg)
 
 void ControlUnit::timeOutKeyboard()
 {
-    if (tictoc.toc() > 1.0)
+    if (tictoc.toc() > 10000.0)
     {
         pub.joy->publish(joy_data);
     }
