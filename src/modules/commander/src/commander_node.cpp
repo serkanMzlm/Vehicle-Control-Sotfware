@@ -7,10 +7,20 @@ Commander::Commander() : Node("commander_node")
   initTopic();
 }
 
+void Commander::calculateAvoidanceRules()
+{
+  int x = powf((vehicle_dimensions[WIDTH] / 2.0f), 2);
+  int y = powf((vehicle_dimensions[LENGTH] / 2.0f), 2);
+  vehicle_radius = sqrtf(x + y);
+
+  distance_limits = lidar_rules[MAX_DIS] - OFFSET;
+  safety_distance = distance_limits - vehicle_radius;
+}
+
 void Commander::commandCallback(const joyMsg msg)
 {
-  data.linear.x = OFFSET_EXCEPTION(msg.axes[0]);
-  data.angular.z = OFFSET_EXCEPTION(msg.axes[1]);
+  data.linear.x = msg.axes[0];
+  data.angular.z = msg.axes[1];
   obstacleAvoidance();
 }
 
@@ -30,9 +40,9 @@ void Commander::pointCloudCallback(const pointCloudMsg &msg)
     if (std::isinf(std::abs(pcl_data.xyz_cloud.points[i].x)) ||
         std::isnan(std::abs(pcl_data.xyz_cloud.points[i].x)))
     {
-      pcl_data.xyz_cloud.points[i].x = 0.0f;
-      pcl_data.xyz_cloud.points[i].y = 0.0f;
-      pcl_data.xyz_cloud.points[i].z = 0.0f;
+      pcl_data.xyz_cloud.points[i].x = lidar_rules[MAX_DIS];
+      pcl_data.xyz_cloud.points[i].y = lidar_rules[MAX_DIS];
+      pcl_data.xyz_cloud.points[i].z = lidar_rules[MAX_DIS];
     }
   }
   detectObject(pcl_data.xyz_cloud);
@@ -40,7 +50,7 @@ void Commander::pointCloudCallback(const pointCloudMsg &msg)
 
 void Commander::makerCallback()
 {
-  for (int i = 0; i < ALL_V; i++)
+  for (int i = 0; i < VEL_ALL; i++)
   {
     visualization_msgs::msg::Marker marker;
     marker.header.frame_id = "X1/base_link/front_laser";
@@ -66,16 +76,19 @@ void Commander::makerCallback()
 
 void Commander::declareParameters()
 {
-  this->declare_parameter("rules", std::vector<double>(4, 0.0));
-  this->declare_parameter("sensor", std::vector<double>(2, 0.0));
-  rules = this->get_parameter("rules").as_double_array();
-  sensor = this->get_parameter("sensor").as_double_array();
-  for (int i = 0; i < ALL_V; i++)
+  this->declare_parameter("vehicle_dimensions", std::vector<double>(VEC_DIM_ALL, 0.0));
+  this->declare_parameter("lidar_rules", std::vector<double>(SENSOR_RULES_ALL, 0.0));
+  vehicle_dimensions = this->get_parameter("vehicle_dimensions").as_double_array();
+  lidar_rules = this->get_parameter("lidar_rules").as_double_array();
+
+  for (int i = 0; i < VEL_ALL; i++)
   {
     first_point[i].x = 0.0;
     first_point[i].y = 0.0;
     first_point[i].z = 0.0;
   }
+
+  calculateAvoidanceRules();
 }
 
 void Commander::initTopic()

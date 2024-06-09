@@ -126,7 +126,7 @@ bridge_imu = Node(
 
 def generate_launch_description():
     return LaunchDescription([
-        # control_unit,
+        control_unit,
         commander,
         # camera_recorder,
         simulation,

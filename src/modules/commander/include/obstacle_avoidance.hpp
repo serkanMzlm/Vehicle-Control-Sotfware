@@ -26,24 +26,28 @@ using pointIndicesMsg = std::vector<pcl::PointIndices>;
 
 typedef struct
 {
-    pcl::PCLPointCloud2 cloud; //merge
-    pcl::PointCloud<pcl::PointXYZ> xyz_cloud; //cloud
+    pcl::PCLPointCloud2 cloud;
+    pcl::PointCloud<pcl::PointXYZ> xyz_cloud; 
 } pcl_t;
 
 class ObstacleAvoidance
 {
 private:
-    std::array<std::array<float, VERTICAL>, HORIZONTAL> histogram;
+    std::array<float, HORIZONTAL> histogram;
 
 protected:
-    std::vector<double> rules;
-    std::vector<double> sensor;
-    pointMsg first_point[ALL_V];
-    pointMsg last_point[ALL_V];
+    std::vector<double> vehicle_dimensions;
+    std::vector<double> lidar_rules;
+    float vehicle_radius = 0.0f;
+    float safety_distance = 0.0f;
+    float distance_limits = 0.0f;
+    pointMsg first_point[VEL_ALL];
+    pointMsg last_point[VEL_ALL];
 
 public:
     void clearHistogram();
-    void updateHistogram(float *);
+    void polarObstacleDensity(float *);
+    void maskPolarHistogram(Coordinate_t, float);
     void detectObject(pointXYZMsg &);
     float calculateDistance(float, int);
     float avoidanceDistance(float, int);

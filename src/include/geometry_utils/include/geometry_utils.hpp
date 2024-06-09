@@ -13,7 +13,7 @@ typedef enum
     X,
     Y,
     Z,
-    ALL_CC
+    CART_COORD_ALL
 } Cartesian_coordinate_e;
 
 typedef enum
@@ -21,7 +21,7 @@ typedef enum
     RADIUS,
     THETA,
     PHI,
-    ALL_SC
+    CYL_COORD_ALL
 } Cylindrical_coordinate_e;
 
 typedef enum
@@ -29,7 +29,7 @@ typedef enum
     ROLL,
     PITCH,
     YAW,
-    R_ALL
+    ROT_ANGLE_ALL
 } Rotation_angle_t;
 
 /**

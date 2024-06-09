@@ -36,10 +36,11 @@ private:
   twistMsg data;
   pcl_t pcl_data;
   markerArrayMsg marker_array;
-  rclcpp::TimerBase::SharedPtr obs_timer;
+  // rclcpp::TimerBase::SharedPtr obs_timer;
 
 public:
   Commander();
+  void calculateAvoidanceRules();
   void commandCallback(const joyMsg msg);
   void obstacleAvoidance();
   void pointCloudCallback(const pointCloudMsg &);

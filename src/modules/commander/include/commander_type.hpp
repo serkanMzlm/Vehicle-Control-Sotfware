@@ -4,9 +4,13 @@
 #include <cmath>
 #include "geometry_utils.hpp"
 
-#define VERTICAL 181
-#define HORIZONTAL 360
+#define VERTICAL 181    // theta
+#define HORIZONTAL 360  // phi
 #define OFFSET 0.1f
+
+#define ANGLE_OFFSET 10
+#define MAX_PHI_ANGLE (90 + ANGLE_OFFSET)
+#define MIN_PHI_ANGLE (90 - ANGLE_OFFSET)
 
 #define ERROR (-1)
 #define OK (1)
@@ -19,23 +23,25 @@ typedef enum
   LINEAR_V,
   ANGULAR_V,
   RESULT_V,
-  ALL_V
+  VEL_ALL
 } Velocity_e;
 
 typedef enum
 {
-  THRESHOLD_DIS,
-  SAFETY_DIS,
-  VEHICLE_RAD,
-  VEHICLE_WIDTH,
-  OBS_ALL
-} Rules_e;
+  WIDTH,
+  LENGTH,
+  HEIGHT,
+  VEC_DIM_ALL
+} Vehicle_Dimensions_s;
 
 typedef enum
 {
   MAX_DIS,
   MIN_DIS,
-  SENSOR_ALL
+  X_POS,
+  Y_POS,
+  Z_POS,
+  SENSOR_RULES_ALL
 } Sensor_rules_e;
 
 typedef struct
@@ -66,7 +72,7 @@ typedef union
     float angular;
     float result;
   };
-  float data[ALL_V];
+  float data[VEL_ALL];
 } Joy_t;
 
 #endif
