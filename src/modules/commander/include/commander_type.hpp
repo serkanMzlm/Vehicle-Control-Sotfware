@@ -2,7 +2,8 @@
 #define __CONTROLLER_TYPE_HPP__
 
 #include <cmath>
-#include "geometry_utils.hpp"
+#include "geometric_operations.hpp"
+
 
 #define VERTICAL 181    // theta
 #define HORIZONTAL 360  // phi

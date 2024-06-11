@@ -36,7 +36,6 @@ private:
   twistMsg data;
   pcl_t pcl_data;
   markerArrayMsg marker_array;
-  // rclcpp::TimerBase::SharedPtr obs_timer;
 
 public:
   Commander();

@@ -88,9 +88,14 @@ void ObstacleAvoidance::getClusterPoint(pointIndicesMsg &indices_c, pointXYZMsg 
     {
         for (std::vector<int>::const_iterator pit = it->indices.begin(); pit != it->indices.end(); ++pit)
         {
-            cartesian[X] = cloud_c.points[*pit].x;
-            cartesian[Y] = cloud_c.points[*pit].y;
-            cartesian[Z] = cloud_c.points[*pit].z;
+            float angle[3] = {0.0, 0.0, 0.0};
+            float lidar_pose[3] = {lidar_rules[X_POS], lidar_rules[Y_POS], lidar_rules[Z_POS]};
+            float center_data[3] = {cloud_c.points[*pit].x, cloud_c.points[*pit].y, cloud_c.points[*pit].z};
+            transformation(center_data, angle, lidar_pose);
+
+            cartesian[X] = center_data[0];
+            cartesian[Y] = center_data[1];
+            cartesian[Z] = center_data[2];
             polarObstacleDensity(cartesian);
         }
     }
@@ -104,7 +109,6 @@ void ObstacleAvoidance::polarObstacleDensity(float *cc_data)
     float z = powf(cc_data[Z], 2);
     float distance = sqrtf(x + y + z);
     cartesian2Spherical(cc_data, spherical.pos); // PHI - THETA - RADIUS
-
     maskPolarHistogram(spherical, distance);
 }
 

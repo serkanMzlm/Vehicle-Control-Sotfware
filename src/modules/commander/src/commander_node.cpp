@@ -26,7 +26,7 @@ void Commander::commandCallback(const joyMsg msg)
 
 void Commander::obstacleAvoidance()
 {
-  updateVelocity(data.linear.x, data.angular.z);
+  // updateVelocity(data.linear.x, data.angular.z);
   makerCallback();
   pub.joy->publish(data);
 }
@@ -44,6 +44,7 @@ void Commander::pointCloudCallback(const pointCloudMsg &msg)
       pcl_data.xyz_cloud.points[i].y = lidar_rules[MAX_DIS];
       pcl_data.xyz_cloud.points[i].z = lidar_rules[MAX_DIS];
     }
+
   }
   detectObject(pcl_data.xyz_cloud);
 }

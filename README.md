@@ -33,12 +33,12 @@ source ~/.bashrc # or bash or simply restart the terminal
 - When using the `bash` command to reload the terminal, it restarts the terminal session, while `source ~/.bashrc` reloads the .bashrc file, applying the changes for the current session
 
 - Build the project.
-    - First, build the packages located in src/include. For example, build and include the geometry_utils, num_tools, and time_utils packages in the system. We use these modules as libraries in the packages.
+    - First, build the packages located in src/include. For example, build and include the affine_transformation, num_tools, and time_utils packages in the system. We use these modules as libraries in the packages.
     
 ```bash
 cd ~/Secure-Drive-Vehicle
 
-colcon build --packages-select num_tools time_utils geometry_utils
+colcon build --packages-select num_tools time_utils affine_transformation
 . install/setup.bash
 ```
 ```bash

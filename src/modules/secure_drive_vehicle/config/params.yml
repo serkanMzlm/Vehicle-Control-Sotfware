@@ -6,8 +6,8 @@ control_unit_node:
 commander_node:
   ros__parameters:
     vehicle_dimensions:
-      - 0.90   # Vehicle Width
-      - 0.50   # Vehicle Length
+      - 1.00   # Vehicle Width
+      - 0.58   # Vehicle Length
       - 0.05   # Vehicle Height
 #     - x      # Wheel Radius 
 #     - x      # Vehicle Weight
@@ -16,9 +16,9 @@ commander_node:
       - 0.05   # Min Range
 
       # Sensor Location (relative to vehicle)
-      - 0.0    # X
+      - 0.48    # X
       - 0.0    # Y
-      - 0.0    # Z
+      - 0.18    # Z
 
       # - 3.14   # Horizontal Max Angle
       # - -3.14  # Horizontal Min Angle
