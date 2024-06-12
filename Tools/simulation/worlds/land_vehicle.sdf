@@ -1,28 +1,26 @@
-<?xml version="1.0" ?>
+<?xml version="1.0"?>
 <sdf version="1.7">
   <world name="land_vehicle">
 
-  <physics type="dart">
-    <max_step_size>0.004</max_step_size>
-    <real_time_factor>1.02</real_time_factor>
-    <real_time_update_rate>250</real_time_update_rate>
-  </physics>
+    <physics type="dart">
+      <max_step_size>0.004</max_step_size>
+      <real_time_factor>1.02</real_time_factor>
+      <real_time_update_rate>250</real_time_update_rate>
+    </physics>
 
-  <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"> </plugin>
-  <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"> </plugin>
-  <plugin filename='gz-sim-scene-broadcaster-system' name='gz::sim::systems::SceneBroadcaster'> </plugin>
-  <plugin filename="gz-sim-contact-system" name="gz::sim::systems::Contact"></plugin>
-  <plugin filename="gz-sim-altimeter-system" name="gz::sim::systems::Altimeter"></plugin>
-  <plugin filename="gz-sim-imu-system"  name="gz::sim::systems::Imu"></plugin>
-  <plugin filename="gz-sim-air-pressure-system" name="gz::sim::systems::AirPressure"> </plugin> 
-  <plugin name='gz::sim::systems::Sensors' filename='gz-sim-sensors-system'> 
-    <render_engine>ogre2</render_engine> 
-  </plugin>
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"> </plugin>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"> </plugin>
+    <plugin filename='gz-sim-scene-broadcaster-system' name='gz::sim::systems::SceneBroadcaster'> </plugin>
+    <plugin filename="gz-sim-contact-system" name="gz::sim::systems::Contact"></plugin>
+    <plugin filename="gz-sim-altimeter-system" name="gz::sim::systems::Altimeter"></plugin>
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu"></plugin>
+    <plugin filename="gz-sim-air-pressure-system" name="gz::sim::systems::AirPressure"> </plugin>
+    <plugin filename='gz-sim-navsat-system' name='gz::sim::systems::NavSat' />
+    <plugin filename='gz-sim-sensors-system' name='gz::sim::systems::Sensors'>
+      <render_engine>ogre2</render_engine>
+    </plugin>
 
     <gui fullscreen="0">
-      <!-- <gravity>0 0 -9.8</gravity>
-      <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
-      <atmosphere type='standard'/> adiabatic, standard, gradient, none -->
       <plugin filename="GzScene3D" name="3D View">
         <gz-gui>
           <title>3D View</title>
@@ -48,8 +46,8 @@
           <property type="double" key="z">1</property>
           <property type="string" key="state">floating</property>
           <anchors target="3D View">
-            <line own="left" target="left"/>
-            <line own="bottom" target="bottom"/>
+            <line own="left" target="left" />
+            <line own="bottom" target="bottom" />
           </anchors>
         </gz-gui>
         <play_pause>true</play_pause>
@@ -72,8 +70,8 @@
           <property type="double" key="z">1</property>
           <property type="string" key="state">floating</property>
           <anchors target="3D View">
-            <line own="right" target="right"/>
-            <line own="bottom" target="bottom"/>
+            <line own="right" target="right" />
+            <line own="bottom" target="bottom" />
           </anchors>
         </gz-gui>
         <sim_time>false</sim_time>
@@ -82,25 +80,25 @@
         <iterations>true</iterations>
       </plugin>
 
-      <plugin filename="ImageDisplay" name="Image Display">
+      <!-- <plugin filename="ImageDisplay" name="Image Display">
         <gz-gui>
           <title>Camera</title>
-          <property key="state" type="string">docked</property>  <!-- docked yerine floating -->
+          <property key="state" type="string">docked</property>  
         </gz-gui>
         <topic>/camera</topic>
-      </plugin>
+      </plugin> -->
       <plugin filename="VisualizeLidar" name="Visualize Lidar">
         <gz-gui>
           <title>Lidar</title>
           <property type="string" key="state">docked</property>
-          <!-- <property key="state" type="string">docked_collapsed</property> --> 
+          <!-- <property key="state" type="string">docked_collapsed</property> -->
         </gz-gui>
       </plugin>
       <plugin filename="KeyPublisher" name="Key publisher">
         <gz-gui>
           <anchors target="3D View">
-            <line own="right" target="right"/>
-            <line own="top" target="top"/>
+            <line own="right" target="right" />
+            <line own="top" target="top" />
           </anchors>
           <property key="resizable" type="bool">true</property>
           <property key="width" type="double">5</property>
@@ -113,7 +111,7 @@
 
     <include>
       <pose>0 0 0.5 0 0 0</pose>
-      <uri>marble_husky/model.sdf</uri> 
+      <uri>marble_husky/model.sdf</uri>
     </include>
 
     <include>
@@ -139,8 +137,8 @@
 
     <actor name="actor_walking">
       <skin>
-          <filename>https://fuel.gazebosim.org/1.0/Mingfei/models/actor/tip/files/meshes/walk.dae</filename>
-          <scale>1.0</scale>
+        <filename>https://fuel.gazebosim.org/1.0/Mingfei/models/actor/tip/files/meshes/walk.dae</filename>
+        <scale>1.0</scale>
       </skin>
       <script>
         <loop>true</loop>
@@ -148,20 +146,20 @@
         <auto_start>true</auto_start>
         <trajectory id="0" type="walk" tension="0.6">
           <waypoint>
-              <time>0</time>
-              <pose>0 0 1.0 0 0 0</pose>
+            <time>0</time>
+            <pose>0 0 1.0 0 0 0</pose>
           </waypoint>
           <waypoint>
-              <time>10</time>
-              <pose>8.0 0 1.0 0 0 0</pose>
+            <time>10</time>
+            <pose>8.0 0 1.0 0 0 0</pose>
           </waypoint>
           <waypoint>
-              <time>11</time>
-              <pose>8.0 0 1.0 0 0 3.14</pose>
+            <time>11</time>
+            <pose>8.0 0 1.0 0 0 3.14</pose>
           </waypoint>
           <waypoint>
-              <time>21</time>
-              <pose>0 0 1.0 0 0 3.14</pose>
+            <time>21</time>
+            <pose>0 0 1.0 0 0 3.14</pose>
           </waypoint>
           <waypoint>
             <time>22</time>
@@ -171,6 +169,8 @@
       </script>
       <pose>5 -3 0 0 0 1.57</pose>
     </actor>
-
+    <gravity>0 0 -9.8</gravity>
+    <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
+    <atmosphere type='adiabatic' />
   </world>
 </sdf>

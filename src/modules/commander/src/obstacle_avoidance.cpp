@@ -6,37 +6,34 @@ void ObstacleAvoidance::updateVelocity(double &linear_x, double &linear_w)
     for (int phi = 0; phi < HORIZONTAL; phi++)
     {
         int angle = phi % 15;
-        if(histogram[phi] > 3.0f)
+        if (histogram[phi] > 3.0f)
         {
-            // std::cout << -1 << std::endl;
             continue;
         }
-        if ((histogram[angle] < 0.3f) || (histogram[359 - angle] < 0.3f))
-        {
-            // std::cout << "vehicle safety" << angle << " " << histogram[angle] << histogram[angle]<< std::endl;
-            linear_x = 0.0;
-            int left_force = 0.0f;
-            int right_force = 0.0f;
-            for (int i = 60; i < 110; i++)
-            {
-                left_force += histogram[i];
-                right_force += histogram[360 - i];
-            }
-            linear_w = left_force >= right_force ? 0.5 : -0.5;
-            linear_x = 0.0;
-        }
+        // if ((histogram[angle] < 0.3f) || (histogram[359 - angle] < 0.3f))
+        // {
+        //     linear_x = 0.0;
+        //     int left_force = 0.0f;
+        //     int right_force = 0.0f;
+        //     for (int i = 60; i < 110; i++)
+        //     {
+        //         left_force += histogram[i];
+        //         right_force += histogram[360 - i];
+        //     }
+        //     linear_w = left_force >= right_force ? 0.5 : -0.5;
+        //     linear_x = 0.0;
+        // }
         if (histogram[phi] <= calculateDistance(vehicle_radius, phi))
         {
             continue;
         }
-        if (linear_x * cosf(DEG2RAD * phi) > 0)
+        if (std::abs(linear_x * cosf(DEG2RAD * phi)) > 0)
         {
-            std::cout << error << std::endl;
+            // std::cout << error << std::endl;
             error += avoidanceDistance(histogram[phi], phi);
         }
     }
-    
-    // std::cout << " ERROR: " << error << "\n_______________________" << std::endl;
+
     if (abs(linear_x) > OFFSET && abs(error) > OFFSET)
     {
         linear_w = error;
@@ -53,8 +50,9 @@ void ObstacleAvoidance::updateVelocity(double &linear_x, double &linear_w)
 }
 
 float ObstacleAvoidance::calculateDistance(float distance, int angle)
-{
-    return distance /* * (abs(cos(DEG2RAD * angle)) + abs(sin(DEG2RAD * angle))) */;
+{   
+    float kForce = 1.414213562;
+    return distance * (abs(cos(DEG2RAD * angle)) + abs(sin(DEG2RAD * angle))) / kForce;
 }
 
 float ObstacleAvoidance::avoidanceDistance(float distance, int angle)
@@ -104,29 +102,23 @@ void ObstacleAvoidance::getClusterPoint(pointIndicesMsg &indices_c, pointXYZMsg 
 void ObstacleAvoidance::polarObstacleDensity(float *cc_data)
 {
     Coordinate_t spherical;
-    float x = powf(cc_data[X], 2);
-    float y = powf(cc_data[Y], 2);
-    float z = powf(cc_data[Z], 2);
-    float distance = sqrtf(x + y + z);
     cartesian2Spherical(cc_data, spherical.pos); // PHI - THETA - RADIUS
-    maskPolarHistogram(spherical, distance);
+    maskPolarHistogram(spherical);
 }
 
-void ObstacleAvoidance::maskPolarHistogram(Coordinate_t spherical, float distance)
+void ObstacleAvoidance::maskPolarHistogram(Coordinate_t spherical)
 {
-    if ((distance <= lidar_rules[MIN_DIS]) || (distance >= lidar_rules[MAX_DIS]))
+    bool flag_distance_limits = spherical.pos[RADIUS] <= lidar_rules[MIN_DIS] || spherical.pos[RADIUS] >= lidar_rules[MAX_DIS];
+    bool flag_angle_limit = spherical.pos[THETA] >= MAX_PHI_ANGLE || spherical.pos[THETA] <= MIN_PHI_ANGLE;
+    if (flag_distance_limits || flag_angle_limit)
     {
         return;
     }
-    std::cout << spherical.pos[PHI] << std::endl;
-    if (spherical.pos[THETA] >= MAX_PHI_ANGLE || spherical.pos[THETA] <= MIN_PHI_ANGLE)
-    {
-        return;
-    }
+
     histogram[spherical.pos[PHI]] = spherical.pos[RADIUS];
 }
 
 void ObstacleAvoidance::clearHistogram()
 {
-    histogram.fill(4.0f);
+    histogram.fill(-1.0f);
 }

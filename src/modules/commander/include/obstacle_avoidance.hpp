@@ -47,7 +47,7 @@ protected:
 public:
     void clearHistogram();
     void polarObstacleDensity(float *);
-    void maskPolarHistogram(Coordinate_t, float);
+    void maskPolarHistogram(Coordinate_t);
     void detectObject(pointXYZMsg &);
     float calculateDistance(float, int);
     float avoidanceDistance(float, int);

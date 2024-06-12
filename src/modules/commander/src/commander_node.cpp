@@ -9,12 +9,15 @@ Commander::Commander() : Node("commander_node")
 
 void Commander::calculateAvoidanceRules()
 {
-  int x = powf((vehicle_dimensions[WIDTH] / 2.0f), 2);
-  int y = powf((vehicle_dimensions[LENGTH] / 2.0f), 2);
+  float x = powf((vehicle_dimensions[WIDTH] / 2.0f), 2);
+  float y = powf((vehicle_dimensions[LENGTH] / 2.0f), 2);
   vehicle_radius = sqrtf(x + y);
 
   distance_limits = lidar_rules[MAX_DIS] - OFFSET;
   safety_distance = distance_limits - vehicle_radius;
+  RCLCPP_INFO(this->get_logger(), "safety_distance: %.2f", safety_distance);
+  RCLCPP_INFO(this->get_logger(), "distance_limits: %.2f", distance_limits);
+  RCLCPP_INFO(this->get_logger(), "vehicle_radius: %.2f", vehicle_radius);
 }
 
 void Commander::commandCallback(const joyMsg msg)
@@ -26,7 +29,7 @@ void Commander::commandCallback(const joyMsg msg)
 
 void Commander::obstacleAvoidance()
 {
-  // updateVelocity(data.linear.x, data.angular.z);
+  updateVelocity(data.linear.x, data.angular.z);
   makerCallback();
   pub.joy->publish(data);
 }
@@ -40,12 +43,12 @@ void Commander::pointCloudCallback(const pointCloudMsg &msg)
     if (std::isinf(std::abs(pcl_data.xyz_cloud.points[i].x)) ||
         std::isnan(std::abs(pcl_data.xyz_cloud.points[i].x)))
     {
-      pcl_data.xyz_cloud.points[i].x = lidar_rules[MAX_DIS];
-      pcl_data.xyz_cloud.points[i].y = lidar_rules[MAX_DIS];
-      pcl_data.xyz_cloud.points[i].z = lidar_rules[MAX_DIS];
+      pcl_data.xyz_cloud.points[i].x = 0.0f;
+      pcl_data.xyz_cloud.points[i].y = 0.0f;
+      pcl_data.xyz_cloud.points[i].z = 0.0f;
     }
-
   }
+
   detectObject(pcl_data.xyz_cloud);
 }
 
@@ -54,7 +57,7 @@ void Commander::makerCallback()
   for (int i = 0; i < VEL_ALL; i++)
   {
     visualization_msgs::msg::Marker marker;
-    marker.header.frame_id = "X1/base_link/front_laser";
+    marker.header.frame_id = "marble_husky/base_link/front_laser";
     marker.ns = "markers" + std::to_string(i);
     marker.type = markerMsg::ARROW;
     marker.id = i;
@@ -73,6 +76,7 @@ void Commander::makerCallback()
   }
 
   pub.markers->publish(marker_array);
+  marker_array.markers.clear();
 }
 
 void Commander::declareParameters()
