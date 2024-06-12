@@ -5,24 +5,26 @@ void ObstacleAvoidance::updateVelocity(double &linear_x, double &linear_w)
     float error = 0.0f;
     for (int phi = 0; phi < HORIZONTAL; phi++)
     {
+        if(histogram[phi] != -1)
+            std::cout << phi << ": " << histogram[phi] << std::endl;
         int angle = phi % 15;
-        if (histogram[phi] > 3.0f)
+        if (histogram[phi] >= lidar_rules[MIN_DIS] || histogram[phi]  <= lidar_rules[MIN_DIS])
         {
             continue;
         }
-        // if ((histogram[angle] < 0.3f) || (histogram[359 - angle] < 0.3f))
-        // {
-        //     linear_x = 0.0;
-        //     int left_force = 0.0f;
-        //     int right_force = 0.0f;
-        //     for (int i = 60; i < 110; i++)
-        //     {
-        //         left_force += histogram[i];
-        //         right_force += histogram[360 - i];
-        //     }
-        //     linear_w = left_force >= right_force ? 0.5 : -0.5;
-        //     linear_x = 0.0;
-        // }
+        if ((histogram[angle] < 0.3f) || (histogram[359 - angle] < 0.3f))
+        {
+            linear_x = 0.0;
+            int left_force = 0.0f;
+            int right_force = 0.0f;
+            for (int i = 60; i < 110; i++)
+            {
+                left_force += histogram[i];
+                right_force += histogram[360 - i];
+            }
+            linear_w = left_force >= right_force ? 0.5 : -0.5;
+            linear_x = 0.0;
+        }
         if (histogram[phi] <= calculateDistance(vehicle_radius, phi))
         {
             continue;
@@ -33,7 +35,7 @@ void ObstacleAvoidance::updateVelocity(double &linear_x, double &linear_w)
             error += avoidanceDistance(histogram[phi], phi);
         }
     }
-
+    std::cout << "--------------------" << std::endl;
     if (abs(linear_x) > OFFSET && abs(error) > OFFSET)
     {
         linear_w = error;
