@@ -35,6 +35,12 @@ else:
     print("GZ_SIM_RESOURCE_PATH environment variable is not set.")
     simulation = ExecuteProcess(cmd=["gz", "sim"])
 
+bridge_directory = get_package_share_directory('secure_drive_vehicle')
+bridge_file = PythonLaunchDescriptionSource(
+                    os.path.join(bridge_directory,'launch','gazebo_bridge_launch.py')
+                )
+
+bridge_launch = IncludeLaunchDescription(bridge_file)
 
 config_file = os.path.join(
         get_package_share_directory('secure_drive_vehicle'),
@@ -42,14 +48,11 @@ config_file = os.path.join(
         'params.yaml'
     )
 
-
 rviz = ExecuteProcess( cmd=["rviz2"] )
 
 control_unit = Node(
     package="control_unit",                                              
     executable="control_unit_node",
-    # ros_arguments=[ "--remap", "Command_node:=my_command_node"
-        # "--log-level", "Command_node:=debug"],
     parameters=[config_file],
     output="screen"
 )
@@ -82,61 +85,15 @@ shutdown = RegisterEventHandler(
     )
 )
 
-##################### BRIDGE #####################
-bridge_control = Node(
-    package="ros_gz_bridge",                                               # ros_ign_bridge is used in an older version
-    executable="parameter_bridge",
-    arguments=["/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist"],
-    output="screen"
-)
-
-bridge_keyboard = Node(
-    package="ros_gz_bridge",                                               # ros_ign_bridge is used in an older version
-    executable="parameter_bridge",
-    arguments=["/keyboard/keypress@std_msgs/msg/Int32[gz.msgs.Int32"],
-    remappings=[("/keyboard/keypress","/keypress")],
-    output="screen"
-)
-
-bridge_lidar = Node(
-    package="ros_gz_bridge",
-    executable="parameter_bridge",
-    arguments=["/lidar/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked"],
-    remappings=[("/lidar/points","/lidar")],
-)
-
-bridge_laser_scan = Node(
-    package="ros_gz_bridge",
-    executable="parameter_bridge",
-    arguments=["/lidar@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan"],  # Only one axis is being provided
-    remappings=[("/lidar","/scan")],
-)
-
-bridge_camera = Node(
-    package="ros_gz_bridge",
-    executable="parameter_bridge",
-    arguments=["/camera@sensor_msgs/msg/Image[gz.msgs.Image"]
-)
-
-bridge_imu = Node(
-    package="ros_gz_bridge",
-    executable="parameter_bridge",
-    arguments=["/imu@sensor_msgs/msg/Imu[gz.msgs.IMU"]
-)
-
 def generate_launch_description():
     return LaunchDescription([
         control_unit,
         # commander,
+        
         # camera_recorder,
-        simulation,
         # camera_player,
 
-        bridge_control,
-        bridge_keyboard,
-        # bridge_laser_scan,
-        bridge_lidar,
-        bridge_camera,
-        # bridge_imu,
+        simulation,
+        bridge_launch,
         shutdown        
     ]) 
