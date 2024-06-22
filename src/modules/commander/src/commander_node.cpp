@@ -38,17 +38,6 @@ void Commander::pointCloudCallback(const pointCloudMsg &msg)
 {
   pcl_conversions::toPCL(msg, pcl_data.cloud);
   pcl::fromPCLPointCloud2(pcl_data.cloud, pcl_data.xyz_cloud);
-  for (size_t i = 0; i < pcl_data.xyz_cloud.size(); i++)
-  {
-    if (std::isinf(std::abs(pcl_data.xyz_cloud.points[i].x)) ||
-        std::isnan(std::abs(pcl_data.xyz_cloud.points[i].x)))
-    {
-      pcl_data.xyz_cloud.points[i].x = 0.0f;
-      pcl_data.xyz_cloud.points[i].y = 0.0f;
-      pcl_data.xyz_cloud.points[i].z = 0.0f;
-    }
-  }
-
   detectObject(pcl_data.xyz_cloud);
 }
 

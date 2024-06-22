@@ -11,7 +11,7 @@ void cartesian2Spherical(float *cart_data, float *spe_data)
     // Calculate theta (angle from z-axis)
     if (spe_data[RADIUS] != 0.0f)
     {
-        spe_data[THETA] = acosf(cart_data[Z] / spe_data[RADIUS]) * RAD2DEG;
+        spe_data[THETA] = RAD2DEG(acosf(cart_data[Z] / spe_data[RADIUS]));
     }
     else
     {
@@ -20,7 +20,7 @@ void cartesian2Spherical(float *cart_data, float *spe_data)
     spe_data[THETA] = static_cast<int>(std::round(spe_data[THETA]));
 
     // Calculate phi (angle from x-axis in the xy-plane)
-    spe_data[PHI] = atan2f(cart_data[Y], cart_data[X]) * RAD2DEG;
+    spe_data[PHI] = RAD2DEG(atan2f(cart_data[Y], cart_data[X]));
     spe_data[PHI] = static_cast<int>(std::round(spe_data[PHI]));
     spe_data[PHI] = constrainAngle(spe_data[PHI], 0);
 }
@@ -28,8 +28,8 @@ void cartesian2Spherical(float *cart_data, float *spe_data)
 void spherical2Cartesian(float *spe_data, float *cart_data)
 {
     // Convert spherical coordinates to Cartesian coordinates
-    float theta_rad = spe_data[THETA] * DEG2RAD;
-    float phi_rad = spe_data[PHI] * DEG2RAD;
+    float theta_rad = DEG2RAD(spe_data[THETA]);
+    float phi_rad = DEG2RAD(spe_data[PHI]);
 
     cart_data[X] = spe_data[RADIUS] * sin(theta_rad) * cos(phi_rad);
     cart_data[Y] = spe_data[RADIUS] * sin(theta_rad) * sin(phi_rad);

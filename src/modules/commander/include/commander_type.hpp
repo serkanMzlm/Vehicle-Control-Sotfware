@@ -16,7 +16,7 @@
 #define ERROR (-1)
 #define OK (1)
 
-#define DETECT_RANGE(X) abs(std::pow((cosf(DEG2RAD * X)), 3))
+#define DETECT_RANGE(X) abs(std::pow((cosf(DEG2RAD(X))), 3))
 #define OFFSET_EXCEPTION(X) (abs(X) > OFFSET ? X : 0.0f) 
 
 typedef enum

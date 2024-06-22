@@ -5,10 +5,10 @@ void ObstacleAvoidance::updateVelocity(double &linear_x, double &linear_w)
     float error = 0.0f;
     for (int phi = 0; phi < HORIZONTAL; phi++)
     {
-        if(histogram[phi] != -1)
-            std::cout << phi << ": " << histogram[phi] << std::endl;
+        // if(histogram[phi] != -1)
+        // std::cout << phi << ": " << histogram[phi] << std::endl;
         int angle = phi % 15;
-        if (histogram[phi] >= lidar_rules[MIN_DIS] || histogram[phi]  <= lidar_rules[MIN_DIS])
+        if (histogram[phi] >= lidar_rules[MIN_DIS] || histogram[phi] <= lidar_rules[MIN_DIS])
         {
             continue;
         }
@@ -29,13 +29,13 @@ void ObstacleAvoidance::updateVelocity(double &linear_x, double &linear_w)
         {
             continue;
         }
-        if (std::abs(linear_x * cosf(DEG2RAD * phi)) > 0)
+        if (std::abs(linear_x * cosf(DEG2RAD(phi))) > 0)
         {
             // std::cout << error << std::endl;
             error += avoidanceDistance(histogram[phi], phi);
         }
     }
-    std::cout << "--------------------" << std::endl;
+    // std::cout << "--------------------" << std::endl;
     if (abs(linear_x) > OFFSET && abs(error) > OFFSET)
     {
         linear_w = error;
@@ -52,25 +52,35 @@ void ObstacleAvoidance::updateVelocity(double &linear_x, double &linear_w)
 }
 
 float ObstacleAvoidance::calculateDistance(float distance, int angle)
-{   
+{
     float kForce = 1.414213562;
-    return distance * (abs(cos(DEG2RAD * angle)) + abs(sin(DEG2RAD * angle))) / kForce;
+    return distance * (abs(cos(DEG2RAD(angle))) + abs(sin(DEG2RAD(angle)))) / kForce;
 }
 
 float ObstacleAvoidance::avoidanceDistance(float distance, int angle)
 {
     float kForce = -0.1f;
-    return kForce * cosf(DEG2RAD * angle) * sinf(DEG2RAD * angle) / distance;
+    return kForce * cosf(DEG2RAD(angle)) * sinf(DEG2RAD(angle)) / distance;
 }
 
 void ObstacleAvoidance::detectObject(pointXYZMsg &cloud_data)
 {
-    pointIndicesMsg cluster_indices;
     pointXYZMsg::Ptr cloud_m(new pointXYZMsg);
+    *cloud_m = cloud_data;
+
+    filterPointCloud(cloud_m);
+
+    if (cloud_m->empty())
+    {
+        clearHistogram();
+        return;
+    }
+
+    pointIndicesMsg cluster_indices;
     pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>);
     pcl::EuclideanClusterExtraction<pcl::PointXYZ> ec;
-    *cloud_m = cloud_data;
-    ec.setClusterTolerance(vehicle_dimensions[WIDTH]);
+
+    ec.setClusterTolerance(vehicle_radius);
     tree->setInputCloud(cloud_m);
     ec.setMinClusterSize(2);
     ec.setMaxClusterSize(1000);
@@ -78,6 +88,27 @@ void ObstacleAvoidance::detectObject(pointXYZMsg &cloud_data)
     ec.setInputCloud(cloud_m);
     ec.extract(cluster_indices);
     getClusterPoint(cluster_indices, cloud_data);
+}
+
+void ObstacleAvoidance::filterPointCloud(const pointXYZMsg::Ptr &cloud_in)
+{
+    std::string fields[] = {"x", "y", "z"};
+    for (const std::string &field : fields)
+    {
+        pcl::PassThrough<pcl::PointXYZ> pass;
+        pass.setInputCloud(cloud_in);
+        pass.setFilterFieldName(field);
+        pass.setFilterLimits(0.0, lidar_rules[MAX_DIS]);
+        pass.filter(*cloud_in);
+    }
+}
+
+void printPointCloud(const pointXYZMsg::Ptr &cloud_in)
+{
+    for (const auto &point : *cloud_in)
+    {
+        std::cout << "x: " << point.x << ", y: " << point.y << ", z: " << point.z << std::endl;
+    }
 }
 
 void ObstacleAvoidance::getClusterPoint(pointIndicesMsg &indices_c, pointXYZMsg &cloud_c)
@@ -89,7 +120,7 @@ void ObstacleAvoidance::getClusterPoint(pointIndicesMsg &indices_c, pointXYZMsg 
         for (std::vector<int>::const_iterator pit = it->indices.begin(); pit != it->indices.end(); ++pit)
         {
             float angle[3] = {0.0, 0.0, 0.0};
-            float lidar_pose[3] = {lidar_rules[X_POS], lidar_rules[Y_POS], lidar_rules[Z_POS]};
+            float lidar_pose[3] = {(float)lidar_rules[X_POS], (float)lidar_rules[Y_POS], (float)lidar_rules[Z_POS]};
             float center_data[3] = {cloud_c.points[*pit].x, cloud_c.points[*pit].y, cloud_c.points[*pit].z};
             transformation(center_data, angle, lidar_pose);
 
@@ -117,7 +148,14 @@ void ObstacleAvoidance::maskPolarHistogram(Coordinate_t spherical)
         return;
     }
 
-    histogram[spherical.pos[PHI]] = spherical.pos[RADIUS];
+    if(histogram[spherical.pos[PHI]] == -1)
+    {
+        histogram[spherical.pos[PHI]] = spherical.pos[RADIUS];
+    }
+    else
+    {
+        histogram[spherical.pos[PHI]] = fminf(spherical.pos[RADIUS], histogram[spherical.pos[PHI]]);
+    }   
 }
 
 void ObstacleAvoidance::clearHistogram()

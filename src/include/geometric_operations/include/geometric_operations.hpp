@@ -4,10 +4,16 @@
 #include <cmath>
 #include <Eigen/Dense>
 #include "geometric_operations_type.hpp"
- 
+
 #define F2P(x) (1000 / x)
-#define DEG2RAD (M_PI / 180.0f)
-#define RAD2DEG (180.0f / M_PI)
+
+#ifndef DEG2RAD
+#define DEG2RAD(x) ((x)*(M_PI / 180.0f))
+#endif
+
+#ifndef RAD2DEG
+#define RAD2DEG(x) ((x)*(180.0f / M_PI))
+#endif
 
 /**
  * @brief Generates a rotation matrix for a rotation around the X-axis.
