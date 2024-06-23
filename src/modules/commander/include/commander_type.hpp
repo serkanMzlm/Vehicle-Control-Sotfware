@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include "geometric_operations.hpp"
+#include "num_tools.hpp"
 
 
 #define VERTICAL 181    // theta

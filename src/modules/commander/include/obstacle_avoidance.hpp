@@ -43,15 +43,16 @@ protected:
     float distance_limits = 0.0f;
     pointMsg first_point[VEL_ALL];
     pointMsg last_point[VEL_ALL];
+    float angle[3] = {0.0, 0.0, 0.0};
+    float lidar_pose[3];
 
 public:
     void clearHistogram();
     void polarObstacleDensity(float *);
     void maskPolarHistogram(Coordinate_t);
-    void detectObject(pointXYZMsg &);
     float calculateError(float, float, int);
     void updateVelocity(double &, double &);
-    void getClusterPoint(pointIndicesMsg &, pointXYZMsg &);
+    void centerData(pointXYZMsg &);
     void printHistogram();
     void printPointCloud(const pointXYZMsg::Ptr &);
     void printClusters(const std::vector<pcl::PointIndices>&, const pointXYZMsg::Ptr&);

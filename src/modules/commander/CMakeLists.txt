@@ -35,6 +35,7 @@ ament_target_dependencies(
     visualization_msgs                
     sensor_msgs
     geometry_msgs
+    num_tools
     geometric_operations
 )
 

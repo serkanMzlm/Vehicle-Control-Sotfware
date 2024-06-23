@@ -213,8 +213,9 @@ void ControlUnit::keyboardCallback(const int32Msg msg)
 
 void ControlUnit::timeOutKeyboard()
 {
-    if (tictoc.toc() > 10000.0)
+    if (tictoc.toc() > 100.0)
     {
+        tictoc.tic();
         pub.joy->publish(joy_data);
     }
 }

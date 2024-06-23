@@ -31,6 +31,8 @@ void Commander::obstacleAvoidance()
 {
   updateVelocity(data.linear.x, data.angular.z);
   makerCallback();
+  data.linear.x = constrainValue(data.linear.x, -1.0, 1.0);
+  data.angular.z = constrainValue(data.angular.z, -0.75, 0.75);
   pub.joy->publish(data);
 }
 
@@ -38,17 +40,7 @@ void Commander::pointCloudCallback(const pointCloudMsg &msg)
 {
   pcl_conversions::toPCL(msg, pcl_data.cloud);
   pcl::fromPCLPointCloud2(pcl_data.cloud, pcl_data.xyz_cloud);
-  for (size_t i = 0; i < pcl_data.xyz_cloud.size(); i++)
-  {
-    if (std::isinf(std::abs(pcl_data.xyz_cloud.points[i].x)) ||
-        std::isnan(std::abs(pcl_data.xyz_cloud.points[i].x)))
-    {
-      pcl_data.xyz_cloud.points[i].x = 0.0f;
-      pcl_data.xyz_cloud.points[i].y = 0.0f;
-      pcl_data.xyz_cloud.points[i].z = 0.0f;
-    }
-  }
-  detectObject(pcl_data.xyz_cloud);
+  centerData(pcl_data.xyz_cloud);
 }
 
 void Commander::makerCallback()
@@ -93,6 +85,10 @@ void Commander::declareParameters()
   }
 
   calculateAvoidanceRules();
+
+  lidar_pose[0] = (float)lidar_rules[X_POS];
+  lidar_pose[1] = (float)lidar_rules[Y_POS];
+  lidar_pose[2] = (float)lidar_rules[Z_POS];
 }
 
 void Commander::initTopic()
