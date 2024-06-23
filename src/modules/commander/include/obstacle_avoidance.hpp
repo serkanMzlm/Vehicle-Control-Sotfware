@@ -11,7 +11,6 @@
 #include <pcl/filters/conditional_removal.h>
 #include <pcl_conversions/pcl_conversions.h>
 #include <pcl/segmentation/extract_clusters.h>
-#include <pcl/filters/passthrough.h>
 #include "visualization_msgs/msg/marker.hpp"
 #include "visualization_msgs/msg/marker_array.hpp"
 
@@ -50,12 +49,13 @@ public:
     void polarObstacleDensity(float *);
     void maskPolarHistogram(Coordinate_t);
     void detectObject(pointXYZMsg &);
-    void filterPointCloud(const pointXYZMsg::Ptr &);
-    void printPointCloud(const pointXYZMsg::Ptr &);
-    float calculateDistance(float, int);
-    float avoidanceDistance(float, int);
+    float calculateError(float, float, int);
     void updateVelocity(double &, double &);
     void getClusterPoint(pointIndicesMsg &, pointXYZMsg &);
+    void printHistogram();
+    void printPointCloud(const pointXYZMsg::Ptr &);
+    void printClusters(const std::vector<pcl::PointIndices>&, const pointXYZMsg::Ptr&);
+
 };
 
 #endif

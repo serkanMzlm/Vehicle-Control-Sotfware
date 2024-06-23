@@ -9,9 +9,9 @@
 #define HORIZONTAL 360  // phi
 #define OFFSET 0.1f
 
-#define ANGLE_OFFSET 5
-#define MAX_PHI_ANGLE (90 + ANGLE_OFFSET)
-#define MIN_PHI_ANGLE (90 - ANGLE_OFFSET)
+#define ANGLE_OFFSET 10
+#define MAX_THETA_ANGLE (90 + ANGLE_OFFSET)
+#define MIN_THETA_ANGLE (90 - ANGLE_OFFSET)
 
 #define ERROR (-1)
 #define OK (1)

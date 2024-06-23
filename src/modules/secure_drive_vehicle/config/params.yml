@@ -12,7 +12,7 @@ commander_node:
 #     - x      # Wheel Radius 
 #     - x      # Vehicle Weight
     lidar_rules:
-      - 5.00   # Max Range
+      - 3.00   # Max Range
       - 0.05   # Min Range
 
       # Sensor Location (relative to vehicle)
