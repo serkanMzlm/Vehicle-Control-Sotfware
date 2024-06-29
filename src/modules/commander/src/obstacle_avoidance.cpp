@@ -3,7 +3,7 @@
 void ObstacleAvoidance::updateVelocity(double &linear_x, double &linear_w)
 {
     float error = 0.0f;
-    float critical_zone = (safety_distance - vehicle_radius) / 2.0f;
+    float critical_zone = (safety_distance - vehicle_radius) * 0.8;
 
     if (linear_x == 0.0f && linear_w == 0.0f)
     {
@@ -19,9 +19,9 @@ void ObstacleAvoidance::updateVelocity(double &linear_x, double &linear_w)
             continue;
         }
 
-        if ((histogram[front_angle] < critical_zone) || (histogram[359 - front_angle] < critical_zone))
+        if (((histogram[front_angle] < critical_zone) || (histogram[359 - front_angle] < critical_zone)) && linear_x > 0 )
         {
-            linear_x = - 0.5f;
+            linear_x = 0.0f;
             int left_force = 0.0f;
             int right_force = 0.0f;
 
@@ -34,12 +34,27 @@ void ObstacleAvoidance::updateVelocity(double &linear_x, double &linear_w)
             linear_w = left_force >= right_force ? 0.5 : -0.5;
         }
 
+        if (((histogram[180 + front_angle] < critical_zone) || (histogram[180 + front_angle] < critical_zone)) && linear_x < 0)
+        {
+            linear_x = 0.0f;
+            int left_force = 0.0f;
+            int right_force = 0.0f;
+
+            for (int i = 60; i < 110; i++)
+            {
+                left_force += histogram[i];
+                right_force += histogram[360 - i];
+            }
+
+            linear_w = left_force >= right_force ? -0.5 : 0.5;
+        }
+
         else if(((normalized_phi <= vehicle_fov) && (normalized_phi >= -vehicle_fov)) && linear_x > 0)
         {
             error += calculateError(histogram[phi], linear_x, phi);
         }
 
-        if(((normalized_phi <= (180 - vehicle_fov)) && (normalized_phi >= -(180 - vehicle_fov))) && linear_x < 0) 
+        if(((normalized_phi >= (180 - vehicle_fov)) || (normalized_phi <= (-180 + vehicle_fov))) && linear_x < 0) 
         {
             error += calculateError(histogram[phi], linear_x, phi);
         }
@@ -49,12 +64,12 @@ void ObstacleAvoidance::updateVelocity(double &linear_x, double &linear_w)
     if (abs(linear_x) > OFFSET && abs(error) > OFFSET)
     {
         linear_w = error;
-        std::cout << "error: " << error << std::endl;
+        // std::cout << "error: " << error << std::endl;
     }
 
 
     linear_x = constrainValue(linear_x, -1.0, 1.0);
-    linear_w = constrainValue(linear_w, -0.33, 0.33);
+    linear_w = constrainValue(linear_w, -0.5, 0.5);
 
     last_point[LINEAR_V].x = linear_x;
 
@@ -68,7 +83,7 @@ void ObstacleAvoidance::updateVelocity(double &linear_x, double &linear_w)
 
 float ObstacleAvoidance::calculateError(float distance, float velocity, int angle)
 {
-    float kForce = -0.25;
+    float kForce = -0.15;
     float error = kForce * cosf((DEG2RAD(angle))) * sinf((DEG2RAD(angle))) / distance;
 
     return error;
