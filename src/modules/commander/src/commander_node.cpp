@@ -15,9 +15,12 @@ void Commander::calculateAvoidanceRules()
 
   distance_limits = lidar_rules[MAX_DIS] - OFFSET;
   safety_distance = distance_limits - vehicle_radius;
+  vehicle_fov = static_cast<int>(RAD2DEG(atan2(vehicle_dimensions[WIDTH], vehicle_dimensions[LENGTH])));
+
   RCLCPP_INFO(this->get_logger(), "safety_distance: %.2f", safety_distance);
   RCLCPP_INFO(this->get_logger(), "distance_limits: %.2f", distance_limits);
   RCLCPP_INFO(this->get_logger(), "vehicle_radius: %.2f", vehicle_radius);
+  RCLCPP_INFO(this->get_logger(), "vehicle_fov: %d", vehicle_fov);
 }
 
 void Commander::commandCallback(const joyMsg msg)
@@ -31,8 +34,6 @@ void Commander::obstacleAvoidance()
 {
   updateVelocity(data.linear.x, data.angular.z);
   makerCallback();
-  data.linear.x = constrainValue(data.linear.x, -1.0, 1.0);
-  data.angular.z = constrainValue(data.angular.z, -0.75, 0.75);
   pub.joy->publish(data);
 }
 

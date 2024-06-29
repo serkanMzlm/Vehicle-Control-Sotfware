@@ -41,10 +41,12 @@ protected:
     float vehicle_radius = 0.0f;
     float safety_distance = 0.0f;
     float distance_limits = 0.0f;
+    int vehicle_fov = 0;
     pointMsg first_point[VEL_ALL];
     pointMsg last_point[VEL_ALL];
     float angle[3] = {0.0, 0.0, 0.0};
     float lidar_pose[3];
+    float normalized_phi = 0.0f;
 
 public:
     void clearHistogram();

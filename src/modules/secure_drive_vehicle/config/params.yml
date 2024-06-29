@@ -6,8 +6,9 @@ control_unit_node:
 commander_node:
   ros__parameters:
     vehicle_dimensions:
-      - 1.00   # Vehicle Width
-      - 0.58   # Vehicle Length
+   
+      - 0.58   # Vehicle Width
+      - 1.00   # Vehicle Length
       - 0.05   # Vehicle Height
 #     - x      # Wheel Radius 
 #     - x      # Vehicle Weight
