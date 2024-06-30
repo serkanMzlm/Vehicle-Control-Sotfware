@@ -16,7 +16,7 @@ class Player(Node):
         super().__init__("player_node") 
         self.get_logger().info("Press 'q' to exit.")
         
-        self.parameters_path =  get_package_share_directory('secure_drive_vehicle')
+        self.parameters_path =  get_package_share_directory('vehicle_control_software')
         self.video_path = os.path.join(self.parameters_path + "/video", "front_camera.avi")
         self.camera_pub = self.create_publisher(Image, 'camera', 10)
         self.bridge = CvBridge()

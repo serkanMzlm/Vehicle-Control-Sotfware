@@ -39,7 +39,7 @@ git clone git@github.com:serkanMzlm/Vehicle-Control-Sotfware.git
 ```bash
 export GZ_SIM_RESOURCE_PATH=/home/${USER}/Vehicle-Control-Sotfware/Tools/simulation/models"
 ```
-- The purpose of the code specified in the [drive_launch.py](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/blob/main/src/modules/secure_drive_vehicle/launch/drive_launch.py#L16) file is to parse the data in GZ_SIM_RESOURCE_PATH to determine the environment in which the simulation will run and to locate the models. Therefore, ensure that 'GZ_SIM_RESOURCE_PATH' is correctly assigned.
+- The purpose of the code specified in the [drive_launch.py](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/blob/main/src/modules/vehicle_control_software/launch/drive_launch.py#L16) file is to parse the data in GZ_SIM_RESOURCE_PATH to determine the environment in which the simulation will run and to locate the models. Therefore, ensure that 'GZ_SIM_RESOURCE_PATH' is correctly assigned.
 
 ```python
 if gz_sim_resource_path:
@@ -72,12 +72,11 @@ source ~/.bashrc # or bash or simply restart the terminal
 - When using the `bash` command to reload the terminal, it restarts the terminal session, while `source ~/.bashrc` reloads the .bashrc file, applying the changes for the current session
 
 - Build the project.
-    - First, build the packages located in src/include. For example, build and include the geometry_utils, num_tools, and time_utils packages in the system. We use these modules as libraries in the packages.
+    - First, build the packages located in src/include. For example, build and include the geometric_operations, num_tools, and time_utils packages in the system. We use these modules as libraries in the packages.
     
 ```bash
 cd ~/Vehicle-Control-Sotfware
-
-colcon build --packages-select num_tools time_utils geometry_utils
+colcon build --packages-select geometric_operations num_tools time_utils
 . install/setup.bash
 ```
 ```bash
@@ -109,16 +108,19 @@ a   s   d
 3. **ESP8266 control:** Joy data is sent to the computer's serial port via an interface prepared using [RemoteXY](https://remotexy.com/en/). 
     - To connect to the ESP8266 board, it is necessary to write the port to which the board is connected in the file_name variable in the params file. By default, it is /dev/ttyUSB0
     - The RemoteXY application is downloaded to the phone, and to connect to the access point broadcasted by ESP8266, you connect to `joy` in the Wi-Fi section. The password is `135798642`.
-    - Arduino Code `Tools/arduino/nodemcu_esp8266/nodemcu_esp8266.ino`
+    - Arduino Code [nodemcu_esp8266.ino](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/blob/main/Tools/arduino/nodemcu_esp8266/nodemcu_esp8266.ino)
 
 - Instead of running each code individually, the launch file is executed.
 ```bash
-ros2 launch secure_drive_vehicle drive_launch.py
+ros2 launch vehicle_control_software drive_launch.py
 ```
 - If files are to be launched individually, the path to the params file should be provided during the launch.
 ```bash
-ros2 run commander commander_node  --ros-args --params-file /home/${USER}/Vehicle-Control-Sotfware/src/modules/secure_drive_vehicle/config/params.yml
+ros2 run commander commander_node  --ros-args --params-file /home/${USER}/Vehicle-Control-Sotfware/src/modules/vehicle_control_software/config/params.yml
 ```
 
 ## NOTE
 - The project is not finished yet, so keep your repository up to date.
+
+## Gazebo Garden 
+![Proje Tanıtım Videosu](./Documentation/video/gazebo.mp4)
