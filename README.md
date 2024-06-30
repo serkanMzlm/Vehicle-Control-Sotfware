@@ -12,6 +12,29 @@ This repository contains software written for ground vehicle control. The softwa
 - Obstacle Avoidance: The vehicle adjusts its progress according to objects and performs obstacle avoidance.
 - Future Developments: More complex software, such as artificial intelligence and image processing, will be added in future stages.
 
+### Project
+**Gazebo Garden:** Simulation settings can be modified by assigning the topic name lidar for the lidar window to display Lidar data. If it is desired to hide areas where detection is not performed, unchecking the show non-hitting rays option is recommended
+
+![Gazebo](./Documentation/images/gz_sim.png)
+
+---
+
+**Rviz2:** The Lidar sensor data is visualized in conjunction with the camera at the front of the vehicle, as well as the data from the joystick and the error information from obstacle avoidance.
+
+- The **RED** arrow represents the linear velocity.
+- The **GREEN** arrow represents the angular velocity.
+- The **BLUE** arrow represents the result vector.
+
+![rviz](./Documentation/images/rviz2.png)
+
+---
+
+**RQT:** Using rqt, we can observe the relationships between packets
+
+![rviz](./Documentation/images/rosgraph.png)
+
+---
+
 ### System Requirements
 **Note:** The code is based on the specifications of the computer on which it was written. With minor adjustments, it should work without issues on different versions as well. As an example, for those using ROS2 Foxy, the subscription functions need to be adjusted. In Foxy, subscription functions should be written as `function_type function_name(const data_type::SharedPtr msg)`. This requirement does not exist in Humble.
 
@@ -110,6 +133,8 @@ a   s   d
     - The RemoteXY application is downloaded to the phone, and to connect to the access point broadcasted by ESP8266, you connect to `joy` in the Wi-Fi section. The password is `135798642`.
     - Arduino Code [nodemcu_esp8266.ino](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/blob/main/Tools/arduino/nodemcu_esp8266/nodemcu_esp8266.ino)
 
+![remote_xy](./Documentation/images/remotexy.png)
+
 - Instead of running each code individually, the launch file is executed.
 ```bash
 ros2 launch vehicle_control_software drive_launch.py
@@ -121,6 +146,3 @@ ros2 run commander commander_node  --ros-args --params-file /home/${USER}/Vehicl
 
 ## NOTE
 - The project is not finished yet, so keep your repository up to date.
-
-## Gazebo Garden 
-![Proje Tanıtım Videosu](./Documentation/video/gazebo.mp4)
