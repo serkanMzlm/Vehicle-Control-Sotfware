@@ -31,7 +31,7 @@ void ObstacleAvoidance::updateVelocity(double &linear_x, double &linear_w)
                 right_force += histogram[360 - i];
             }
 
-            linear_w = left_force >= right_force ? 0.5 : -0.5;
+            linear_w = left_force >= right_force ? angular_velocity_limit : -angular_velocity_limit;
         }
 
         if (((histogram[180 + front_angle] < critical_zone) || (histogram[180 + front_angle] < critical_zone)) && linear_x < 0)
@@ -46,17 +46,17 @@ void ObstacleAvoidance::updateVelocity(double &linear_x, double &linear_w)
                 right_force += histogram[360 - i];
             }
 
-            linear_w = left_force >= right_force ? -0.5 : 0.5;
+            linear_w = left_force >= right_force ? -angular_velocity_limit : angular_velocity_limit;
         }
 
         else if(((normalized_phi <= vehicle_fov) && (normalized_phi >= -vehicle_fov)) && linear_x > 0)
         {
-            error += calculateError(histogram[phi], linear_x, phi);
+            error += calculateError(histogram[phi], phi);
         }
 
         if(((normalized_phi >= (180 - vehicle_fov)) || (normalized_phi <= (-180 + vehicle_fov))) && linear_x < 0) 
         {
-            error += calculateError(histogram[phi], linear_x, phi);
+            error += calculateError(histogram[phi], phi);
         }
     }
 
@@ -68,8 +68,8 @@ void ObstacleAvoidance::updateVelocity(double &linear_x, double &linear_w)
     }
 
 
-    linear_x = constrainValue(linear_x, -1.0, 1.0);
-    linear_w = constrainValue(linear_w, -0.5, 0.5);
+    linear_x = constrainValue(linear_x, -linear_velocity_limit, linear_velocity_limit);
+    linear_w = constrainValue(linear_w, -angular_velocity_limit, angular_velocity_limit);
 
     last_point[LINEAR_V].x = linear_x;
 
@@ -81,7 +81,7 @@ void ObstacleAvoidance::updateVelocity(double &linear_x, double &linear_w)
     last_point[RESULT_V].y = last_point[ANGULAR_V].y;
 }
 
-float ObstacleAvoidance::calculateError(float distance, float velocity, int angle)
+float ObstacleAvoidance::calculateError(float distance, int angle)
 {
     float kForce = -0.15;
     float error = kForce * cosf((DEG2RAD(angle))) * sinf((DEG2RAD(angle))) / distance;

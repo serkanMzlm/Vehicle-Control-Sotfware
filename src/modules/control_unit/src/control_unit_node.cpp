@@ -21,11 +21,18 @@ void ControlUnit::initParam()
 {
     this->declare_parameter<std::string>("control_unit", "keyboard");
     this->declare_parameter<std::string>("device_name", "/dev/ttyUSB0");
+    this->declare_parameter<double>("max_angular_velocity", 1.0);
+    this->declare_parameter<double>("max_linear_velocity", 1.0);
     dev.name = this->get_parameter("device_name").as_string();
     control_unit = this->get_parameter("control_unit").as_string();
 
+    angular_velocity_limit = this->get_parameter("max_angular_velocity").as_double(); 
+    linear_velocity_limit  = this->get_parameter("max_linear_velocity").as_double();
+
     joy_data.axes.resize(4);
     joy_data.buttons.resize(1);
+    RCLCPP_INFO(this->get_logger(), "linear velocity limit: %lf", linear_velocity_limit);
+    RCLCPP_INFO(this->get_logger(), "angular velocity limit: %lf", angular_velocity_limit);
 }
 
 void ControlUnit::controlSelection()
@@ -178,25 +185,25 @@ void ControlUnit::keyboardCallback(const int32Msg msg)
     {
     case KEYBOARD_W:
         RCLCPP_DEBUG(this->get_logger(), "W");
-        joy_data.axes[0] = 1.0;
+        joy_data.axes[0] = linear_velocity_limit;
         is_ready = true;
         break;
     case KEYBOARD_A:
         RCLCPP_DEBUG(this->get_logger(), "A");
-        joy_data.axes[1] = 0.5;
+        joy_data.axes[1] = angular_velocity_limit;
         is_ready = true;
         break;
     case KEYBOARD_S:
         break;
     case KEYBOARD_D:
         RCLCPP_DEBUG(this->get_logger(), "D");
-        joy_data.axes[1] = -0.5;
+        joy_data.axes[1] = -angular_velocity_limit;
         is_ready = true;
         break;
     case KEYBOARD_X:
         RCLCPP_DEBUG(this->get_logger(), "X");
         is_ready = true;
-        joy_data.axes[0] = -1.0;
+        joy_data.axes[0] = -linear_velocity_limit;
         break;
     default:
         RCLCPP_DEBUG(this->get_logger(), "None: %x", msg.data);

@@ -1,3 +1,8 @@
+/**:                      # Can be used for all nodes
+  ros__parameters:
+    max_angular_velocity: 0.75
+    max_linear_velocity: 2.20
+
 control_unit_node:
   ros__parameters:
     control_unit: "keyboard" # joy, esp8266, keyboard

@@ -47,12 +47,14 @@ protected:
     float angle[3] = {0.0, 0.0, 0.0};
     float lidar_pose[3];
     float normalized_phi = 0.0f;
+    double linear_velocity_limit;
+    double angular_velocity_limit;
 
 public:
     void clearHistogram();
     void polarObstacleDensity(float *);
     void maskPolarHistogram(Coordinate_t);
-    float calculateError(float, float, int);
+    float calculateError(float, int);
     void updateVelocity(double &, double &);
     void centerData(pointXYZMsg &);
     void printHistogram();

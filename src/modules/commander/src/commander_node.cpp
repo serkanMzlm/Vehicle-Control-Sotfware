@@ -75,9 +75,16 @@ void Commander::declareParameters()
 {
   this->declare_parameter("vehicle_dimensions", std::vector<double>(VEC_DIM_ALL, 0.0));
   this->declare_parameter("lidar_rules", std::vector<double>(SENSOR_RULES_ALL, 0.0));
+  this->declare_parameter<double>("max_angular_velocity", 1.0);
+  this->declare_parameter<double>("max_linear_velocity", 1.0);
+
   vehicle_dimensions = this->get_parameter("vehicle_dimensions").as_double_array();
   lidar_rules = this->get_parameter("lidar_rules").as_double_array();
+  angular_velocity_limit = this->get_parameter("max_angular_velocity").as_double(); 
+  linear_velocity_limit  = this->get_parameter("max_linear_velocity").as_double();
 
+  RCLCPP_INFO(this->get_logger(), "linear velocity limit: %lf", linear_velocity_limit);
+  RCLCPP_INFO(this->get_logger(), "angular velocity limit: %lf", angular_velocity_limit);
   for (int i = 0; i < VEL_ALL; i++)
   {
     first_point[i].x = 0.0;

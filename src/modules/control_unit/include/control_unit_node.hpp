@@ -47,6 +47,9 @@ private:
     joyMsg joy_data;
     std::string control_unit;
     TicToc tictoc;
+    
+    double linear_velocity_limit;
+    double angular_velocity_limit;
 
 public:
     ControlUnit();
