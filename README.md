@@ -4,7 +4,11 @@
 
 ---
 
+### Project
+
 This repository contains software written for ground vehicle control. The software is prepared for use both in the Gazebo simulation environment and in a real vehicle. In general, ROS2 Humble is used for communication between packages and with the simulation environment.
+
+![Gazebo](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/blob/main/Documentation/video/gazebo.mp4)
 
 ### Features:
 - Gazebo Simulation Environment: The software is designed to run in the Gazebo simulation environment.
@@ -12,7 +16,7 @@ This repository contains software written for ground vehicle control. The softwa
 - Obstacle Avoidance: The vehicle adjusts its progress according to objects and performs obstacle avoidance.
 - Future Developments: More complex software, such as artificial intelligence and image processing, will be added in future stages.
 
-### Project
+
 **Gazebo Garden:** Simulation settings can be modified by assigning the topic name lidar for the lidar window to display Lidar data. If it is desired to hide areas where detection is not performed, unchecking the show non-hitting rays option is recommended
 
 ![Gazebo](./Documentation/images/gz_sim.png)
