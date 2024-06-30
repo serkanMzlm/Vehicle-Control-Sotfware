@@ -18,7 +18,7 @@ if gz_sim_resource_path:
     desired_path = None
 
     for path in paths:
-        if "Secure-Drive-Vehicle" in path:
+        if "Vehicle-Control-Sotfware" in path:
             desired_path = path
             break
     
@@ -28,7 +28,7 @@ if gz_sim_resource_path:
         sim_world_file = simulation_world_path = Path(sim_world_path, "worlds", "land_vehicle.sdf")
         simulation = ExecuteProcess(cmd=["gz", "sim", "-r", sim_world_file])
     else:
-        print("Secure-Drive-Vehicle directory not found in GZ_SIM_RESOURCE_PATH.")
+        print("Vehicle-Control-Sotfware directory not found in GZ_SIM_RESOURCE_PATH.")
         simulation = ExecuteProcess(cmd=["gz", "sim"])
 
 else:
@@ -88,7 +88,7 @@ shutdown = RegisterEventHandler(
 def generate_launch_description():
     return LaunchDescription([
         control_unit,
-        # commander,
+        commander,
         
         # camera_recorder,
         # camera_player,

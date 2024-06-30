@@ -21,6 +21,8 @@ void Commander::calculateAvoidanceRules()
   RCLCPP_INFO(this->get_logger(), "distance_limits: %.2f", distance_limits);
   RCLCPP_INFO(this->get_logger(), "vehicle_radius: %.2f", vehicle_radius);
   RCLCPP_INFO(this->get_logger(), "vehicle_fov: %d", vehicle_fov);
+  RCLCPP_INFO(this->get_logger(), "linear velocity limit: %lf", linear_velocity_limit);
+  RCLCPP_INFO(this->get_logger(), "angular velocity limit: %lf", angular_velocity_limit);
 }
 
 void Commander::commandCallback(const joyMsg msg)
@@ -83,8 +85,6 @@ void Commander::declareParameters()
   angular_velocity_limit = this->get_parameter("max_angular_velocity").as_double(); 
   linear_velocity_limit  = this->get_parameter("max_linear_velocity").as_double();
 
-  RCLCPP_INFO(this->get_logger(), "linear velocity limit: %lf", linear_velocity_limit);
-  RCLCPP_INFO(this->get_logger(), "angular velocity limit: %lf", angular_velocity_limit);
   for (int i = 0; i < VEL_ALL; i++)
   {
     first_point[i].x = 0.0;

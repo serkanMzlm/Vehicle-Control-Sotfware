@@ -6,7 +6,7 @@ bridge_control = Node(
     package="ros_gz_bridge",                                               # ros_ign_bridge is used in an older version
     executable="parameter_bridge",
     arguments=["/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist"],
-    output="screen"
+    output="log"
 )
 
 bridge_keyboard = Node(
@@ -14,7 +14,7 @@ bridge_keyboard = Node(
     executable="parameter_bridge",
     arguments=["/keyboard/keypress@std_msgs/msg/Int32[gz.msgs.Int32"],
     remappings=[("/keyboard/keypress","/keypress")],
-    output="screen"
+    output="log"
 )
 
 bridge_lidar = Node(
@@ -22,6 +22,7 @@ bridge_lidar = Node(
     executable="parameter_bridge",
     arguments=["/lidar/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked"],
     remappings=[("/lidar/points","/lidar")],
+    output="log"
 )
 
 bridge_laser_scan = Node(
@@ -29,18 +30,21 @@ bridge_laser_scan = Node(
     executable="parameter_bridge",
     arguments=["/lidar@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan"],  # Only one axis is being provided
     remappings=[("/lidar","/scan")],
+    output="log"
 )
 
 bridge_camera = Node(
     package="ros_gz_bridge",
     executable="parameter_bridge",
-    arguments=["/camera@sensor_msgs/msg/Image[gz.msgs.Image"]
+    arguments=["/camera@sensor_msgs/msg/Image[gz.msgs.Image"],
+    output="log"
 )
 
 bridge_imu = Node(
     package="ros_gz_bridge",
     executable="parameter_bridge",
-    arguments=["/imu@sensor_msgs/msg/Imu[gz.msgs.IMU"]
+    arguments=["/imu@sensor_msgs/msg/Imu[gz.msgs.IMU"],
+    output="log"
 )
 
 def generate_launch_description():
