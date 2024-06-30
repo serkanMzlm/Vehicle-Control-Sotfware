@@ -8,6 +8,8 @@
 
 This repository contains software written for ground vehicle control. The software is prepared for use both in the Gazebo simulation environment and in a real vehicle. In general, ROS2 Humble is used for communication between packages and with the simulation environment.
 
+This project [video](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/tree/main/Documentation/video)
+
 ### Features:
 - Gazebo Simulation Environment: The software is designed to run in the Gazebo simulation environment.
 - Real Vehicle Support: The software is optimized for use in a real ground vehicle.
