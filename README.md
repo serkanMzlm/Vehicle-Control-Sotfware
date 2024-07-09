@@ -150,3 +150,4 @@ ros2 run commander commander_node  --ros-args --params-file /home/${USER}/Vehicl
 
 ## NOTE
 - The project is not finished yet, so keep your repository up to date.
+- `set(CMAKE_PREFIX_PATH ${PROJECT_SOURCE_DIR}/install/lib/cmake)`
