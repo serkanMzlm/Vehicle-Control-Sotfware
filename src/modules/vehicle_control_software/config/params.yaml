@@ -31,3 +31,7 @@ commander_node:
   ros__parameters:
     max_angular_velocity: 0.75
     max_linear_velocity: 2.20
+
+camera_node:
+  ros__parameters:
+    select_input: "simulation" # camera, simulation
