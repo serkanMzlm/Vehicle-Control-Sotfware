@@ -147,7 +147,12 @@ ros2 launch vehicle_control_software drive_launch.py
 ```bash
 ros2 run commander commander_node  --ros-args --params-file /home/${USER}/Vehicle-Control-Sotfware/src/modules/vehicle_control_software/config/params.yml
 ```
+### ROS2 Sensors
+- With ROS2, the sensor readings are located in the `src/sensors` directory.
 
 ## NOTE
 - The project is not finished yet, so keep your repository up to date.
+
+---
+
 - `set(CMAKE_PREFIX_PATH ${PROJECT_SOURCE_DIR}/install/lib/cmake)`
