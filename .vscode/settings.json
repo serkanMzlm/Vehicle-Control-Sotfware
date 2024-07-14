@@ -82,5 +82,8 @@
         "typeindex": "cpp",
         "typeinfo": "cpp",
         "fstream": "cpp"
-    }
+    },
+    "cmake.configureOnOpen": true,
+    "ros.distro": "humble",
+    "ros.rosSetupScript": "/opt/ros/humble/setup.bash"
 }
