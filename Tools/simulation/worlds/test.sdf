@@ -6,6 +6,10 @@
             <uri>model://orion</uri>
         </include>
         <include>
+            <pose>2 0 0.5 0 0 0</pose>
+            <uri>model://marble_husky</uri>
+        </include>
+        <include>
             <uri>model://white_ground</uri>
         </include>
 
