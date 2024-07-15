@@ -17,10 +17,11 @@
                     </box>
                 </geometry>
             </collision>
-            <!-- <sensor name="hc_sr04_distance" type="gpu_lidar">
+            <sensor name="hc_sr04_distance" type="gpu_lidar">
                 <pose>0 0 0 0 -1.57 0</pose>
                 <visualize>true</visualize>
                 <update_rate>20</update_rate>
+                <topic>distance</topic>
                 <lidar>
                     <scan>
                         <horizontal>
@@ -47,7 +48,7 @@
                         <stddev>0.01</stddev>
                     </noise>
                 </lidar>
-            </sensor> -->
+            </sensor>
         </link>
     </model>
 </sdf>

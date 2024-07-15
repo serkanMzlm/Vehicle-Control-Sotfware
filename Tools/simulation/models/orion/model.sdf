@@ -31,6 +31,125 @@
             </collision>
         </link>
 
+        <link name="hc_sr04_right_link">
+            <pose relative_to="base_link">0.094 -0.044 0.003 1.55 0 1.41</pose>
+            <visual name="visual">
+                <geometry>
+                    <mesh>
+                        <uri>meshes/hc_sr04.dae</uri>
+                    </mesh>
+                </geometry>
+            </visual>
+            <sensor name="hc_sr04_right" type="gpu_lidar">
+                <pose>0 0 0 0 -1.57 0</pose>
+                <visualize>true</visualize>
+                <update_rate>20</update_rate>
+                <topic>hc_sr04_right_distance</topic>
+                <lidar>
+                    <scan>
+                        <horizontal>
+                            <samples>1</samples>
+                            <resolution>1</resolution>
+                            <min_angle>0</min_angle>
+                            <max_angle>0</max_angle>
+                        </horizontal>
+                        <vertical>
+                            <samples>1</samples>
+                            <resolution>1</resolution>
+                            <min_angle>0</min_angle>
+                            <max_angle>0</max_angle>
+                        </vertical>
+                    </scan>
+                    <range>
+                        <min>0.02</min>
+                        <max>4.0</max>
+                        <resolution>0.1</resolution>
+                    </range>
+                    <noise>
+                        <type>gaussian</type>
+                        <mean>0</mean>
+                        <stddev>0.01</stddev>
+                    </noise>
+                </lidar>
+            </sensor>
+        </link>
+
+        <!--Sensors And Kamera-->
+        <link name="hc_sr04_left_link">
+            <pose relative_to="base_link">0.094 0.04 0.003 1.55 0 1.78</pose>
+            <visual name="visual">
+                <geometry>
+                    <mesh>
+                        <uri>meshes/hc_sr04.dae</uri>
+                    </mesh>
+                </geometry>
+            </visual>
+            <sensor name="hc_sr04_left" type="gpu_lidar">
+                <pose>0 0 0 0 -1.57 0</pose>
+                <visualize>true</visualize>
+                <update_rate>20</update_rate>
+                <topic>hc_sr04_left_distance</topic>
+                <lidar>
+                    <scan>
+                        <horizontal>
+                            <samples>1</samples>
+                            <resolution>1</resolution>
+                            <min_angle>0</min_angle>
+                            <max_angle>0</max_angle>
+                        </horizontal>
+                        <vertical>
+                            <samples>1</samples>
+                            <resolution>1</resolution>
+                            <min_angle>0</min_angle>
+                            <max_angle>0</max_angle>
+                        </vertical>
+                    </scan>
+                    <range>
+                        <min>0.02</min>
+                        <max>4.0</max>
+                        <resolution>0.1</resolution>
+                    </range>
+                    <noise>
+                        <type>gaussian</type>
+                        <mean>0</mean>
+                        <stddev>0.01</stddev>
+                    </noise>
+                </lidar>
+            </sensor>
+        </link>
+        <link name="front_camera_link">
+            <pose relative_to="base_link">0.096 0.0 -0.001 1.55 0 1.57</pose>
+            <visual name="visual">
+                <geometry>
+                    <mesh>
+                        <uri>meshes/rp3_camera.dae</uri>
+                    </mesh>
+                </geometry>
+            </visual>
+            <sensor name="rpi_camera" type="camera">
+                <pose> 0 0.02 -0.08 0 -1.57 -1.57</pose>
+                <visualize>true</visualize>
+                <topic>rpi_camera</topic>
+                <camera>
+                    <horizontal_fov>1.089</horizontal_fov>
+                    <image>
+                      <width>720</width>
+                      <height>720</height>
+                      <format>R8G8B8</format>
+                    </image>
+                    <clip>
+                      <near>0.1</near>
+                      <far>100</far>
+                    </clip>
+                </camera>
+                <always_on>1</always_on>
+                <update_rate>30.0</update_rate>
+                <visualize>true</visualize>
+                <topic>camera</topic>
+            </sensor>
+        </link>
+        
+        <!-- Wheel visual and collision -->
         <link name="left_front_wheel_link">
             <pose relative_to="base_link"> 0.06 0.092 -0.012 -1.57 0 0</pose>
             <inertial>
@@ -220,6 +339,7 @@
             </collision>
         </link>
 
+        <!-- wheel joint -->
         <joint name="left_front_wheel_joint" type="revolute">
             <child>left_front_wheel_link</child>
             <parent>base_link</parent>
@@ -285,6 +405,21 @@
             </axis>
         </joint>
 
+        <!-- Sensor Joint-->
+        <joint name="hc_sr04_right_joint" type="fixed">
+            <child>hc_sr04_right_link</child>
+            <parent>base_link</parent>
+        </joint>
+        <joint name="hc_sr04_left_joint" type="fixed">
+            <child>hc_sr04_left_link</child>
+            <parent>base_link</parent>
+        </joint>
+        <joint name="front_camera_joint" type="fixed">
+            <child>front_camera_link</child>
+            <parent>base_link</parent>
+        </joint>
+
+        <!-- Wheel control -->
         <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
             <left_joint>left_back_wheel_joint</left_joint>
             <left_joint>left_front_wheel_joint</left_joint>

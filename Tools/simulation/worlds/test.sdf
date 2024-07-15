@@ -18,27 +18,20 @@
     </plugin>
 
     <include>
-            <pose>0 0 0.05 0 0 0</pose>
-            <uri>model://orion</uri>
-        </include>
-    <include>
-            <pose>2 0 0.0 0 0 0</pose>
-            <uri>model://marble_husky</uri>
-        </include>
-    <include>
       <uri>model://white_ground</uri>
     </include>
 
     <include>
-      <pose>0.094 -0.044 0.053 1.55 0 1.41</pose>
-      <uri>model://hc_sr04</uri>
+      <pose>0 0 0.05 0 0 0</pose>
+      <uri>model://orion</uri>
     </include>
 
-    <include>
+  
+    <!-- <include>
       <name>hc_sr04_2</name>
       <pose>0.094 0.04 0.053 1.55 0 1.78</pose>
       <uri>model://hc_sr04</uri>
-    </include>
+    </include> -->
 
     <light name="sunUTC" type="directional">
       <pose>0 0 500 0 -0 0</pose>
