@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+
+<!-- not working on RVIZ side -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="orion">
+
+    <link name="base_footprint" />
+
+    <link name="base_link">
+        <inertial>
+            <origin xyz="0.0 0.0 0.02" rpy="0.0 0.0 0" />
+            <mass value="1.5" />
+            <inertia ixx="0.0035705" ixy="0.0" ixz="0.0"
+                iyy="0.0057545" iyz="0.0"
+                izz="0.008425" />
+        </inertial>
+        <visual>
+            <origin xyz="0.0 0.0 0.02" rpy="0.0 0.0 0" />
+            <geometry>
+                <mesh filename="package://vehicle_control_software/urdf/meshes/body.stl"/>
+                <!-- <box size="0.206 0.158 0.060"/> -->
+            </geometry>
+            <material name="dark_gray">
+                <color rgba="0.4 0.4 0.4 1.0" />
+            </material>
+        </visual>
+
+        <collision>
+            <origin xyz="0.0 0.0 0.02" rpy="0.0 0 0" />
+            <geometry>
+                <box size="0.206 0.158 0.060"/>
+            </geometry>
+            <contact_coefficients mu="1" mu2="1" kp="1e+13.0" kd="1.0" />
+        </collision>
+    </link>
+
+    <xacro:macro name="wheel" params="name x y roll">
+        <link name="${name}_wheel_link">
+            <inertial>
+                <origin xyz="0 0.0 0.0" rpy="0 0 0.0" />
+                <mass value="0.5" />
+                <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0" />
+            </inertial>
+            <visual name="">
+                <origin xyz="0 0.0 0.0" rpy="0 0 0.0" />
+                <geometry>
+                    <mesh filename="package://vehicle_control_software/urdf/meshes/wheel.stl" />
+                </geometry>
+                <material name="black">
+                    <color rgba="0.0 0.0 0.0 1.0" />
+                </material>
+            </visual>
+            <collision>
+                <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+                <geometry>
+                    <cylinder radius="0.033" length="0.022" />
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="wheel_${name}_joint" type="continuous">
+            <origin xyz="${x} ${y} 0.033" rpy="${roll} 0 0.0" />
+            <parent link="base_link" />
+            <child link="${name}_wheel_link" />
+            <axis xyz="1 0 0" />
+        </joint>
+    </xacro:macro>
+
+    <xacro:wheel name="left_front" x="0.07" y="0.08" roll="-1.57"/>
+    <xacro:wheel name="right_front" x="0.07" y="-0.08" roll="1.57"/>
+    <xacro:wheel name="left_back" x="-0.06" y="0.08" roll="-1.57" />
+    <xacro:wheel name="right_back" x="-0.06" y="-0.08" roll="1.57"/>
+
+</robot>
