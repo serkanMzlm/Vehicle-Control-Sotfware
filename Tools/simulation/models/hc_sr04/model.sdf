@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sdf version="1.6">
+    <model name="hcsr_04">
+        <pose>1 0 0.2 0 0 0</pose>
+        <link name="hc_sr04_base">
+            <visual name="visual">
+                <geometry>
+                    <cylinder>
+                        <radius>0.025</radius>
+                        <length>0.01</length>
+                    </cylinder>
+                </geometry>
+                <material>
+                    <lighting>1</lighting>
+                    <ambient>1 1 1 1</ambient>
+                    <diffuse>1 1 1 1</diffuse>
+                    <specular>1 1 1 1</specular>
+                    <emissive>1 1 1 1</emissive>
+                </material>
+                <transparency>0</transparency>
+                <cast_shadows>1</cast_shadows>
+            </visual>
+            <collision name="collision">
+                <geometry>
+                    <cylinder>
+                        <radius>0.025</radius>
+                        <length>0.01</length>
+                    </cylinder>
+                </geometry>
+            </collision>
+        </link>
+        <link name="hc_sr04_center">
+            <visual name="visual">
+                <geometry>
+                    <cylinder>
+                        <radius>0.015</radius>
+                        <length>0.012</length>
+                    </cylinder>
+                </geometry>
+                <material>
+                    <lighting>1</lighting>
+                    <ambient>0 0 0 1</ambient>
+                    <diffuse>0 0 0 1</diffuse>
+                    <specular>0 0 0 1</specular>
+                    <emissive>0 0 0 1</emissive>
+                </material>
+                <transparency>0</transparency>
+                <cast_shadows>1</cast_shadows>
+            </visual>
+            <collision name="collision">
+                <geometry>
+                    <cylinder>
+                        <radius>0.015</radius>
+                        <length>0.012</length>
+                    </cylinder>
+                </geometry>
+            </collision>
+        </link>
+    </model>
+</sdf>
