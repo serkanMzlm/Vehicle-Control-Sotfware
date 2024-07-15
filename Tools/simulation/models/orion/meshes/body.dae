@@ -41,7 +41,7 @@
   </library_effects>
   <library_images>
     <image id="gray_jpg_001_jpg" name="gray_jpg_001_jpg">
-      <init_from>gray.jpg.001.jpg</init_from>
+      <init_from>../materials/textures/gray.jpg.001.jpg</init_from>
     </image>
   </library_images>
   <library_materials>

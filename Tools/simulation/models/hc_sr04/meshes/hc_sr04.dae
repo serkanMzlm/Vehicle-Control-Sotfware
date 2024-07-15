@@ -41,7 +41,7 @@
   </library_effects>
   <library_images>
     <image id="Material_Base_Color" name="Material_Base_Color">
-      <init_from>Material_Base_Color.png</init_from>
+      <init_from>../materials/textures/Material_Base_Color.png</init_from>
     </image>
   </library_images>
   <library_materials>

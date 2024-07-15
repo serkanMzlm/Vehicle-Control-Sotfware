@@ -17,6 +17,37 @@
                     </box>
                 </geometry>
             </collision>
+            <!-- <sensor name="hc_sr04_distance" type="gpu_lidar">
+                <pose>0 0 0 0 -1.57 0</pose>
+                <visualize>true</visualize>
+                <update_rate>20</update_rate>
+                <lidar>
+                    <scan>
+                        <horizontal>
+                            <samples>1</samples>
+                            <resolution>1</resolution>
+                            <min_angle>0</min_angle>
+                            <max_angle>0</max_angle>
+                        </horizontal>
+                        <vertical>
+                            <samples>1</samples>
+                            <resolution>1</resolution>
+                            <min_angle>0</min_angle>
+                            <max_angle>0</max_angle>
+                        </vertical>
+                    </scan>
+                    <range>
+                        <min>0.1</min>
+                        <max>2.0</max>
+                        <resolution>0.1</resolution>
+                    </range>
+                    <noise>
+                        <type>gaussian</type>
+                        <mean>0</mean>
+                        <stddev>0.01</stddev>
+                    </noise>
+                </lidar>
+            </sensor> -->
         </link>
     </model>
 </sdf>

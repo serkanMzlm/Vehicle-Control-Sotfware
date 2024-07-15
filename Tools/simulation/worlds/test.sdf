@@ -1,47 +1,63 @@
 <?xml version="1.0"?>
 <sdf version="1.7">
-    <world name="default">
-        <include>
+  <world name="default">
+
+    <physics type="dart">
+      <max_step_size>0.005</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <real_time_update_rate>200</real_time_update_rate>
+    </physics>
+
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+    <plugin filename='gz-sim-scene-broadcaster-system' name='gz::sim::systems::SceneBroadcaster'/>
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu"/>
+    <plugin filename='gz-sim-navsat-system' name='gz::sim::systems::NavSat' />
+    <plugin filename='gz-sim-sensors-system' name='gz::sim::systems::Sensors'>
+      <render_engine>ogre2</render_engine>
+    </plugin>
+
+    <include>
             <pose>0 0 0.05 0 0 0</pose>
             <uri>model://orion</uri>
         </include>
-        <include>
+    <include>
             <pose>2 0 0.0 0 0 0</pose>
             <uri>model://marble_husky</uri>
         </include>
-        <include>
-            <uri>model://white_ground</uri>
-        </include>
+    <include>
+      <uri>model://white_ground</uri>
+    </include>
 
-        <include>
-          <pose>0.094 -0.044 0.053 1.55 0 1.41</pose>
-          <uri>model://hc_sr04</uri>
-        </include>
+    <include>
+      <pose>0.094 -0.044 0.053 1.55 0 1.41</pose>
+      <uri>model://hc_sr04</uri>
+    </include>
 
-        <include>
-          <name>hc_sr04_2</name>
-          <pose>0.094 0.04 0.053 1.55 0 1.78</pose>
-          <uri>model://hc_sr04</uri>
-        </include>
-        
-        <light name="sunUTC" type="directional">
-            <pose>0 0 500 0 -0 0</pose>
-            <cast_shadows>true</cast_shadows>
-            <intensity>1</intensity>
-            <direction>0.001 0.625 -0.78</direction>
-            <diffuse>0.904 0.904 0.904 1</diffuse>
-            <specular>0.271 0.271 0.271 1</specular>
-            <attenuation>
-              <range>2000</range>
-              <linear>0</linear>
-              <constant>1</constant>
-              <quadratic>0</quadratic>
-            </attenuation>
-            <spot>
-              <inner_angle>0</inner_angle>
-              <outer_angle>0</outer_angle>
-              <falloff>0</falloff>
-            </spot>
-          </light>
-    </world>
+    <include>
+      <name>hc_sr04_2</name>
+      <pose>0.094 0.04 0.053 1.55 0 1.78</pose>
+      <uri>model://hc_sr04</uri>
+    </include>
+
+    <light name="sunUTC" type="directional">
+      <pose>0 0 500 0 -0 0</pose>
+      <cast_shadows>true</cast_shadows>
+      <intensity>1</intensity>
+      <direction>0.001 0.625 -0.78</direction>
+      <diffuse>0.904 0.904 0.904 1</diffuse>
+      <specular>0.271 0.271 0.271 1</specular>
+      <attenuation>
+        <range>2000</range>
+        <linear>0</linear>
+        <constant>1</constant>
+        <quadratic>0</quadratic>
+      </attenuation>
+      <spot>
+        <inner_angle>0</inner_angle>
+        <outer_angle>0</outer_angle>
+        <falloff>0</falloff>
+      </spot>
+    </light>
+  </world>
 </sdf>
