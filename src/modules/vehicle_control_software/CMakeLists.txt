@@ -10,7 +10,7 @@ find_package(ament_cmake REQUIRED)
 
 install(
   DIRECTORY 
-  launch video config images calibration_data
+  launch video config images calibration_data urdf
   DESTINATION  
   share/${PROJECT_NAME}/
 )
