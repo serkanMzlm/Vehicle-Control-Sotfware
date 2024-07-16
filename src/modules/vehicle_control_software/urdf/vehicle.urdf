@@ -32,6 +32,40 @@
         </collision>
     </link>
 
+    <link name="hc_sr04_right_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://vehicle_control_software/urdf/meshes/hc_sr04.stl"/>
+            </geometry>
+            <material name="dark_gray">
+                <color rgba="0.2 0.2 0.2 1.0" />
+            </material>
+        </visual>
+    </link>
+    <link name="hc_sr04_left_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://vehicle_control_software/urdf/meshes/hc_sr04.stl"/>
+            </geometry>
+            <material name="dark_gray">
+                <color rgba="0.2 0.2 0.2 1.0" />
+            </material>
+        </visual>
+    </link>
+    <link name="front_camera_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://vehicle_control_software/urdf/meshes/rpi_camera.stl"/>
+            </geometry>
+            <material name="dark_gray">
+                <color rgba="0.0 0.0 0.0 1.0" />
+            </material>
+        </visual>
+    </link>
+
     <link name="left_front_wheel_link">
         <inertial>
             <origin xyz="0 0.0 0.0" rpy="0 0 0.0" />
@@ -148,6 +182,24 @@
     <joint name="base_joint" type="fixed">
         <parent link="base_footprint" />
         <child link="base_link" />
+        <origin rpy="0 0 0" xyz="0 0 0" />
+    </joint>
+    <joint name="hc_sr04_right_joint" type="fixed">
+        <origin xyz="0.09 -0.044 0.055" rpy="1.55 0.0 1.41" />
+        <parent link="base_link" />
+        <child link="hc_sr04_right_link" />
+        <origin rpy="0 0 0" xyz="0 0 0" />
+    </joint>
+    <joint name="hc_sr04_left_joint" type="fixed">
+        <origin xyz="0.09 0.042 0.055" rpy="1.55 0.0 1.78" />
+        <parent link="base_link" />
+        <child link="hc_sr04_left_link" />
+        <origin rpy="0 0 0" xyz="0 0 0" />
+    </joint>
+    <joint name="front_camera_joint" type="fixed">
+        <origin xyz="0.09 0.0 0.048" rpy="1.55 0.0 1.57" />
+        <parent link="base_link" />
+        <child link="front_camera_link" />
         <origin rpy="0 0 0" xyz="0 0 0" />
     </joint>
 </robot>
