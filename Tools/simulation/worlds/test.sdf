@@ -33,7 +33,7 @@
       <uri>model://hc_sr04</uri>
     </include> -->
 
-    <light name="sunUTC" type="directional">
+    <!-- <light name="sunUTC" type="directional">
       <pose>0 0 500 0 -0 0</pose>
       <cast_shadows>true</cast_shadows>
       <intensity>1</intensity>
@@ -51,6 +51,6 @@
         <outer_angle>0</outer_angle>
         <falloff>0</falloff>
       </spot>
-    </light>
+    </light> -->
   </world>
 </sdf>

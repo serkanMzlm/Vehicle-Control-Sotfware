@@ -31,6 +31,7 @@
             </collision>
         </link>
 
+         <!--Sensors And Kamera-->
         <link name="hc_sr04_right_link">
             <pose relative_to="base_link">0.094 -0.044 0.003 1.55 0 1.41</pose>
             <visual name="visual">
@@ -73,8 +74,6 @@
                 </lidar>
             </sensor>
         </link>
-
-        <!--Sensors And Kamera-->
         <link name="hc_sr04_left_link">
             <pose relative_to="base_link">0.094 0.04 0.003 1.55 0 1.78</pose>
             <visual name="visual">
@@ -133,13 +132,13 @@
                 <camera>
                     <horizontal_fov>1.089</horizontal_fov>
                     <image>
-                      <width>720</width>
-                      <height>720</height>
-                      <format>R8G8B8</format>
+                        <width>720</width>
+                        <height>720</height>
+                        <format>R8G8B8</format>
                     </image>
                     <clip>
-                      <near>0.1</near>
-                      <far>100</far>
+                        <near>0.1</near>
+                        <far>100</far>
                     </clip>
                 </camera>
                 <always_on>1</always_on>
@@ -147,8 +146,48 @@
                 <visualize>true</visualize>
                 <topic>camera</topic>
             </sensor>
+
+            <light name="right_flash" type="spot">
+                <pose relative_to="base_link">0.098 -0.042 -0.027 -0.87 0 1.41</pose>
+                <cast_shadows>1</cast_shadows>
+                <visualize>false</visualize>
+                <attenuation>
+                    <range>3</range>
+                    <linear>0.1</linear>
+                    <constant>0.1</constant>
+                    <quadratic>0.0025</quadratic>
+                </attenuation>
+                <diffuse>0.8 0.8 0.5 1</diffuse>
+                <specular>0.8 0.8 0.5 1</specular>
+                <spot>
+                    <inner_angle>1.2</inner_angle>
+                    <outer_angle>1.5</outer_angle>
+                    <falloff>1</falloff>
+                </spot>
+                <direction>0 0 -1</direction>
+            </light>
+    
+            <light name="left_flash" type="spot">
+                <pose relative_to="base_link">0.098 0.042 -0.027 -0.87 0 1.78</pose>
+                <cast_shadows>1</cast_shadows>
+                <visualize>false</visualize>
+                <attenuation>
+                    <range>3</range>
+                    <linear>0.1</linear>
+                    <constant>0.1</constant>
+                    <quadratic>0.0025</quadratic>
+                </attenuation>
+                <diffuse>0.8 0.8 0.5 1</diffuse>
+                <specular>0.8 0.8 0.5 1</specular>
+                <spot>
+                    <inner_angle>1.2</inner_angle>
+                    <outer_angle>1.5</outer_angle>
+                    <falloff>1</falloff>
+                </spot>
+                <direction>0 0 -1</direction>
+            </light>
         </link>
-        
+
         <!-- Wheel visual and collision -->
         <link name="left_front_wheel_link">
             <pose relative_to="base_link"> 0.06 0.092 -0.012 -1.57 0 0</pose>
