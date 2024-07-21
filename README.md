@@ -120,6 +120,8 @@ find_package(geometric_operations REQUIRED)
 - **save_image:** Allows the data received from the camera to be saved as images.
 - **vehicle_control_software:** It is created to manage the directories that should be in the build folder. Additionally, it contains config and launch files
 - **filter_scan:** Filters laser scan data by angle and distance, and republishes it.
+  ![filter_1](./Documentation/images/rviz2_filter_scan_1.png)
+  ![filter_2](./Documentation/images/rviz2_filter_scan_2.png)
   
 **4. [arduino](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/tree/main/Tools/arduino):** Contains the code for the ESP8266 NodeMCU with RemoteXY installed.
 
