@@ -119,7 +119,8 @@ find_package(geometric_operations REQUIRED)
 - **gz_bridge:** Intervention in the Gazebo simulation from an external C++ file is enabled. This package allows the specified model to be added after the Gazebo simulation environment is launched. Allows the position of the model or the model itself to be changed directly during runtime.
 - **save_image:** Allows the data received from the camera to be saved as images.
 - **vehicle_control_software:** It is created to manage the directories that should be in the build folder. Additionally, it contains config and launch files
-
+- **filter_scan:** Filters laser scan data by angle and distance, and republishes it.
+  
 **4. [arduino](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/tree/main/Tools/arduino):** Contains the code for the ESP8266 NodeMCU with RemoteXY installed.
 
 **5. [simulation](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/tree/main/Tools/simulation):** It is the package that contains the models and worlds in the simulation environment.
