@@ -29,7 +29,7 @@ bridge_laser_scan = Node(
     package="ros_gz_bridge",
     executable="parameter_bridge",
     arguments=["/lidar@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan"],  # Only one axis is being provided
-    remappings=[("/lidar","/scan")],
+    remappings=[("/lidar","/laser_scan")],
     output="log"
 )
 
@@ -51,7 +51,7 @@ def generate_launch_description():
     return LaunchDescription([
         bridge_control,
         bridge_keyboard,
-        # bridge_laser_scan,
+        bridge_laser_scan,
         bridge_lidar,
         bridge_camera,
         # bridge_imu,
