@@ -1,7 +1,14 @@
 # Vehicle Control Software
 
+
+
+https://github.com/user-attachments/assets/59023c52-a4bc-4c01-aa8e-c8ea53fad5f9
+
+
+
 **NOTE:** You can find the most up-to-date information on the [wiki](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/wiki) page
-[Uploading gz_sim.webm…]()
+
+
 
 ---
 
@@ -20,7 +27,9 @@ This project [video](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/tree
 
 **Gazebo Garden:** Simulation settings can be modified by assigning the topic name lidar for the lidar window to display Lidar data. If it is desired to hide areas where detection is not performed, unchecking the show non-hitting rays option is recommended
 
-![Gazebo](./Documentation/images/gz_sim.png)
+![Gazebo](./Docu[gz_sim.webm](https://github.com/user-attachments/assets/1fd6200b-1e5a-4131-a3eb-5ff162ffbeb5)
+[gz_sim.webm](https://github.com/user-attachments/assets/43f89b2b-8932-41f7-b71d-33db09a9229a)
+mentation/images/gz_sim.png)
 
 ---
 
