@@ -57,6 +57,13 @@ control_unit = Node(
     output="screen"
 )
 
+gz_bridge = Node(
+    package="gz_bridge",                                              
+    executable="gz_bridge_node",
+    parameters=[config_file],
+    output="screen"
+)
+
 commander = Node(
     package="commander",                                              
     executable="commander_node",
@@ -89,6 +96,7 @@ def generate_launch_description():
     return LaunchDescription([
         control_unit,
         commander,
+        gz_bridge,
         
         # camera_recorder,
         # camera_player,
