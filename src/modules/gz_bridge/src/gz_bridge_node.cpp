@@ -66,7 +66,7 @@ void GazeboBridge::findSimulationPath()
 
 void GazeboBridge::declareParameters()
 {
-    this->declare_parameter<std::string>("model_name", "orion");
+    this->declare_parameter<std::string>("model_name", "marble_husky");
     this->declare_parameter<std::string>("world_name", "default");
     this->declare_parameter("model_pose", std::vector<double>(3, 0.0));
     this->declare_parameter("model_orientation", std::vector<double>(3, 0.0));

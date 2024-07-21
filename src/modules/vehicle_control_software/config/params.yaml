@@ -38,7 +38,7 @@ camera_node:
 
 gz_bridge_node:
   ros__parameters:
-    model_name: "orion" # camera, simulation
+    model_name: "marble_husky" # camera, simulation
     world_name: "default"
     model_pose: 
       - 0.0 # X
