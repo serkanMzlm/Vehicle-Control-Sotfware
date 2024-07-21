@@ -4,7 +4,7 @@ using namespace std::placeholders;
 
 ControlUnit::ControlUnit() : Node("control_unit_node")
 {
-    initParam();
+    declareParameters();
     memset(rx_data.buffer, 0, sizeof(rx_data.buffer));
     controlSelection();
 }
@@ -17,7 +17,7 @@ ControlUnit::~ControlUnit()
     }
 }
 
-void ControlUnit::initParam()
+void ControlUnit::declareParameters()
 {
     this->declare_parameter<std::string>("control_unit", "keyboard");
     this->declare_parameter<std::string>("device_name", "/dev/ttyUSB0");

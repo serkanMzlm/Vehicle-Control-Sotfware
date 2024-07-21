@@ -16,6 +16,22 @@
 #endif
 
 /**
+ * @brief Converts Euler angles to a quaternion.
+ *
+ * @param euler A double array of size 3 containing the Euler angles (roll, pitch, yaw) in radians.
+ * @param quaternion A double array of size 4 to store the resulting quaternion (w, x, y, z).
+ */
+void eulerToQuaternion(double* euler, double *quaternion);
+
+/**
+ * @brief Converts a quaternion to Euler angles.
+ *
+ * @param quaternion A double array of size 4 containing the quaternion (w, x, y, z).
+ * @param euler A double array of size 3 to store the resulting Euler angles (roll, pitch, yaw) in radians.
+ */
+void quaternionToEuler(double *quaternion, double* euler);
+
+/**
  * @brief Generates a rotation matrix for a rotation around the X-axis.
  *
  * @param phi The rotation angle in radians.
@@ -124,7 +140,7 @@ void transformation(float out[], float angle[], float state[]);
  * @param[out] spe_data A pointer to an array of three floats where the spherical
  *                      coordinates (radius, theta, phi) will be stored.
  */
-void cartesian2Spherical(float *cart_data, float *spe_data);
+void cartesianToSpherical(float *cart_data, float *spe_data);
 
 /**
  * @brief Converts spherical coordinates to Cartesian coordinates.
@@ -134,7 +150,7 @@ void cartesian2Spherical(float *cart_data, float *spe_data);
  * @param[out] cart_data A pointer to an array of three floats where the Cartesian
  *                      coordinates (x, y, z) will be stored.
  */
-void spherical2Cartesian(float *spe_data, float *cart_data);
+void sphericalToCartesian(float *spe_data, float *cart_data);
 
 /**
  * @brief Constrains the given angle to a specified range.

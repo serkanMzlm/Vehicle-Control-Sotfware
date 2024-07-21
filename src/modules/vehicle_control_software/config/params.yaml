@@ -35,3 +35,16 @@ commander_node:
 camera_node:
   ros__parameters:
     select_input: "simulation" # camera, simulation
+
+gz_bridge_node:
+  ros__parameters:
+    model_name: "orion" # camera, simulation
+    world_name: "default"
+    model_pose: 
+      - 0.0 # X
+      - 0.0 # Y
+      - 1.0 # Z
+    model_orientation:
+      - 0.0 # Roll
+      - 0.0 # Pitch
+      - 0.0 # Yaw

@@ -56,7 +56,7 @@ public:
     ~ControlUnit();
 
     /// @brief Initializes parameters.
-    void initParam();
+    void declareParameters();
 
     /// @brief Selects the control method based on the control_unit parameter.
     void controlSelection();

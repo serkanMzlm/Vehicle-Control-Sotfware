@@ -1,6 +1,52 @@
 #include "geometric_operations.hpp"
 
-void cartesian2Spherical(float *cart_data, float *spe_data)
+void eulerToQuaternion(double* euler, double *quaternion)
+{
+    double roll = euler[0];
+    double pitch = euler[1];
+    double yaw = euler[2];
+
+    // Calculate the half angles
+    double cy = cos(yaw * 0.5);
+    double sy = sin(yaw * 0.5);
+    double cp = cos(pitch * 0.5);
+    double sp = sin(pitch * 0.5);
+    double cr = cos(roll * 0.5);
+    double sr = sin(roll * 0.5);
+
+    quaternion[0] = sr * cp * cy - cr * sp * sy; // x
+    quaternion[1] = cr * sp * cy + sr * cp * sy; // y
+    quaternion[2] = cr * cp * sy - sr * sp * cy; // z
+    quaternion[3] = cr * cp * cy + sr * sp * sy; // w
+
+}
+
+void quaternionToEuler(double *quaternion, double* euler)
+{
+    double x = quaternion[0];
+    double y = quaternion[1];
+    double z = quaternion[2];
+    double w = quaternion[3];
+
+    // Roll (x-axis rotation)
+    double sinr_cosp = 2.0 * (w * x + y * z);
+    double cosr_cosp = 1.0 - 2.0 * (x * x + y * y);
+    euler[0] = std::atan2(sinr_cosp, cosr_cosp);
+
+    // Pitch (y-axis rotation)
+    double sinp = 2.0 * (w * y - z * x);
+    if (std::abs(sinp) >= 1)
+        euler[1] = std::copysign(M_PI / 2, sinp); // use 90 degrees if out of range
+    else
+        euler[1] = std::asin(sinp);
+
+    // Yaw (z-axis rotation)
+    double siny_cosp = 2.0 * (w * z + x * y);
+    double cosy_cosp = 1.0 - 2.0 * (y * y + z * z);
+    euler[2] = std::atan2(siny_cosp, cosy_cosp);
+}
+
+void cartesianToSpherical(float *cart_data, float *spe_data)
 {
     // Calculate radius
     float x2 = powf(cart_data[X], 2);
@@ -25,7 +71,7 @@ void cartesian2Spherical(float *cart_data, float *spe_data)
     spe_data[PHI] = constrainAngle(spe_data[PHI], 0);
 }
 
-void spherical2Cartesian(float *spe_data, float *cart_data)
+void sphericalToCartesian(float *spe_data, float *cart_data)
 {
     // Convert spherical coordinates to Cartesian coordinates
     float theta_rad = DEG2RAD(spe_data[THETA]);

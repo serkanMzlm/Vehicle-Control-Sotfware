@@ -123,7 +123,7 @@ void ObstacleAvoidance::centerData(pointXYZMsg &data)
 void ObstacleAvoidance::polarObstacleDensity(float *cc_data)
 {
     Coordinate_t spherical;
-    cartesian2Spherical(cc_data, spherical.pos); // PHI - THETA - RADIUS
+    cartesianToSpherical(cc_data, spherical.pos); // PHI - THETA - RADIUS
     maskPolarHistogram(spherical);
 }
 

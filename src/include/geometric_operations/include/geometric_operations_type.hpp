@@ -7,8 +7,9 @@ typedef enum
     X,
     Y,
     Z,
-    CART_COORD_ALL
-} Cartesian_coordinate_e;
+    W,
+    QUATERNION_ALL
+} Quaternion_e;
 
 typedef enum
 {
@@ -23,7 +24,7 @@ typedef enum
     ROLL,
     PITCH,
     YAW,
-    ROT_ANGLE_ALL
-} Rotation_angle_t;
+    EULER_ALL
+} Euler_e;
 
 #endif
