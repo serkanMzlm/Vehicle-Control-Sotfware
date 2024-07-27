@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sdf version="1.6">
+    <model name="outdoor_camera">
+        <static>true</static>
+        <link name="outdoor_camera_base">
+            <visual name="visual">
+                <geometry>
+                    <box>
+                        <size>0.5 0.5 0.1</size>
+                    </box>
+                </geometry>
+            </visual>
+            <collision name="collision">
+                <geometry>
+                    <box>
+                        <size>0.5 0.5 0.1</size>
+                    </box>
+                </geometry>
+            </collision>
+            <sensor name="outdoor_camera" type="camera">
+                <pose> 0 0.02 -0.08 0 -1.57 -1.57</pose>
+                <visualize>true</visualize>
+                <topic>outdoor_camera</topic>
+                <camera>
+                    <horizontal_fov>1.089</horizontal_fov>
+                    <image>
+                      <width>720</width>
+                      <height>720</height>
+                      <format>R8G8B8</format>
+                    </image>
+                    <clip>
+                      <near>0.1</near>
+                      <far>100</far>
+                    </clip>
+                </camera>
+                <always_on>1</always_on>
+                <update_rate>30.0</update_rate>
+                <visualize>true</visualize>
+                <topic>outdoor_camera</topic>
+            </sensor>
+        </link>
+    </model>
+</sdf>

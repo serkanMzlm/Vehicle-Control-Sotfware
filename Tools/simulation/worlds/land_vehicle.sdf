@@ -83,7 +83,14 @@
       <plugin filename="ImageDisplay" name="Image Display">
         <gz-gui>
           <title>Camera</title>
-          <property key="state" type="string">docked</property>  
+          <property key="state" type="string">docked</property>
+        </gz-gui>
+        <topic>/camera</topic>
+      </plugin>
+      <plugin filename="ViewAngle" name="View Angle">
+        <gz-gui>
+          <title>View Angle</title>
+          <property key="state" type="string">docked</property>
         </gz-gui>
         <topic>/camera</topic>
       </plugin>
@@ -116,22 +123,12 @@
       <pose>-5 -29 -7.5 0 0 0</pose>
     </include>
 
+    <include>
+      <pose>0 0 20 0 3.14 0</pose>
+      <uri>model://outdoor_camera</uri>
+    </include>
 
-    <!-- <include>
-      <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Satsop</uri>
-      <pose>0 0 -0.5 0 0 0</pose>
-    </include> -->
-
-    <!-- <include>
-      <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Depot</uri>
-    </include> -->
-    <!-- <include>
-    <uri>
-    https://fuel.gazebosim.org/1.0/OpenRobotics/models/Urban Stairwell Straight
-    </uri>
-    </include> -->
-
-    <actor name="actor_walking">
+    <!-- <actor name="actor_walking">
       <skin>
         <filename>https://fuel.gazebosim.org/1.0/Mingfei/models/actor/tip/files/meshes/walk.dae</filename>
         <scale>1.0</scale>
@@ -164,7 +161,7 @@
         </trajectory>
       </script>
       <pose>5 -3 0 0 0 1.57</pose>
-    </actor>
+    </actor> -->
     <gravity>0 0 -9.8</gravity>
     <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
     <atmosphere type='adiabatic' />
@@ -188,6 +185,4 @@
       </spot>
     </light> -->
   </world>
-
-
 </sdf>
