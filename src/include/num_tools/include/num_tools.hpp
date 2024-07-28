@@ -1,6 +1,8 @@
 #ifndef __NUM_TOOLS_HPP__
 #define __NUM_TOOLS_HPP__
 
+#define THREEHALFS (0x5f3759df)
+
 /**
  * @brief Maps a value from one range to another.
  *
@@ -23,5 +25,18 @@ double mapValue(double data, double in_min,
  * @return The constrained value within the specified range.
  */
 float constrainValue(float value, const float min_value, const float max_value);
+
+/**
+ * @brief Calculate the fast inverse square root of a number.
+ *
+ * This function uses the fast inverse square root algorithm to quickly
+ * compute the inverse square root of the given number. The algorithm
+ * utilizes bit-level manipulations and an initial approximation with
+ * one iteration of Newton-Raphson method to achieve the result.
+ *
+ * @param number The input number for which the inverse square root is to be calculated.
+ * @return The approximate inverse square root of the input number.
+ */
+float fastInverseSqrt(float number);
 
 #endif
