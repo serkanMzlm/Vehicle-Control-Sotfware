@@ -22,18 +22,12 @@
     </include>
 
     <include>
+      <!-- <static>true</static> -->
       <pose>0 0 0.05 0 0 0</pose>
-      <uri>model://orion</uri>
+      <uri>model://imu</uri>
     </include>
 
-  
-    <!-- <include>
-      <name>hc_sr04_2</name>
-      <pose>0.094 0.04 0.053 1.55 0 1.78</pose>
-      <uri>model://hc_sr04</uri>
-    </include> -->
-
-    <!-- <light name="sunUTC" type="directional">
+    <light name="sunUTC" type="directional">
       <pose>0 0 500 0 -0 0</pose>
       <cast_shadows>true</cast_shadows>
       <intensity>1</intensity>
@@ -51,6 +45,6 @@
         <outer_angle>0</outer_angle>
         <falloff>0</falloff>
       </spot>
-    </light> -->
+    </light>
   </world>
 </sdf>

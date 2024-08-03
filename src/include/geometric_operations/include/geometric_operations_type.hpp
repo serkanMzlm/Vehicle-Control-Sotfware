@@ -1,7 +1,6 @@
 #ifndef __GEOMETRIC_OPERATIONS_TYPE_HPP__
 #define __GEOMETRIC_OPERATIONS_TYPE_HPP__
 
-
 typedef enum
 {
     X,
