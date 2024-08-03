@@ -54,5 +54,5 @@ def generate_launch_description():
         bridge_laser_scan,
         bridge_lidar,
         bridge_camera,
-        # bridge_imu,
+        bridge_imu,
     ]) 
