@@ -58,3 +58,30 @@ float lpf2pReset(lpf2pData *lpfData, float sample)
     lpfData->delay_element_2 = dval;
     return lpf2pApply(lpfData, sample);
 }
+
+int16_t iirLowPassFilter(int32_t input, int32_t attenuation, int32_t* filterState) 
+{
+    if (filterState == NULL) {
+        return 0;
+    }
+
+    int32_t inputScaled;
+    int32_t filterTemp = *filterState;
+    int16_t output;
+
+    if (attenuation > (1 << IIR_SHIFT)) {
+        attenuation = (1 << IIR_SHIFT);
+    } else if (attenuation < 1) {
+        attenuation = 1;
+    }
+
+    // Shift to keep accuracy
+    inputScaled = input << IIR_SHIFT;
+    // Calculate IIR filter
+    filterTemp = filterTemp + (((inputScaled - filterTemp) >> IIR_SHIFT) * attenuation);
+    // Scale and round
+    output = (filterTemp >> 8) + ((filterTemp & (1 << (IIR_SHIFT - 1))) >> (IIR_SHIFT - 1));
+    *filterState = filterTemp;
+
+    return output;
+}

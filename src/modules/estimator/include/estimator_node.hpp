@@ -6,27 +6,20 @@
 
 #include "estimator_node_type.hpp"
 #include "complementary_filter.hpp"
-#include "filters.hpp"
+#include "tic_toc.hpp"
 
 using ImuMsg = sensor_msgs::msg::Imu;
 
 class EstimatorNode: public rclcpp::Node
 {
-private:
-    float prev_theta = 0.0;
-    float prev_phi = 0.0f;
-
-    float theta_g = 0.0f;
-    float phi_g = 0.0f;
-    
+private:   
     IMUData_s imu;
+    TicToc tictoc;
     rclcpp::Subscription<ImuMsg>::SharedPtr imu_sub;
 public:
     EstimatorNode();
     ~EstimatorNode();
     void imuCallback(const ImuMsg::SharedPtr msg);
-    void accelToEuler(IMUData_s imu);
-    void gyroToEuler(IMUData_s imu);
     float normalizeByGravity(float data);
 };
 

@@ -14,7 +14,7 @@ double TicToc::toc()
 {
     end = std::chrono::steady_clock::now();
     std::chrono::duration<double> elapsed_sec = end - start;
-    return elapsed_sec.count() * 1000;
+    return elapsed_sec.count();
 }
 
 uint64_t TicToc::timeStep()

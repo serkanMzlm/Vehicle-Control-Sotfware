@@ -61,4 +61,20 @@ float lpf2pApply(lpf2pData* lpfData, float sample);
  */
 float lpf2pReset(lpf2pData* lpfData, float sample);
 
+/**
+ * @brief Applies a single-pole Infinite Impulse Response (IIR) low pass filter.
+ * 
+ * This filter is used to smooth input data by attenuating high-frequency components. 
+ * It uses fixed-point arithmetic to maintain accuracy while processing.
+ * 
+ * @param input The current input value to be filtered. This value is expected to be in a fixed-point representation.
+ * @param attenuation The filter attenuation factor, which determines how much the filter smooths the input. 
+ *        The value should be in the range [1, 256], where 256 corresponds to no attenuation.
+ * @param filterState Pointer to the filter state variable that maintains the previous state of the filter.
+ *        This value is updated by the function to be used in subsequent filtering operations.
+ * 
+ * @return int16_t The filtered output value, in fixed-point representation, which represents the smoothed input.
+ */
+int16_t iirLowPassFilter(int32_t input, int32_t attenuation, int32_t* filterState);
+
 #endif

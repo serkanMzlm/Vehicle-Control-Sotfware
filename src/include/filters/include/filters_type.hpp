@@ -1,6 +1,8 @@
 #ifndef __FILTERS_TYPE_HPP__
 #define __FILTERS_TYPE_HPP__
 
+#define IIR_SHIFT 8
+
 typedef struct {
     float a1;
     float a2;
