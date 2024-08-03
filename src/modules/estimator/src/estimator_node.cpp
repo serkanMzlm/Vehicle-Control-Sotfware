@@ -22,7 +22,7 @@ void EstimatorNode::imuCallback(const ImuMsg::SharedPtr msg)
     imu.ax = normalizeByGravity(msg->linear_acceleration.x);
     imu.ay = normalizeByGravity(msg->linear_acceleration.y);
     imu.az = normalizeByGravity(msg->linear_acceleration.z);
-    complementaryFilter(imu, static_cast<float>(tictoc.toc()));
+    complementaryFilter(imu, static_cast<float>(tictoc.toc() / 1000)); // dt -> second
     tictoc.tic();
 }
 
