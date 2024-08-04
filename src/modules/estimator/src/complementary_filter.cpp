@@ -22,6 +22,8 @@ void complementaryFilter(IMUData_s imu, float dt)
     accelToEuler(imu);
     gyroToEuler(imu, dt);
 
+    roll = alpha * gyro_roll + (1.0f - alpha) * prev_phi;
+    pitch = alpha * gyro_pitch + (1.0f - alpha) * prev_theta;
     
 }
 
