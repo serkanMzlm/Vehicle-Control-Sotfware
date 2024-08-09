@@ -13,11 +13,12 @@ find_package(sensor_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(tf2 REQUIRED)
 
-find_package(pcl_ros REQUIRED)
+# find_package(pcl_ros REQUIRED)
 find_package(pcl_conversions REQUIRED)
 find_package(visualization_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
-find_package(PCL 1.3 REQUIRED)
+find_package(PCL REQUIRED)
+find_package (Eigen3 3.3 REQUIRED)
 find_package(num_tools REQUIRED)
 find_package(geometric_operations REQUIRED)
 
@@ -30,7 +31,7 @@ ament_target_dependencies(
     commander_node 
     rclcpp 
     tf2_ros
-    pcl_ros
+    PCL
     pcl_conversions
     visualization_msgs                
     sensor_msgs
@@ -38,6 +39,8 @@ ament_target_dependencies(
     num_tools
     geometric_operations
 )
+
+target_link_libraries(commander_node Eigen3::Eigen)
 
 install(TARGETS
   commander_node
