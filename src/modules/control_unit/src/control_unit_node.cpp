@@ -151,10 +151,10 @@ void ControlUnit::serialDataRead()
             rx_data.prev_byte = rx_data.curr_byte;
             if (rx_data.curr_byte == FOOTHER_)
             {
-                joy_data.axes[0] = OFFSET_EXCEPTION(mapValue(static_cast<float>(rx_data.buffer[S_LY]), 0, 200, -1, 1));
-                joy_data.axes[1] = OFFSET_EXCEPTION(mapValue(static_cast<float>(rx_data.buffer[S_LX]), 0, 200, 1, -1));
-                joy_data.axes[2] = OFFSET_EXCEPTION(mapValue(static_cast<float>(rx_data.buffer[S_RY]), 0, 200, -1, 1));
-                joy_data.axes[3] = OFFSET_EXCEPTION(mapValue(static_cast<float>(rx_data.buffer[S_RX]), 0, 200, 1, -1));
+                joy_data.axes[0] = OFFSET_EXCEPTION(map(static_cast<float>(rx_data.buffer[S_LY]), 0, 200, -1, 1));
+                joy_data.axes[1] = OFFSET_EXCEPTION(map(static_cast<float>(rx_data.buffer[S_LX]), 0, 200, 1, -1));
+                joy_data.axes[2] = OFFSET_EXCEPTION(map(static_cast<float>(rx_data.buffer[S_RY]), 0, 200, -1, 1));
+                joy_data.axes[3] = OFFSET_EXCEPTION(map(static_cast<float>(rx_data.buffer[S_RX]), 0, 200, 1, -1));
                 joy_data.buttons[0] = rx_data.buffer[S_PWR];
                 pub.joy->publish(joy_data);
             }

@@ -68,8 +68,8 @@ void ObstacleAvoidance::updateVelocity(double &linear_x, double &linear_w)
     }
 
 
-    linear_x = constrainValue(linear_x, -linear_velocity_limit, linear_velocity_limit);
-    linear_w = constrainValue(linear_w, -angular_velocity_limit, angular_velocity_limit);
+    linear_x = constrain(linear_x, -linear_velocity_limit, linear_velocity_limit);
+    linear_w = constrain(linear_w, -angular_velocity_limit, angular_velocity_limit);
 
     last_point[LINEAR_V].x = linear_x / linear_velocity_limit;
 

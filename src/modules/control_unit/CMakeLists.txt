@@ -5,13 +5,20 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+if(CMAKE_PREFIX_PATH)
+  set(CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH}; $ENV{VEHICLE_CONTRAL_SOFTWARE}/src/include/lib/cmake")
+else()
+  set(CMAKE_PREFIX_PATH "$ENV{VEHICLE_CONTRAL_SOFTWARE}/src/include/lib/cmake")
+  message("Path: ${CMAKE_PREFIX_PATH}")
+endif()
+
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
-find_package(num_tools REQUIRED)
-find_package(time_utils REQUIRED)
+
+find_package(mathToolsLib REQUIRED)
 
 file(GLOB_RECURSE SRC_FILE src/*.cpp)
 include_directories(include)
@@ -22,9 +29,9 @@ ament_target_dependencies(
   rclcpp
   std_msgs
   sensor_msgs
-  time_utils
-  num_tools
 )
+
+target_link_libraries(control_unit_node mathToolsLib)
 
 install(TARGETS
         control_unit_node

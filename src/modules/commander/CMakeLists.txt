@@ -5,6 +5,13 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+if(CMAKE_PREFIX_PATH)
+  set(CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH}; $ENV{VEHICLE_CONTRAL_SOFTWARE}/src/include/lib/cmake")
+else()
+  set(CMAKE_PREFIX_PATH "$ENV{VEHICLE_CONTRAL_SOFTWARE}/src/include/lib/cmake")
+  message("Path: ${CMAKE_PREFIX_PATH}")
+endif()
+
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
@@ -18,9 +25,11 @@ find_package(pcl_conversions REQUIRED)
 find_package(visualization_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(PCL REQUIRED)
-find_package (Eigen3 3.3 REQUIRED)
-find_package(num_tools REQUIRED)
-find_package(geometric_operations REQUIRED)
+find_package(Eigen3 3.3 REQUIRED)
+
+find_package(geometryToolsLib REQUIRED)
+find_package(mathToolsLib REQUIRED)
+
 
 FILE(GLOB_RECURSE SRC_FILE src/*.cpp)
 
@@ -36,11 +45,9 @@ ament_target_dependencies(
     visualization_msgs                
     sensor_msgs
     geometry_msgs
-    num_tools
-    geometric_operations
 )
 
-target_link_libraries(commander_node Eigen3::Eigen)
+target_link_libraries(commander_node Eigen3::Eigen geometryToolsLib mathToolsLib)
 
 install(TARGETS
   commander_node

@@ -11,7 +11,7 @@
 #include <gz/msgs.hh>
 #include <gz/transport.hh>
 
-#include "geometric_operations.hpp"
+#include "geometry_tools/geometry_operations.hpp"
 
 class GazeboBridge: public rclcpp::Node
 {

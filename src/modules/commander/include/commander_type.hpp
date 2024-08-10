@@ -2,8 +2,10 @@
 #define __CONTROLLER_TYPE_HPP__
 
 #include <cmath>
-#include "geometric_operations.hpp"
-#include "num_tools.hpp"
+
+#include "math_tools/math_operations.hpp"
+#include "geometry_tools/geometry_operations.hpp"
+#include "geometry_tools/transformation.hpp"
 
 
 #define VERTICAL 181    // theta

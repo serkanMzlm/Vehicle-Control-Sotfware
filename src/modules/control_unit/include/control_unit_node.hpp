@@ -12,8 +12,8 @@
 #include "std_msgs/msg/int32.hpp"
 
 #include "control_unit_type.hpp"
-#include "tic_toc.hpp"
-#include "num_tools.hpp"
+#include "math_tools/time_utils.hpp"
+#include "math_tools/math_operations.hpp"
 
 using joyMsg = sensor_msgs::msg::Joy;
 using int32Msg = std_msgs::msg::Int32;

@@ -5,11 +5,18 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+if(CMAKE_PREFIX_PATH)
+  set(CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH}; $ENV{VEHICLE_CONTRAL_SOFTWARE}/src/include/lib/cmake")
+else()
+  set(CMAKE_PREFIX_PATH "$ENV{VEHICLE_CONTRAL_SOFTWARE}/src/include/lib/cmake")
+  message("Path: ${CMAKE_PREFIX_PATH}")
+endif()
+
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(gz-cmake3 REQUIRED)
-find_package(geometric_operations REQUIRED)
+find_package(geometryToolsLib REQUIRED)
 
 set(GZ_DISTRIBUTION "Garden")
 
@@ -38,8 +45,9 @@ target_link_libraries(gz_bridge_node
 ament_target_dependencies(
   gz_bridge_node
   rclcpp
-  geometric_operations
 )
+
+target_link_libraries(gz_bridge_node geometryToolsLib)
 
 install(TARGETS
         gz_bridge_node
