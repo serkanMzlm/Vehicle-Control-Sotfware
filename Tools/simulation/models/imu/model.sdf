@@ -74,7 +74,7 @@
                                 <noise type="gaussian">
                                     <mean>0</mean>
                                     <stddev>0.021</stddev>
-                                    <!-- <bias_mean>0.05</bias_mean> -->
+                                    <bias_mean>0.05</bias_mean>
                                     <bias_stddev>0.0075</bias_stddev>
                                     <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
                                     <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
@@ -85,7 +85,7 @@
                                 <noise type="gaussian">
                                     <mean>0</mean>
                                     <stddev>0.021</stddev>
-                                    <!-- <bias_mean>0.05</bias_mean> -->
+                                    <bias_mean>0.05</bias_mean>
                                     <bias_stddev>0.0075</bias_stddev>
                                     <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
                                     <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
