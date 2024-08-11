@@ -57,6 +57,9 @@ update_bashrc:
 	fi
 	@. ~/.bashrc
 
+.PHONY: all_clean
+all_clean: clean ros_clean
+	@echo "$(RED)Clean complete.$(RESET)"
 .PHONY: clean
 clean:
 	@echo "$(RED)Cleaning up src/drivers...$(RESET)"

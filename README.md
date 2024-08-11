@@ -1,8 +1,14 @@
 # Vehicle Control Software
 
+https://github.com/user-attachments/assets/59023c52-a4bc-4c01-aa8e-c8ea53fad5f9
+
 This repository contains software written for ground vehicle control. The software is designed to be used both in the Gazebo Garden simulation environment and on a real vehicle. The vehicle attempts to avoid obstacles using mounted distance sensors (Lidar). To make the system more realistic, noise has been added to the sensors in the simulation environment. Future versions will include additions for artificial intelligence (AI) and image processing. The project is not finished yet, so keep your repository up to date.
 
-https://github.com/user-attachments/assets/59023c52-a4bc-4c01-aa8e-c8ea53fad5f9
+###  ON THE [WIKI](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/wiki) THE PAGE
+- **[System Requirements](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/wiki#system-requirements)**
+- **[Installation & Compilation](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/wiki/Install)**
+- **[Run](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/wiki/Run)**
+- **[Packages Info](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/wiki/Packages-Info)**
 
 ## Contents 
 [Features](https://github.com/serkanMzlm/Vehicle-Control-Sotfware?tab=readme-ov-file#features)
@@ -17,13 +23,7 @@ https://github.com/user-attachments/assets/59023c52-a4bc-4c01-aa8e-c8ea53fad5f9
 
 [RQT](https://github.com/serkanMzlm/Vehicle-Control-Sotfware?tab=readme-ov-file#rqt)
 
-[Packages And Their Tasks](https://github.com/serkanMzlm/Vehicle-Control-Sotfware?tab=readme-ov-file#packages-and-their-tasks)
 
-###  ON THE [WIKI](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/wiki) THE PAGE
-- **[System Requirements](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/wiki#system-requirements)**
-- **[Installation](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/wiki#install)**
-- **[Compilation](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/wiki#Compile)**
-- **[Run](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/wiki#Run)**
 ---
 
 ### Features:
@@ -49,20 +49,11 @@ https://github.com/user-attachments/assets/59023c52-a4bc-4c01-aa8e-c8ea53fad5f9
 ## Control
 
 - The control method is specified in the 'control_unit' variable in the params file to control the vehicle. By default, it is set to keyboard control. If desired, it can also be controlled using a joystick or an ESP8266.
+- For more detailed information, you can refer to [this](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/wiki/Run#running-the-packages) page. 
 
-1. **Keyboard controls are as follows**
-```
-    w
-a   s   d   
-    x
-```
+1. Keyboard controls are as follows
 2. **Joystick control:** Control is achieved using the left joystick.
-3. **ESP8266 control:** Joy data is sent to the computer's serial port via an interface prepared using [RemoteXY](https://remotexy.com/en/). 
-    - To connect to the ESP8266 board, it is necessary to write the port to which the board is connected in the file_name variable in the params file. By default, it is /dev/ttyUSB0
-    - The RemoteXY application is downloaded to the phone, and to connect to the access point broadcasted by ESP8266, you connect to `joy` in the Wi-Fi section. The password is `135798642`.
-    - Arduino Code [nodemcu_esp8266.ino](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/blob/main/Tools/arduino/nodemcu_esp8266/nodemcu_esp8266.ino)
-
-![remotexy](https://github.com/user-attachments/assets/29a6654e-0424-47bd-80db-8beaa7ec1d34)
+3. **ESP8266 control:** Joy data is sent to the computer's serial port via an interface prepared using [RemoteXY](https://remotexy.com/en/).
 
 - Instead of running each code individually, the launch file is executed.
 ```bash
@@ -100,30 +91,3 @@ The Lidar sensor data is visualized in conjunction with the camera at the front 
 Using rqt, we can observe the relationships between packets
 
 ![rviz](./Documentation/images/rosgraph.png)
-
-## Packages And Their Tasks
-The contents of the src folder
-![tree](./Documentation/images/tree_2.png)
-
-**1. [drivers:](https://github.com/serkanMzlm/Sensor-Drivers/tree/2b5228538e5d041b34f09c7f603990f4b1cd3ab6)** Libraries necessary for the operation of sensors are included. **(Not required in the simulation environment.)**
-
-**2. [include:](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/tree/main/src/include)** Packages containing libraries that can be used across all packages are included. These packages cannot be executed with `ros2 run` they can only be added as libraries to other packages. During system setup, the packages in this directory are built first, and after being included in the system using the .install/setup.bash command, the other packages are built.
-```cmake
-find_package(geometric_operations REQUIRED) 
-```
-**3. [src:](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/tree/main/src)**
-- **camera_calibration:** It allows for the calibration of the camera by taking images recorded by the camera.
-- **camera_streamer:** The camera allows for the recording and playback of the broadcasted video.
-- **commander:** The package that enables the vehicle to avoid obstacles around it operates by receiving and processing Lidar data broadcasted from the vehicle. The rules necessary for obstacle avoidance to function can be configured through the [config](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/blob/main/src/modules/vehicle_control_software/config/params.yaml#L6) file.
-- **control_unit:** For the vehicle to move, a movement command must be sent by the user. This package allows configuring the control options for the vehicle according to the `control_unit` option specified in the [config](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/blob/main/src/modules/vehicle_control_software/config/params.yaml) file.
-- **gz_bridge:** Intervention in the Gazebo simulation from an external C++ file is enabled. This package allows the specified model to be added after the Gazebo simulation environment is launched. Allows the position of the model or the model itself to be changed directly during runtime.
-- **save_image:** Allows the data received from the camera to be saved as images.
-- **vehicle_control_software:** It is created to manage the directories that should be in the build folder. Additionally, it contains config and launch files
-- **filter_scan:** Filters laser scan data by angle and distance, and republishes it.
-  ![filter_1](./Documentation/images/rviz2_filter_scan_1.png)
-  ![filter_2](./Documentation/images/rviz2_filter_scan_2.png)
-  
-**4. [arduino](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/tree/main/Tools/arduino):** Contains the code for the ESP8266 NodeMCU with RemoteXY installed.
-
-**5. [simulation](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/tree/main/Tools/simulation):** It is the package that contains the models and worlds in the simulation environment.
-

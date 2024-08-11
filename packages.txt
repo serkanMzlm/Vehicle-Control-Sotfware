@@ -1,10 +1,9 @@
-camera_calibration           
-camera_streamer              
+*camera_calibration           
+*camera_streamer              
 commander                    
-control_unit                 
-drivers                      
+control_unit                                     
 estimator                    
-filter_scan                  
+*filter_scan                  
 gz_bridge                    
 *mpu6050_driver               
 *pmw3901_driver               
