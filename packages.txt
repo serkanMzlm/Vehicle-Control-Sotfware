@@ -1,11 +1,9 @@
 *camera_calibration           
 *camera_streamer              
+*filter_scan                  
 commander                    
 control_unit                                     
 estimator                    
-*filter_scan                  
-gz_bridge                    
-*mpu6050_driver               
-*pmw3901_driver               
+gz_bridge                                 
 save_image                   
 vehicle_control_software     
