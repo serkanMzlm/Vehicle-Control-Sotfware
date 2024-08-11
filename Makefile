@@ -44,10 +44,16 @@ $(BUILD_DIR)/Makefile:
 update_bashrc:
 	@echo "$(GREEN)Updating .bashrc with current directory...$(RESET)"
 	@CURRENT_DIR=$$(pwd); \
+	MODEL_DIR=$$(pwd)/Tools/simulation/models; \
 	if grep -q "export VEHICLE_CONTRAL_SOFTWARE=" ~/.bashrc; then \
 		sed -i "s|^export VEHICLE_CONTRAL_SOFTWARE=.*|export VEHICLE_CONTRAL_SOFTWARE=$$CURRENT_DIR|" ~/.bashrc; \
 	else \
 		echo "export VEHICLE_CONTRAL_SOFTWARE=$$CURRENT_DIR" >> ~/.bashrc; \
+	fi; \
+	if grep -q "export GZ_SIM_RESOURCE_PATH=" ~/.bashrc; then \
+		sed -i "s|^export GZ_SIM_RESOURCE_PATH=.*|export GZ_SIM_RESOURCE_PATH=$${GZ_SIM_RESOURCE_PATH}:$$MODEL_DIR|" ~/.bashrc; \
+	else \
+		echo "export GZ_SIM_RESOURCE_PATH=$${GZ_SIM_RESOURCE_PATH}:$$MODEL_DIR" >> ~/.bashrc; \
 	fi
 	@. ~/.bashrc
 
