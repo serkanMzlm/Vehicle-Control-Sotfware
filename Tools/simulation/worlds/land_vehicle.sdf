@@ -3,9 +3,9 @@
   <world name="default">
 
     <physics type="dart">
-      <max_step_size>0.004</max_step_size>
-      <real_time_factor>1.02</real_time_factor>
-      <real_time_update_rate>250</real_time_update_rate>
+      <max_step_size>0.005</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <real_time_update_rate>200</real_time_update_rate>
     </physics>
 
     <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"> </plugin>
@@ -128,7 +128,7 @@
       <uri>model://outdoor_camera</uri>
     </include>
 
-    <!-- <actor name="actor_walking">
+    <actor name="actor_walking">
       <skin>
         <filename>https://fuel.gazebosim.org/1.0/Mingfei/models/actor/tip/files/meshes/walk.dae</filename>
         <scale>1.0</scale>
@@ -161,11 +161,11 @@
         </trajectory>
       </script>
       <pose>5 -3 0 0 0 1.57</pose>
-    </actor> -->
+    </actor>
     <gravity>0 0 -9.8</gravity>
     <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
     <atmosphere type='adiabatic' />
-    <!-- <light name="sunUTC" type="directional">
+    <light name="sunUTC" type="directional">
       <pose>0 0 500 0 -0 0</pose>
       <cast_shadows>true</cast_shadows>
       <intensity>1</intensity>
@@ -183,6 +183,6 @@
         <outer_angle>0</outer_angle>
         <falloff>0</falloff>
       </spot>
-    </light> -->
+    </light>
   </world>
 </sdf>
