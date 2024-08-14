@@ -20,16 +20,16 @@ find_package(geometryToolsLib REQUIRED)
 
 set(GZ_DISTRIBUTION "Garden")
 
-gz_find_package(gz-sim7 REQUIRED)
-gz_find_package(gz-msgs9 REQUIRED)
-gz_find_package(sdformat13 REQUIRED)
+gz_find_package(gz-sim8 REQUIRED)
+gz_find_package(gz-msgs10 REQUIRED)
+gz_find_package(sdformat14 REQUIRED)
 gz_find_package(gz-plugin2 REQUIRED COMPONENTS loader register)
-gz_find_package(gz-transport12 VERSION 12.1 REQUIRED COMPONENTS log parameters)
+gz_find_package(gz-transport13 VERSION 13.1 REQUIRED COMPONENTS log parameters)
 
 set(GZ_PLUGIN_VER ${gz-plugin2_VERSION_MAJOR})
-set(GZ_TRANSPORT_VER ${gz-transport12_VERSION_MAJOR})
-set(GZ_SIM_VER ${gz-sim7_VERSION_MAJOR})
-set(GZ_MSGS_VER ${gz-msgs9_VERSION_MAJOR})
+set(GZ_TRANSPORT_VER ${gz-transport13_VERSION_MAJOR})
+set(GZ_SIM_VER ${gz-sim8_VERSION_MAJOR})
+set(GZ_MSGS_VER ${gz-msgs10_VERSION_MAJOR})
 
 file(GLOB_RECURSE SRC_FILE src/*.cpp)
 include_directories(include)
