@@ -2,7 +2,7 @@
 
 https://github.com/user-attachments/assets/59023c52-a4bc-4c01-aa8e-c8ea53fad5f9
 
-This repository contains software written for ground vehicle control. The software is designed to be used both in the Gazebo Garden simulation environment and on a real vehicle. The vehicle attempts to avoid obstacles using mounted distance sensors (Lidar). To make the system more realistic, noise has been added to the sensors in the simulation environment. Future versions will include additions for artificial intelligence (AI) and image processing. The project is not finished yet, so keep your repository up to date.
+This repository contains software written for ground vehicle control. The software is designed to be used both in the Gazebo Harmonic simulation environment and on a real vehicle. The vehicle attempts to avoid obstacles using mounted distance sensors (Lidar). To make the system more realistic, noise has been added to the sensors in the simulation environment. Future versions will include additions for artificial intelligence (AI) and image processing. The project is not finished yet, so keep your repository up to date.
 
 ###  ON THE [WIKI](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/wiki) THE PAGE
 - **[System Requirements](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/wiki#system-requirements)**
@@ -17,7 +17,7 @@ This repository contains software written for ground vehicle control. The softwa
 
 [Control](https://github.com/serkanMzlm/Vehicle-Control-Sotfware?tab=readme-ov-file#control)
 
-[Gazebo Garden](https://github.com/serkanMzlm/Vehicle-Control-Sotfware?tab=readme-ov-file#gazebo-garden)
+[Gazebo Harmonic](https://github.com/serkanMzlm/Vehicle-Control-Sotfware?tab=readme-ov-file#gazebo-harmonic)
 
 [RViz2](https://github.com/serkanMzlm/Vehicle-Control-Sotfware?tab=readme-ov-file#rviz2)
 
@@ -64,7 +64,7 @@ ros2 launch vehicle_control_software drive_launch.py
 ros2 run commander commander_node  --ros-args --params-file /home/${USER}/Vehicle-Control-Sotfware/src/modules/vehicle_control_software/config/params.yml
 ```
 
-## Gazebo Garden
+## Gazebo Harmonic 
 
 ![rviz](./Documentation/images/gz_sim.png)
 - Simulation settings can be modified by assigning the topic name lidar for the lidar window to display Lidar data. If it is desired to hide areas where detection is not performed, unchecking the show non-hitting rays option is recommended
