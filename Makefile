@@ -42,7 +42,6 @@ $(BUILD_DIR)/Makefile:
 
 .PHONY: update_bashrc
 update_bashrc:
-	@echo "$(GREEN)Updating .bashrc with current directory...$(RESET)"
 	@CURRENT_DIR=$$(pwd); \
 	MODEL_DIR=$$(pwd)/Tools/simulation/models; \
 	if grep -q "export VEHICLE_CONTRAL_SOFTWARE=" ~/.bashrc; then \
@@ -50,11 +49,14 @@ update_bashrc:
 	else \
 		echo "export VEHICLE_CONTRAL_SOFTWARE=$$CURRENT_DIR" >> ~/.bashrc; \
 	fi; \
-	if grep -q "export GZ_SIM_RESOURCE_PATH=" ~/.bashrc; then \
+	if grep -q "export GZ_SIM_RESOURCE_PATH=.*$$MODEL_DIR" ~/.bashrc; then \
+		echo "$(YELLOW) GZ_SIM_RESOURCE_PATH already contains $$MODEL_DIR $(RESET)"; \
+	elif grep -q "export GZ_SIM_RESOURCE_PATH=" ~/.bashrc; then \
 		sed -i "s|^export GZ_SIM_RESOURCE_PATH=.*|export GZ_SIM_RESOURCE_PATH=$${GZ_SIM_RESOURCE_PATH}:$$MODEL_DIR|" ~/.bashrc; \
 	else \
 		echo "export GZ_SIM_RESOURCE_PATH=$${GZ_SIM_RESOURCE_PATH}:$$MODEL_DIR" >> ~/.bashrc; \
 	fi
+	@echo "$(GREEN)Updating .bashrc with current directory...$(RESET)"
 	@. ~/.bashrc
 
 .PHONY: all_clean
