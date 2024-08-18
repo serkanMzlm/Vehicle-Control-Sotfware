@@ -3,6 +3,7 @@ using namespace std::placeholders;
 
 Commander::Commander() : Node("commander_node")
 {
+  tf_vehicle = std::make_shared<tf2_ros::StaticTransformBroadcaster>(this);
   declareParameters();
   initTopic();
 }
@@ -82,8 +83,8 @@ void Commander::declareParameters()
 
   vehicle_dimensions = this->get_parameter("vehicle_dimensions").as_double_array();
   lidar_rules = this->get_parameter("lidar_rules").as_double_array();
-  angular_velocity_limit = this->get_parameter("max_angular_velocity").as_double(); 
-  linear_velocity_limit  = this->get_parameter("max_linear_velocity").as_double();
+  angular_velocity_limit = this->get_parameter("max_angular_velocity").as_double();
+  linear_velocity_limit = this->get_parameter("max_linear_velocity").as_double();
 
   for (int i = 0; i < VEL_ALL; i++)
   {
@@ -103,9 +104,41 @@ void Commander::initTopic()
 {
   sub.joy = this->create_subscription<joyMsg>("velocity", 10, std::bind(&Commander::commandCallback, this, _1));
   sub.cloud = this->create_subscription<pointCloudMsg>("lidar", 100, std::bind(&Commander::pointCloudCallback, this, _1));
+  sub.nav_odom = this->create_subscription<odometryNavMsg>("/model/marble_husky/odometry", 10,
+                                                           std::bind(&Commander::odometryCallback, this, _1));
 
   pub.joy = this->create_publisher<twistMsg>("cmd_vel", 10);
   pub.markers = this->create_publisher<markerArrayMsg>("marker_visulation", 100);
+}
+
+void Commander::odometryCallback(const odometryNavMsg::SharedPtr msg)
+{
+  if(msg->child_frame_id == "marble_husky/base_link") 
+  {
+    return;
+  }
+  
+  geometry_msgs::msg::TransformStamped t;
+  t.header.stamp = this->get_clock()->now();
+  t.header.frame_id = "marble_husky/base_link/front_laser";
+  t.child_frame_id = "base_link";
+
+  t.transform.translation.x = msg->pose.pose.position.x / 10.0;
+  t.transform.translation.y = msg->pose.pose.position.y / 10.0;
+  t.transform.translation.z = msg->pose.pose.position.z / 10.0;
+
+  // euler to quaternion
+  // tf2::Quaternion q;
+  // q.setRPY(msg->pose.orientation.x,
+  //          msg->pose.orientation.y,
+  //          msg->pose.orientation.z);
+
+  t.transform.rotation.x = msg->pose.pose.orientation.x;
+  t.transform.rotation.y = msg->pose.pose.orientation.y;
+  t.transform.rotation.z = msg->pose.pose.orientation.z;
+  t.transform.rotation.w = msg->pose.pose.orientation.w;
+
+  tf_vehicle->sendTransform(t);
 }
 
 int main(int argc, char **args)

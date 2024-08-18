@@ -47,6 +47,13 @@ bridge_imu = Node(
     output="log"
 )
 
+bridge_odometry = Node(
+    package="ros_gz_bridge",
+    executable="parameter_bridge",
+    arguments=["/model/marble_husky/odometry@nav_msgs/msg/Odometry[gz.msgs.Odometry"],
+    output="log"
+)
+
 def generate_launch_description():
     return LaunchDescription([
         bridge_control,
@@ -55,4 +62,5 @@ def generate_launch_description():
         bridge_lidar,
         bridge_camera,
         bridge_imu,
+        bridge_odometry
     ]) 

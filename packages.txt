@@ -2,8 +2,8 @@
 *camera_streamer              
 *filter_scan                  
 commander                    
-control_unit                                     
-estimator                    
-gz_bridge                                 
-save_image                   
+*control_unit                                     
+*estimator                    
+*gz_bridge                                 
+*save_image                   
 vehicle_control_software     
