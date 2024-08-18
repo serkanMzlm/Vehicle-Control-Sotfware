@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='utf-8'?>
+<sdf version="1.8">
+ 	 <model name="white_ground">
+		<pose>0 0 0 0 -0 0</pose>
+		<static>true</static>
+		<link name='link'>
+			<collision name='collision'>
+				<geometry>
+					<plane>
+						<normal>0 0 1</normal>
+						<size>1 1</size>
+					</plane>
+				</geometry>
+				<surface>
+					<friction>
+						<ode/>
+					</friction>
+					<bounce/>
+					<contact/>
+				</surface>
+			</collision>
+			<visual name='visual'>
+				<geometry>
+				<plane>
+					<normal>0 0 1</normal>
+					<size>100 100</size>
+				</plane>
+				</geometry>
+				<material> 
+					<ambient>1 1 1 1</ambient>
+					<diffuse>1 1 1 1</diffuse>
+					<specular>1 1 1 1</specular>
+				</material>
+			</visual>
+			<pose>0 0 0 0 -0 0</pose>
+			<inertial>
+				<pose>0 0 0 0 -0 0</pose>
+				<mass>1</mass>
+				<inertia>
+				<ixx>1</ixx>
+				<ixy>0</ixy>
+				<ixz>0</ixz>
+				<iyy>1</iyy>
+				<iyz>0</iyz>
+				<izz>1</izz>
+				</inertia>
+			</inertial>
+			<enable_wind>false</enable_wind>
+		</link>
+		<self_collide>false</self_collide>
+    </model>
+</sdf>
