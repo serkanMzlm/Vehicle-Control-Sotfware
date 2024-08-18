@@ -29,6 +29,11 @@
                     </box>
                 </geometry>
             </collision>
+            <sensor name="navsat_sensor" type="navsat">
+                <always_on>1</always_on>
+                <update_rate>30</update_rate>
+                <topic>/marble_husky/navsat</topic>
+            </sensor>
         </link>
 
          <!--Sensors And Kamera-->
@@ -199,7 +204,7 @@
                 </spot>
                 <direction>0 0 -1</direction>
             </light>
-    
+
             <light name="left_flash" type="spot">
                 <pose relative_to="base_link">0.098 0.042 -0.027 -1.57 0 1.78</pose>
                 <cast_shadows>1</cast_shadows>
