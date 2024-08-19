@@ -109,15 +109,17 @@ void Commander::initTopic()
 
   pub.joy = this->create_publisher<twistMsg>("cmd_vel", 10);
   pub.markers = this->create_publisher<markerArrayMsg>("marker_visulation", 100);
+  pub.vehicle_path = this->create_publisher<navPathMsg>("vehicle_path", 100);
 }
 
 void Commander::odometryCallback(const odometryNavMsg::SharedPtr msg)
 {
-  if(msg->child_frame_id == "marble_husky/base_link") 
+  if (msg->child_frame_id == "marble_husky/base_link")
   {
     return;
   }
-  
+
+  geometry_msgs::msg::PoseStamped pose_stamped;
   geometry_msgs::msg::TransformStamped t;
   t.header.stamp = this->get_clock()->now();
   t.header.frame_id = "marble_husky/base_link/front_laser";
@@ -138,6 +140,16 @@ void Commander::odometryCallback(const odometryNavMsg::SharedPtr msg)
   t.transform.rotation.z = msg->pose.pose.orientation.z;
   t.transform.rotation.w = msg->pose.pose.orientation.w;
 
+  pose_stamped.header = t.header;
+  // pose_stamped.header.frame_id = "marble_husky/base_link/front_laser";
+  pose_stamped.pose.position.x = t.transform.translation.x;
+  pose_stamped.pose.position.y = t.transform.translation.y;
+  pose_stamped.pose.position.z = t.transform.translation.z;
+
+  path_.header = t.header;
+  // path_.header.frame_id = "marble_husky/base_link/front_laser";
+  path_.poses.push_back(pose_stamped);
+  pub.vehicle_path->publish(path_);
   tf_vehicle->sendTransform(t);
 }
 

@@ -3,10 +3,8 @@
         {
             "name": "Linux",
             "includePath": [
-                "/usr/include/**",
                 "${workspaceFolder}/**",
                 "/opt/ros/humble/include/**"
-
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang-14",
