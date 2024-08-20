@@ -35,6 +35,7 @@ class ObstacleAvoidance
 private:
     std::array<float, HORIZONTAL> histogram;
 
+
 protected:
     std::vector<double> vehicle_dimensions;
     std::vector<double> lidar_rules;
@@ -60,7 +61,6 @@ public:
     void printHistogram();
     void printPointCloud(const pointXYZMsg::Ptr &);
     void printClusters(const std::vector<pcl::PointIndices>&, const pointXYZMsg::Ptr&);
-
 };
 
 #endif

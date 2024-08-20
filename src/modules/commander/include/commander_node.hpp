@@ -35,6 +35,11 @@ typedef struct
 
 typedef struct
 {
+  rclcpp::TimerBase::SharedPtr visual;
+} rosTime_t;
+
+typedef struct
+{
   rclcpp::Publisher<markerArrayMsg>::SharedPtr markers;
   rclcpp::Publisher<navPathMsg>::SharedPtr vehicle_path;
   rclcpp::Publisher<twistMsg>::SharedPtr joy;
@@ -45,10 +50,13 @@ class Commander : public rclcpp::Node, public ObstacleAvoidance
 private:
   sub_t sub;
   pub_t pub;
+  rosTime_t ros_time;
   twistMsg data;
   pcl_t pcl_data;
   markerArrayMsg marker_array;
   navPathMsg path_;
+  float pre_pose[3] = {0.0, 0.0, 0.0};
+  State_t global_state;
   std::shared_ptr<tf2_ros::StaticTransformBroadcaster> tf_vehicle;
 
 public:
@@ -58,6 +66,7 @@ public:
   void obstacleAvoidance();
   void pointCloudCallback(const pointCloudMsg &);
   void odometryCallback(const odometryNavMsg::SharedPtr);
+  void visualization();
   void declareParameters();
   void initTopic();
   void makerCallback();
