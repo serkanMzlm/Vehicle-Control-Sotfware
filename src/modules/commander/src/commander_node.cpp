@@ -82,10 +82,10 @@ void Commander::makerCallback()
   //   marker.points.push_back(last_point[i]);
   //   marker_array.markers.push_back(marker);
   //   marker.action = markerMsg::DELETEALL;
-  }
+  // }
 
-  pub.markers->publish(marker_array);
-  marker_array.markers.clear();
+  // pub.markers->publish(marker_array);
+  // marker_array.markers.clear();
 }
 
 void Commander::declareParameters()
