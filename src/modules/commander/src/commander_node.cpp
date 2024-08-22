@@ -145,6 +145,8 @@ void Commander::odometryCallback(const odometryNavMsg::SharedPtr msg)
   global_state.q[3] = msg->pose.pose.orientation.w;
 
   quaternionToEuler(global_state.q, global_state.orientation.pose);
+  RCLCPP_DEBUG(this->get_logger(), "roll: %f, pitch: %f, yaw: %f", global_state.orientation.roll, 
+                                        global_state.orientation.pitch, global_state.orientation.yaw);
 }
 
 void Commander::visualization()
