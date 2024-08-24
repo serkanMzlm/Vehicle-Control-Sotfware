@@ -57,9 +57,9 @@ control_unit = Node(
     output="screen"
 )
 
-gz_bridge = Node(
-    package="gz_bridge",                                              
-    executable="gz_bridge_node",
+create_model = Node(
+    package="create_model",                                              
+    executable="create_model_node",
     parameters=[config_file],
     output="screen"
 )
@@ -73,15 +73,24 @@ commander = Node(
     output="screen"
 )
 
-camera_recorder = Node(
-    package="camera_streamer",
+player_node = Node(
+    package="camera",
+    executable="player_node",
+    parameters=[config_file],
+)
+recorder_node = Node(
+    package="camera",
     executable="recorder_node",
     parameters=[config_file],
 )
-
 camera_player = Node(
-    package="camera_streamer",
-    executable="player_node",
+    package="camera",
+    executable="camera_player",
+    parameters=[config_file],
+)
+screenshot_node = Node(
+    package="camera",
+    executable="screenshot_node",
     parameters=[config_file],
 )
 
@@ -96,10 +105,12 @@ def generate_launch_description():
     return LaunchDescription([
         control_unit,
         commander,
-        gz_bridge,
+        create_model,
         
-        # camera_recorder,
+        # player_node,
+        # recorder_node,
         # camera_player,
+        # screenshot_node,
 
         simulation,
         bridge_launch,
