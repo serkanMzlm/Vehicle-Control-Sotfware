@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'camera_streamer'
+package_name = 'camera'
 
 setup(
     name=package_name,
@@ -20,8 +20,9 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'recorder_node = camera_streamer.recorder_node:main',
-            'player_node = camera_streamer.player_node:main',
+            'player_node = camera.player:main',
+            'recorder_node = camera.recorder:main',
+            'calibration_node = camera.calibration:main'
         ],
     },
 )

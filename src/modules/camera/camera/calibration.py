@@ -9,13 +9,13 @@ from cv_bridge import CvBridge
 from sensor_msgs.msg import Image
 from ament_index_python.packages import get_package_share_directory
 
-data_safe_path = get_package_share_directory("vehicle_control_software")
-calibration_path = data_safe_path + "/calibration_data/"
+save_path = get_package_share_directory("vehicle_control_software")
+calibration_path = save_path + "/calibration_data/"
 
 class CalibrationNode(Node):
     def __init__(self):
         super().__init__('calibration_node')
-        self.get_logger().info("calibration")
+        self.get_logger().info("Calibration started")
         self.chessboard_size = (7, 7)
         self.frame_size = (720, 720)
         self.size_of_chessboard_squares_mm = 250
@@ -24,7 +24,7 @@ class CalibrationNode(Node):
         self.objp = self.createObjectPoints()
         self.objpoints, self.imgpoints = self.extractCornersFromImages()
         self.safeData()
-
+    
     def createObjectPoints(self):
         objp = np.zeros((self.chessboard_size[0] * self.chessboard_size[1], 3), np.float32)
         objp[:, :2] = np.mgrid[0:self.chessboard_size[0], 0:self.chessboard_size[1]].T.reshape(-1, 2)
@@ -34,7 +34,7 @@ class CalibrationNode(Node):
         objpoints = []
         imgpoints = []
 
-        images = glob.glob(data_safe_path + '/images/*.png')
+        images = glob.glob(save_path + '/images/*.png')
         if not images:
             self.get_logger().warn('No images found in the images folder.')
             raise SystemExit
@@ -64,6 +64,7 @@ class CalibrationNode(Node):
         pickle.dump((cameraMatrix, dist), open(calibration_path + "calibration.pkl", "wb"))
         pickle.dump(cameraMatrix, open(calibration_path + "cameraMatrix.pkl", "wb"))
         pickle.dump(dist, open(calibration_path + "dist.pkl", "wb"))
+
 
 def main(args=None):
     rclpy.init(args=args)
