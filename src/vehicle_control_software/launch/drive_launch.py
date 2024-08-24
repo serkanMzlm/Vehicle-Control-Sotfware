@@ -37,7 +37,7 @@ else:
 
 bridge_directory = get_package_share_directory('vehicle_control_software')
 bridge_file = PythonLaunchDescriptionSource(
-                    os.path.join(bridge_directory,'launch','gazebo_bridge_launch.py')
+                    os.path.join(bridge_directory,'launch','gz_bridge_launch.py')
                 )
 
 bridge_launch = IncludeLaunchDescription(bridge_file)
