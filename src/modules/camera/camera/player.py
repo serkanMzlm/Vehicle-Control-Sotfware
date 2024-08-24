@@ -62,15 +62,8 @@ class VideoPlayer(Node):
 def main(args=None):
     rclpy.init(args=args)
     video_player = VideoPlayer()
-
-    try:
-        rclpy.spin(video_player)
-    except KeyboardInterrupt:
-        pass
-    finally:
-        video_player.cleanupVideoStream()
-        video_player.destroy_node()
-        rclpy.shutdown()
+    video_player.destroy_node()
+    rclpy.shutdown()
 
 if __name__ == '__main__':
     main()

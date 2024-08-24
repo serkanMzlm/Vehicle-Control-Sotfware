@@ -22,7 +22,8 @@ setup(
         'console_scripts': [
             'player_node = camera.player:main',
             'recorder_node = camera.recorder:main',
-            'calibration_node = camera.calibration:main'
+            'calibration_node = camera.calibration:main',
+            'screenshot_node = camera.screenshot:main'
         ],
     },
 )

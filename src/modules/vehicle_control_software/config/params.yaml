@@ -34,7 +34,7 @@ commander_node:
 
 camera_node:
   ros__parameters:
-    select_input: "simulation" # camera, simulation
+    input_source: "simulation" # camera, simulation
 
 gz_bridge_node:
   ros__parameters:
