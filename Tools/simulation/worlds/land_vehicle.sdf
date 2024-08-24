@@ -80,20 +80,20 @@
         <iterations>true</iterations>
       </plugin>
 
-      <plugin filename="ImageDisplay" name="Image Display">
+      <!-- <plugin filename="ImageDisplay" name="Image Display">
         <gz-gui>
           <title>Camera</title>
           <property key="state" type="string">docked</property>
         </gz-gui>
         <topic>/camera</topic>
-      </plugin>
-      <plugin filename="ViewAngle" name="View Angle">
+      </plugin> -->
+      <!-- <plugin filename="ViewAngle" name="View Angle">
         <gz-gui>
           <title>View Angle</title>
           <property key="state" type="string">docked</property>
         </gz-gui>
         <topic>/camera</topic>
-      </plugin>
+      </plugin> -->
       <plugin filename="VisualizeLidar" name="Visualize Lidar">
         <gz-gui>
           <title>Lidar</title>

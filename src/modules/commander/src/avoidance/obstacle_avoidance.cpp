@@ -1,4 +1,4 @@
-#include "obstacle_avoidance.hpp"
+#include "avoidance/obstacle_avoidance.hpp"
 
 void ObstacleAvoidance::updateVelocity(double &linear_x, double &linear_w)
 {

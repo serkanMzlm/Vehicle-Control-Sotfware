@@ -14,7 +14,7 @@
 #include "tf2/LinearMath/Quaternion.h"
 #include "tf2_ros/static_transform_broadcaster.h"
 
-#include "obstacle_avoidance.hpp"
+#include "avoidance/obstacle_avoidance.hpp"
 #include "commander_type.hpp"
 
 using joyMsg = sensor_msgs::msg::Joy;
