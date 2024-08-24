@@ -66,7 +66,7 @@ ros2 run commander commander_node  --ros-args --params-file /home/${USER}/Vehicl
 
 ## Gazebo Harmonic 
 
-![rviz](./Documentation/images/gz_sim.png)
+![rviz](./Documentation/gz_sim.png)
 - Simulation settings can be modified by assigning the topic name lidar for the lidar window to display Lidar data. If it is desired to hide areas where detection is not performed, unchecking the show non-hitting rays option is recommended
 - To change the model in Gazebo, it is sufficient to modify the [config](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/blob/main/src/modules/vehicle_control_software/config/params.yaml#L41) file. The [gz_bridge](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/tree/main/src/modules/gz_bridge) ROS2 package enables the dynamic loading of models into the Gazebo environment. (To add the model, it needs to be located in the [models](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/tree/main/Tools/simulation/models) directory.)
 
@@ -79,15 +79,15 @@ The Lidar sensor data is visualized in conjunction with the camera at the front 
 - The **GREEN** arrow represents the angular velocity.
 - The **BLUE** arrow represents the result vector.
 
-![rviz](./Documentation/images/rviz2.png)
+![rviz](./Documentation/rviz2.png)
 
 - The Orion model has been imported into RViz using the [URDF file](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/tree/main/src/modules/vehicle_control_software/urdf)
 - The fixed frame should be set to base_footprint.
 
-![rviz](./Documentation/images/rviz2_2.png)
+![rviz](./Documentation/rviz2_2.png)
 
 
 ## RQT
 Using rqt, we can observe the relationships between packets
 
-![rviz](./Documentation/images/rosgraph.png)
+![rviz](./Documentation/rosgraph.png)
