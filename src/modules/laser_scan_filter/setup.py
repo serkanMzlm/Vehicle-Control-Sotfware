@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'filter_scan'
+package_name = 'laser_scan_filter'
 
 setup(
     name=package_name,
@@ -20,8 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'angle_filter_node=filter_scan.angle_filter:main',
-            'distance_filter_node=filter_scan.distance_filter:main',
+            'angle_filter_node=laser_scan_filter.angle_filter:main',
+            'distance_filter_node=laser_scan_filter.distance_filter:main',
         ],
     },
 )

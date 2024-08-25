@@ -1,3 +1,10 @@
+# Can be used for all nodes
+/**:                      
+  ros__parameters:
+    max_angular_velocity: 0.75
+    max_linear_velocity: 2.20
+    frame_id: "world"
+
 control_unit_node:
   ros__parameters:
     control_unit: "keyboard" # joy, esp8266, keyboard
@@ -6,20 +13,15 @@ control_unit_node:
 commander_node:
   ros__parameters:
     vehicle_dimensions:
-   
       - 0.58   # Vehicle Width
       - 1.00   # Vehicle Length
       - 0.05   # Vehicle Height
-#     - x      # Wheel Radius 
-#     - x      # Vehicle Weight
     lidar_rules:
-      - 3.00   # Max Range
-      - 0.05   # Min Range
-
-      # Sensor Location (relative to vehicle)
-      - 0.48    # X
-      - 0.0    # Y
-      - 0.18    # Z
+      - 3.00    # Max Range
+      - 0.05    # Min Range
+      - 0.48    # Sensor Location (relative to vehicle)[X]
+      - 0.0     # Sensor Location (relative to vehicle)[Y]
+      - 0.18    # Sensor Location (relative to vehicle)[Z]
 
       # - 3.14   # Horizontal Max Angle
       # - -3.14  # Horizontal Min Angle
@@ -27,24 +29,23 @@ commander_node:
       # - -0.05  # Vertical Min Angle
       # - 0.01   # Noise
       
-/**:                      # Can be used for all nodes
-  ros__parameters:
-    max_angular_velocity: 0.75
-    max_linear_velocity: 2.20
-
-camera_node:
+screenshot_node:
   ros__parameters:
     input_source: "simulation" # camera, simulation
 
-gz_bridge_node:
+angle_filter_node:
   ros__parameters:
-    model_name: "marble_husky" # camera, simulation
+    max_angle: 60   # [deg]
+    min_angle: 0  # [deg]
+
+distance_filter_node:
+  ros__parameters:
+    max_distance: 4.0  # [m]  
+    min_distance: 0.0  # [m]
+
+create_model_node:
+  ros__parameters:
+    model_name: "marble_husky"
     world_name: "default"
-    model_pose: 
-      - 0.0 # X
-      - 0.0 # Y
-      - 1.0 # Z
-    model_orientation:
-      - 0.0 # Roll
-      - 0.0 # Pitch
-      - 0.0 # Yaw
+    model_pose: [0.0, 0.0, 1.0] # [x, Y, Z]
+    model_orientation: [0.0, 0.0, 0.0] # [Roll, Pitch, Yaw] rad

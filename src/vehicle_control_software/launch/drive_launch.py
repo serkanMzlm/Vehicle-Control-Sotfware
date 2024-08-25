@@ -94,6 +94,17 @@ screenshot_node = Node(
     parameters=[config_file],
 )
 
+angle_filter_node = Node(
+    package="laser_scan_filter",
+    executable="angle_filter_node",
+    parameters=[config_file],
+)
+distance_filter_node = Node(
+    package="laser_scan_filter",
+    executable="distance_filter_node",
+    parameters=[config_file],
+)
+
 shutdown = RegisterEventHandler(
     event_handler=OnProcessExit(
       target_action=simulation,
@@ -103,14 +114,17 @@ shutdown = RegisterEventHandler(
 
 def generate_launch_description():
     return LaunchDescription([
-        control_unit,
-        commander,
+        # control_unit,
+        # commander,
         create_model,
         
         # player_node,
         # recorder_node,
         # camera_player,
         # screenshot_node,
+
+        # angle_filter_node,
+        # distance_filter_node,
 
         simulation,
         bridge_launch,

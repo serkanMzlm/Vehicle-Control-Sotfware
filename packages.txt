@@ -5,5 +5,5 @@ create_model
 data_bridge             
 drivers                 
 estimator               
-filter_scan             
+laser_scan_filter             
 vehicle_control_software
