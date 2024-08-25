@@ -22,12 +22,6 @@ commander_node:
       - 0.48    # Sensor Location (relative to vehicle)[X]
       - 0.0     # Sensor Location (relative to vehicle)[Y]
       - 0.18    # Sensor Location (relative to vehicle)[Z]
-
-      # - 3.14   # Horizontal Max Angle
-      # - -3.14  # Horizontal Min Angle
-      # - 0.05   # Vertical Max Angle
-      # - -0.05  # Vertical Min Angle
-      # - 0.01   # Noise
       
 screenshot_node:
   ros__parameters:
