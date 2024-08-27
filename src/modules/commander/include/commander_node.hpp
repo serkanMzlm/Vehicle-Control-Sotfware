@@ -39,17 +39,27 @@ private:
     Sub_t sub;
     Pub_t pub;
     RosTime_t timer_;
+    ObstacleData_t obs_data;
+    
+    std::vector<double> lidar_rules;
+    std::vector<double> vehicle_dimensions;
 
     float pre_pose[3] = {0.0, 0.0, 0.0};
+    markerArrayMsg marker_array;
     std::shared_ptr<tf2_ros::StaticTransformBroadcaster> tf_vehicle;
+
 public:
     CommanderNode();
     void initTopic();
     void printDisplay();
     void declareParameters();
+    void calculateAvoidanceRules();
+
     void joyCallback(const joyMsg::SharedPtr msg);
     void pointCloudCallback(const pointCloudMsg::SharedPtr msg);
     void odometryCallback(const odometryNavMsg::SharedPtr msg);
+
+    void visualization();
 };
 
 #endif

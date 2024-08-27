@@ -10,6 +10,7 @@
 #include "sensor_msgs/msg/point_cloud2.hpp"
 #include "geometry_msgs/msg/pose_stamped.hpp"
 #include "geometry_msgs/msg/transform_stamped.hpp"
+#include "visualization_msgs/msg/marker_array.hpp"
 
 #include "tf2/LinearMath/Quaternion.h"
 #include "tf2_ros/static_transform_broadcaster.h"
@@ -17,6 +18,12 @@
 #include "math_tools/math_operations.hpp"
 #include "geometry_tools/geometry_operations.hpp"
 #include "geometry_tools/transformation.hpp"
+
+#include <pcl_conversions/pcl_conversions.h>
+
+#define HORIZONTAL 360  // phi
+#define VERTICAL 181    // theta
+#define OFFSET 0.1f
 
 using joyMsg = sensor_msgs::msg::Joy;
 using int32Msg = std_msgs::msg::Int32;
@@ -26,6 +33,24 @@ using odometryNavMsg = nav_msgs::msg::Odometry;
 using pointCloudMsg = sensor_msgs::msg::PointCloud2;
 using poseStampedMsg = geometry_msgs::msg::PoseStamped;
 using markerArrayMsg = visualization_msgs::msg::MarkerArray;
+
+typedef enum
+{
+  MAX_DIS,
+  MIN_DIS,
+  X_POS,
+  Y_POS,
+  Z_POS,
+  SENSOR_RULES_ALL
+} SensorRules_e;
+
+typedef enum
+{
+  WIDTH,
+  LENGTH,
+  HEIGHT,
+  VEC_DIM_ALL
+} VehicleDimensions_s;
 
 typedef union
 {
@@ -67,5 +92,16 @@ typedef struct
     Orientation_t orientation;
     Quaternion_t quaternion;
 } State_t;
+
+typedef struct
+{
+    float linear_limit;
+    float angular_limit;
+    float veh_radius;
+    float fov;
+    float safety_dist;
+    float dist_limit;
+    float sensor_pose[3];
+} ObstacleData_t;
 
 #endif
