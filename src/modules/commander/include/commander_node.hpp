@@ -2,16 +2,7 @@
 #define __CONTROLLER_NODE_HPP__
 
 #include "commander_types.hpp"
-
-typedef struct
-{
-    pcl::PCLPointCloud2 pcl_cloud;
-    pcl::PointCloud<pcl::PointXYZ> pcl_xyz_cloud; 
-    twistMsg twist;
-    markerArrayMsg marker_array;
-    navPathMsg path;
-    State_t state;
-} Data_t;
+#include "commander_visualization.hpp"
 
 typedef struct
 {

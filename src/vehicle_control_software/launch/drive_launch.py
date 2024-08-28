@@ -115,7 +115,7 @@ shutdown = RegisterEventHandler(
 def generate_launch_description():
     return LaunchDescription([
         control_unit,
-        commander,
+        # commander,
         create_model,
         
         # player_node,

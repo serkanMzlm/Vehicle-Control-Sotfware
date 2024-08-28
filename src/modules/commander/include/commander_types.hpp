@@ -104,4 +104,14 @@ typedef struct
     float sensor_pose[3];
 } ObstacleData_t;
 
+typedef struct
+{
+    pcl::PCLPointCloud2 pcl_cloud;
+    pcl::PointCloud<pcl::PointXYZ> pcl_xyz_cloud; 
+    twistMsg twist;
+    markerArrayMsg marker_array;
+    navPathMsg path;
+    State_t state;
+} Data_t;
+
 #endif

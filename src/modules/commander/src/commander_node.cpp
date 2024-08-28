@@ -98,7 +98,27 @@ void CommanderNode::odometryCallback(const odometryNavMsg::SharedPtr msg)
 
 void CommanderNode::visualization()
 {
-    
+    geometry_msgs::msg::PoseStamped pose_stamped;
+    geometry_msgs::msg::TransformStamped t;
+
+    t = visualizationTf2(data.state);
+    tf_vehicle->sendTransform(t);
+
+    if (pre_pose[0] == data.state.position.x &&
+        pre_pose[1] == data.state.position.y &&
+        pre_pose[2] == data.state.position.z)
+    {
+        return;
+    }
+
+    pre_pose[0] = data.state.position.x;
+    pre_pose[1] = data.state.position.y;
+    pre_pose[2] = data.state.position.z;
+
+    pose_stamped = visualizationPath(data.state.position);
+    data.path.header = t.header;
+    data.path.poses.push_back(pose_stamped);
+    pub.vehicle_path->publish(data.path);
 }
 
 int main(int argc, char **argv)
