@@ -7,6 +7,7 @@
 #include "sensor_msgs/msg/joy.hpp"
 #include "nav_msgs/msg/odometry.hpp"
 #include "geometry_msgs/msg/twist.hpp"
+#include "geometry_msgs/msg/point.hpp"
 #include "sensor_msgs/msg/point_cloud2.hpp"
 #include "geometry_msgs/msg/pose_stamped.hpp"
 #include "geometry_msgs/msg/transform_stamped.hpp"
@@ -33,6 +34,9 @@ using odometryNavMsg = nav_msgs::msg::Odometry;
 using pointCloudMsg = sensor_msgs::msg::PointCloud2;
 using poseStampedMsg = geometry_msgs::msg::PoseStamped;
 using markerArrayMsg = visualization_msgs::msg::MarkerArray;
+using markerMsg = visualization_msgs::msg::Marker;
+using pointMsg = geometry_msgs::msg::Point;
+using pointXYZMsg = pcl::PointCloud<pcl::PointXYZ>;
 
 typedef enum
 {
@@ -92,26 +96,5 @@ typedef struct
     Orientation_t orientation;
     Quaternion_t quaternion;
 } State_t;
-
-typedef struct
-{
-    float linear_limit;
-    float angular_limit;
-    float veh_radius;
-    float fov;
-    float safety_dist;
-    float dist_limit;
-    float sensor_pose[3];
-} ObstacleData_t;
-
-typedef struct
-{
-    pcl::PCLPointCloud2 pcl_cloud;
-    pcl::PointCloud<pcl::PointXYZ> pcl_xyz_cloud; 
-    twistMsg twist;
-    markerArrayMsg marker_array;
-    navPathMsg path;
-    State_t state;
-} Data_t;
 
 #endif

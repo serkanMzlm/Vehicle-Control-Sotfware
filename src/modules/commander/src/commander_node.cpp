@@ -5,6 +5,8 @@ using namespace std::placeholders;
 CommanderNode::CommanderNode() : Node("commander_node")
 {
     tf_vehicle = std::make_shared<tf2_ros::StaticTransformBroadcaster>(this);
+    avoidance = std::make_shared<Avoidance>(1);
+
     declareParameters();
     initTopic();
     RCLCPP_INFO(this->get_logger(), "Commaned Started");
@@ -26,55 +28,62 @@ void CommanderNode::initTopic()
 
 void CommanderNode::printDisplay()
 {
-    RCLCPP_INFO(this->get_logger(), "safety_distance: %.2f", obs_data.safety_dist);
-    RCLCPP_INFO(this->get_logger(), "distance_limits: %.2f", obs_data.dist_limit);
-    RCLCPP_INFO(this->get_logger(), "vehicle_radius: %.2f", obs_data.veh_radius);
-    RCLCPP_INFO(this->get_logger(), "vehicle_fov: %f", obs_data.fov);
-    RCLCPP_INFO(this->get_logger(), "linear velocity limit: %lf", obs_data.linear_limit);
-    RCLCPP_INFO(this->get_logger(), "angular velocity limit: %lf", obs_data.angular_limit);
+    RCLCPP_INFO(this->get_logger(), "safety_distance: %.2f", safety_dist);
+    RCLCPP_INFO(this->get_logger(), "distance_limits: %.2f", dist_limit);
+    RCLCPP_INFO(this->get_logger(), "vehicle_radius: %.2f", veh_radius);
+    RCLCPP_INFO(this->get_logger(), "vehicle_fov: %f", fov);
+    RCLCPP_INFO(this->get_logger(), "linear velocity limit: %lf", linear_limit);
+    RCLCPP_INFO(this->get_logger(), "angular velocity limit: %lf", angular_limit);
 }
 
 void CommanderNode::declareParameters()
 {
     this->declare_parameter("vehicle_dimensions", std::vector<double>(VEC_DIM_ALL, 0.0));
     this->declare_parameter("lidar_rules", std::vector<double>(SENSOR_RULES_ALL, 0.0));
+    this->declare_parameter<std::string>("frame_id", "world");
     this->declare_parameter<double>("max_angular_velocity", 1.0);
     this->declare_parameter<double>("max_linear_velocity", 1.0);
 
+    frame_id = this->get_parameter("frame_id").as_string();
     vehicle_dimensions = this->get_parameter("vehicle_dimensions").as_double_array();
-    lidar_rules = this->get_parameter("lidar_rules").as_double_array();
-    obs_data.linear_limit = this->get_parameter("max_angular_velocity").as_double();
-    obs_data.angular_limit = this->get_parameter("max_linear_velocity").as_double();
+    sensor_rules = this->get_parameter("lidar_rules").as_double_array();
+    linear_limit = this->get_parameter("max_angular_velocity").as_double();
+    angular_limit = this->get_parameter("max_linear_velocity").as_double();
 
     calculateAvoidanceRules();
 
-    obs_data.sensor_pose[0] = (float)lidar_rules[X_POS];
-    obs_data.sensor_pose[1] = (float)lidar_rules[Y_POS];
-    obs_data.sensor_pose[2] = (float)lidar_rules[Z_POS];
+    sensor_pose[0] = (float)sensor_rules[X_POS];
+    sensor_pose[1] = (float)sensor_rules[Y_POS];
+    sensor_pose[2] = (float)sensor_rules[Z_POS];
     printDisplay();
+
+    avoidance->setSensorState(sensor_pose);
 }
 
 void CommanderNode::calculateAvoidanceRules()
 {
     float x = powf((vehicle_dimensions[WIDTH] / 2.0f), 2);
     float y = powf((vehicle_dimensions[LENGTH] / 2.0f), 2);
-    obs_data.veh_radius = sqrtf(x + y);
+    veh_radius = sqrtf(x + y);
 
-    obs_data.dist_limit = lidar_rules[MAX_DIS] - OFFSET;
-    obs_data.safety_dist = obs_data.dist_limit - obs_data.veh_radius;
-    obs_data.fov = static_cast<int>(RAD2DEG(atan2(vehicle_dimensions[WIDTH], vehicle_dimensions[LENGTH])));
+    dist_limit = sensor_rules[MAX_DIS] - OFFSET;
+    safety_dist = dist_limit - veh_radius;
+    fov = static_cast<int>(RAD2DEG(atan2(vehicle_dimensions[WIDTH], vehicle_dimensions[LENGTH])));
 }
 
 void CommanderNode::joyCallback(const joyMsg::SharedPtr msg)
 {
-    data.twist.linear.x = msg->axes[0];
-    data.twist.angular.z = msg->axes[1];
+    velocity.linear.x = msg->axes[0];
+    velocity.angular.z = msg->axes[1];
+    // RCLCPP_INFO(this->get_logger(), "Linear: %.2f", msg->axes[0]);
+    // RCLCPP_INFO(this->get_logger(), "Angular: %.2f",msg->axes[1]);
+    
 }
 
 void CommanderNode::pointCloudCallback(const pointCloudMsg::SharedPtr msg)
 {
-    pcl_conversions::toPCL(*msg, data.pcl_cloud);
-    pcl::fromPCLPointCloud2(data.pcl_cloud, data.pcl_xyz_cloud);
+    pcl_conversions::toPCL(*msg, pcl_pc);
+    pcl::fromPCLPointCloud2(pcl_pc, pcl_xyz_pc);
 }
 
 void CommanderNode::odometryCallback(const odometryNavMsg::SharedPtr msg)
@@ -84,16 +93,16 @@ void CommanderNode::odometryCallback(const odometryNavMsg::SharedPtr msg)
         return;
     }
 
-    data.state.position.x = msg->pose.pose.position.x;
-    data.state.position.y = msg->pose.pose.position.y;
-    data.state.position.z = msg->pose.pose.position.z;
+    state.position.x = msg->pose.pose.position.x;
+    state.position.y = msg->pose.pose.position.y;
+    state.position.z = msg->pose.pose.position.z;
 
-    data.state.quaternion.q[0] = msg->pose.pose.orientation.x;
-    data.state.quaternion.q[1] = msg->pose.pose.orientation.y;
-    data.state.quaternion.q[2] = msg->pose.pose.orientation.z;
-    data.state.quaternion.q[3] = msg->pose.pose.orientation.w;
+    state.quaternion.q[0] = msg->pose.pose.orientation.x;
+    state.quaternion.q[1] = msg->pose.pose.orientation.y;
+    state.quaternion.q[2] = msg->pose.pose.orientation.z;
+    state.quaternion.q[3] = msg->pose.pose.orientation.w;
 
-    quaternionToEuler(data.state.quaternion.q, data.state.orientation.angle);
+    quaternionToEuler(state.quaternion.q, state.orientation.angle);
 }
 
 void CommanderNode::visualization()
@@ -101,24 +110,26 @@ void CommanderNode::visualization()
     geometry_msgs::msg::PoseStamped pose_stamped;
     geometry_msgs::msg::TransformStamped t;
 
-    t = visualizationTf2(data.state);
+    t = visualizationTf2(state, frame_id);
     tf_vehicle->sendTransform(t);
 
-    if (pre_pose[0] == data.state.position.x &&
-        pre_pose[1] == data.state.position.y &&
-        pre_pose[2] == data.state.position.z)
+    if(visualizationPath(pose_stamped, state.position, frame_id))
     {
-        return;
+        vehicle_path.header = t.header;
+        vehicle_path.poses.push_back(pose_stamped);
+        pub.vehicle_path->publish(vehicle_path);
     }
 
-    pre_pose[0] = data.state.position.x;
-    pre_pose[1] = data.state.position.y;
-    pre_pose[2] = data.state.position.z;
+    for(int i = 0; i < 3; i++)
+    {
+        markerMsg marker;
+        visualizationMarker(marker, velocity.linear.x,  velocity.angular.z, i);
+        marker_array.markers.push_back(marker);
+        marker.action = markerMsg::DELETEALL;
+    }
 
-    pose_stamped = visualizationPath(data.state.position);
-    data.path.header = t.header;
-    data.path.poses.push_back(pose_stamped);
-    pub.vehicle_path->publish(data.path);
+    pub.markers->publish(marker_array);
+    marker_array.markers.clear();
 }
 
 int main(int argc, char **argv)

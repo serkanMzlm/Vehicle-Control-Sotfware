@@ -1,6 +1,7 @@
 #ifndef __CONTROLLER_NODE_HPP__
 #define __CONTROLLER_NODE_HPP__
 
+#include "avoidance/avoidance.hpp"
 #include "commander_types.hpp"
 #include "commander_visualization.hpp"
 
@@ -26,18 +27,32 @@ typedef struct
 class CommanderNode : public rclcpp::Node
 {
 private:
-    Data_t data;
+    State_t state;
     Sub_t sub;
     Pub_t pub;
     RosTime_t timer_;
-    ObstacleData_t obs_data;
-    
-    std::vector<double> lidar_rules;
+
+    pcl::PCLPointCloud2 pcl_pc;
+    pointXYZMsg pcl_xyz_pc;
+    twistMsg velocity;
+    markerArrayMsg marker_array;
+    navPathMsg vehicle_path;
+
+    float linear_limit;
+    float angular_limit;
+    float sensor_pose[3];
+    float veh_radius;
+    float fov;
+    float safety_dist;
+    float dist_limit;
+
+    std::vector<double> sensor_rules;
     std::vector<double> vehicle_dimensions;
 
-    float pre_pose[3] = {0.0, 0.0, 0.0};
-    markerArrayMsg marker_array;
+    std::string frame_id;
     std::shared_ptr<tf2_ros::StaticTransformBroadcaster> tf_vehicle;
+
+    std::shared_ptr<Avoidance> avoidance;
 
 public:
     CommanderNode();

@@ -25,12 +25,12 @@ void ControlUnitNode::declareParameters()
 
 void ControlUnitNode::printDisplay()
 {
-    RCLCPP_INFO_STREAM(node_->get_logger(), COLOR_MGT << LINE);
-    RCLCPP_INFO_STREAM(node_->get_logger(), COLOR_MGT << "Device Name: " << params.dev_name);
-    RCLCPP_INFO_STREAM(node_->get_logger(), COLOR_MGT << "Control Unit: " << params.control_unit);
-    RCLCPP_INFO_STREAM(node_->get_logger(), COLOR_MGT << "Linear Velocity Limit: " << params.angular_limit);
-    RCLCPP_INFO_STREAM(node_->get_logger(), COLOR_MGT << "Angular Velocity Limit: " << params.linear_limit);
-    RCLCPP_INFO_STREAM(node_->get_logger(), COLOR_MGT << LINE);
+    RCLCPP_INFO_STREAM(node_->get_logger(), COLOR_MGT << LINE << COLOR_RST);
+    RCLCPP_INFO_STREAM(node_->get_logger(), COLOR_MGT << "Device Name: " << params.dev_name << COLOR_RST);
+    RCLCPP_INFO_STREAM(node_->get_logger(), COLOR_MGT << "Control Unit: " << params.control_unit << COLOR_RST);
+    RCLCPP_INFO_STREAM(node_->get_logger(), COLOR_MGT << "Linear Velocity Limit: " << params.angular_limit << COLOR_RST);
+    RCLCPP_INFO_STREAM(node_->get_logger(), COLOR_MGT << "Angular Velocity Limit: " << params.linear_limit << COLOR_RST);
+    RCLCPP_INFO_STREAM(node_->get_logger(), COLOR_MGT << LINE << COLOR_RST);
 
 }
 
