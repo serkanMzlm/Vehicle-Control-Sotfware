@@ -38,28 +38,15 @@ private:
     markerArrayMsg marker_array;
     navPathMsg vehicle_path;
 
-    float linear_limit;
-    float angular_limit;
-    float sensor_pose[3];
-    float veh_radius;
-    float fov;
-    float safety_dist;
-    float dist_limit;
-
-    std::vector<double> sensor_rules;
-    std::vector<double> vehicle_dimensions;
-
     std::string frame_id;
-    std::shared_ptr<tf2_ros::StaticTransformBroadcaster> tf_vehicle;
-
     std::shared_ptr<Avoidance> avoidance;
+    std::shared_ptr<tf2_ros::StaticTransformBroadcaster> tf_vehicle;
 
 public:
     CommanderNode();
     void initTopic();
     void printDisplay();
     void declareParameters();
-    void calculateAvoidanceRules();
 
     void joyCallback(const joyMsg::SharedPtr msg);
     void pointCloudCallback(const pointCloudMsg::SharedPtr msg);

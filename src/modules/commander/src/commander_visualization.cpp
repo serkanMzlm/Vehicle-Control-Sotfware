@@ -44,7 +44,7 @@ void visualizationMarker(markerMsg& marker, float linear_x, float angular_z, int
 {
     pointMsg start_point;
     pointMsg end_point;
-
+    
     marker.header.frame_id = frame_id;
     marker.ns = "marker_" + std::to_string(marker_id);
     marker.type = markerMsg::ARROW;

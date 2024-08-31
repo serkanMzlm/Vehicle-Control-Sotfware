@@ -4,9 +4,7 @@ using namespace std::placeholders;
 
 CommanderNode::CommanderNode() : Node("commander_node")
 {
-    tf_vehicle = std::make_shared<tf2_ros::StaticTransformBroadcaster>(this);
-    avoidance = std::make_shared<Avoidance>(1);
-
+    avoidance = std::make_shared<Avoidance>();
     declareParameters();
     initTopic();
     RCLCPP_INFO(this->get_logger(), "Commaned Started");
@@ -28,12 +26,12 @@ void CommanderNode::initTopic()
 
 void CommanderNode::printDisplay()
 {
-    RCLCPP_INFO(this->get_logger(), "safety_distance: %.2f", safety_dist);
-    RCLCPP_INFO(this->get_logger(), "distance_limits: %.2f", dist_limit);
-    RCLCPP_INFO(this->get_logger(), "vehicle_radius: %.2f", veh_radius);
-    RCLCPP_INFO(this->get_logger(), "vehicle_fov: %f", fov);
-    RCLCPP_INFO(this->get_logger(), "linear velocity limit: %lf", linear_limit);
-    RCLCPP_INFO(this->get_logger(), "angular velocity limit: %lf", angular_limit);
+    RCLCPP_INFO(this->get_logger(), "safety_distance: %.2f", avoidance->safety_dist);
+    RCLCPP_INFO(this->get_logger(), "distance_limits: %.2f", avoidance->dist_limit);
+    RCLCPP_INFO(this->get_logger(), "vehicle_radius: %.2f", avoidance->vehicle_radius);
+    RCLCPP_INFO(this->get_logger(), "vehicle_fov: %f", avoidance->fov);
+    RCLCPP_INFO(this->get_logger(), "linear velocity limit: %lf", avoidance->linear_limit);
+    RCLCPP_INFO(this->get_logger(), "angular velocity limit: %lf", avoidance->angular_limit);
 }
 
 void CommanderNode::declareParameters()
@@ -45,45 +43,35 @@ void CommanderNode::declareParameters()
     this->declare_parameter<double>("max_linear_velocity", 1.0);
 
     frame_id = this->get_parameter("frame_id").as_string();
-    vehicle_dimensions = this->get_parameter("vehicle_dimensions").as_double_array();
-    sensor_rules = this->get_parameter("lidar_rules").as_double_array();
-    linear_limit = this->get_parameter("max_angular_velocity").as_double();
-    angular_limit = this->get_parameter("max_linear_velocity").as_double();
+    avoidance->vehicle_dimensions = this->get_parameter("vehicle_dimensions").as_double_array();
+    avoidance->sensor_rules = this->get_parameter("lidar_rules").as_double_array();
+    avoidance->angular_limit = this->get_parameter("max_angular_velocity").as_double();
+    avoidance->linear_limit = this->get_parameter("max_linear_velocity").as_double();
 
-    calculateAvoidanceRules();
+    tf_vehicle = std::make_shared<tf2_ros::StaticTransformBroadcaster>(this);
+    avoidance->init();
 
-    sensor_pose[0] = (float)sensor_rules[X_POS];
-    sensor_pose[1] = (float)sensor_rules[Y_POS];
-    sensor_pose[2] = (float)sensor_rules[Z_POS];
     printDisplay();
-
-    avoidance->setSensorState(sensor_pose);
-}
-
-void CommanderNode::calculateAvoidanceRules()
-{
-    float x = powf((vehicle_dimensions[WIDTH] / 2.0f), 2);
-    float y = powf((vehicle_dimensions[LENGTH] / 2.0f), 2);
-    veh_radius = sqrtf(x + y);
-
-    dist_limit = sensor_rules[MAX_DIS] - OFFSET;
-    safety_dist = dist_limit - veh_radius;
-    fov = static_cast<int>(RAD2DEG(atan2(vehicle_dimensions[WIDTH], vehicle_dimensions[LENGTH])));
 }
 
 void CommanderNode::joyCallback(const joyMsg::SharedPtr msg)
 {
     velocity.linear.x = msg->axes[0];
     velocity.angular.z = msg->axes[1];
-    // RCLCPP_INFO(this->get_logger(), "Linear: %.2f", msg->axes[0]);
-    // RCLCPP_INFO(this->get_logger(), "Angular: %.2f",msg->axes[1]);
-    
+
+    if (velocity.linear.x != 0 || velocity.angular.z != 0)
+    {
+        avoidance->updateVelocity(velocity.linear.x, velocity.angular.z);
+    }
+
+    pub.joy->publish(velocity); 
 }
 
 void CommanderNode::pointCloudCallback(const pointCloudMsg::SharedPtr msg)
 {
     pcl_conversions::toPCL(*msg, pcl_pc);
     pcl::fromPCLPointCloud2(pcl_pc, pcl_xyz_pc);
+    avoidance->updateHistogram(pcl_xyz_pc);
 }
 
 void CommanderNode::odometryCallback(const odometryNavMsg::SharedPtr msg)

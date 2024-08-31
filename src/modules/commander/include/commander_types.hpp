@@ -22,8 +22,6 @@
 
 #include <pcl_conversions/pcl_conversions.h>
 
-#define HORIZONTAL 360  // phi
-#define VERTICAL 181    // theta
 #define OFFSET 0.1f
 
 using joyMsg = sensor_msgs::msg::Joy;
