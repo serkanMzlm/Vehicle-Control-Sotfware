@@ -1,17 +1,8 @@
-#include "estimator_node.hpp"
+#include "estimator/estimator.hpp"
 
-using namespace std::placeholders;
-
-EstimatorNode::EstimatorNode():Node("estimator_node")
+EstimatorNode::EstimatorNode()
 {
     tictoc.tic();
-    imu_sub = this->create_subscription<ImuMsg>("/imu", 10,
-                                                std::bind(&EstimatorNode::imuCallback, this, _1));
-}
-
-EstimatorNode::~EstimatorNode()
-{
-
 }
 
 void EstimatorNode::imuCallback(const ImuMsg::SharedPtr msg)
@@ -29,12 +20,4 @@ void EstimatorNode::imuCallback(const ImuMsg::SharedPtr msg)
 float EstimatorNode::normalizeByGravity(float data)
 {
     return data / GRAVITY;
-}
-
-int main(int argc, char** argv)
-{
-    rclcpp::init(argc, argv);
-    rclcpp::spin(std::make_shared<EstimatorNode>());
-    rclcpp::shutdown();
-    return 0;
 }
