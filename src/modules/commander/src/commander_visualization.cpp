@@ -7,9 +7,9 @@ geometry_msgs::msg::TransformStamped visualizationTf2(State_t state, std::string
     t.header.frame_id = frame_id;
     t.child_frame_id = "base_link";
 
-    t.transform.translation.x = state.position.x;
-    t.transform.translation.y = state.position.y;
-    t.transform.translation.z = state.position.z;
+    t.transform.translation.x = state.position.x / 10.0;
+    t.transform.translation.y = state.position.y / 10.0;
+    t.transform.translation.z = state.position.z / 10.0;
 
     t.transform.rotation.x = state.quaternion.q[0];
     t.transform.rotation.y = state.quaternion.q[1];
@@ -29,9 +29,9 @@ bool visualizationPath(poseStampedMsg &pose_stamped, Position_t pose, std::strin
 
     pose_stamped.header.frame_id = frame_id;
     pose_stamped.header.stamp = rclcpp::Clock().now();
-    pose_stamped.pose.position.x = pose.x;
-    pose_stamped.pose.position.y = pose.y;
-    pose_stamped.pose.position.z = pose.z;
+    pose_stamped.pose.position.x = pose.x / 10.0;
+    pose_stamped.pose.position.y = pose.y / 10.0;
+    pose_stamped.pose.position.z = pose.z / 10.0;
 
     prev_pose[0] = pose.x;
     prev_pose[1] = pose.y;

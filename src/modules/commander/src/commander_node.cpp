@@ -64,7 +64,7 @@ void CommanderNode::joyCallback(const joyMsg::SharedPtr msg)
         avoidance->updateVelocity(velocity.linear.x, velocity.angular.z);
     }
 
-    pub.joy->publish(velocity); 
+    pub.joy->publish(velocity);
 }
 
 void CommanderNode::pointCloudCallback(const pointCloudMsg::SharedPtr msg)
@@ -101,23 +101,26 @@ void CommanderNode::visualization()
     t = visualizationTf2(state, frame_id);
     tf_vehicle->sendTransform(t);
 
-    if(visualizationPath(pose_stamped, state.position, frame_id))
+    if (visualizationPath(pose_stamped, state.position, frame_id))
     {
         vehicle_path.header = t.header;
         vehicle_path.poses.push_back(pose_stamped);
         pub.vehicle_path->publish(vehicle_path);
     }
 
-    for(int i = 0; i < 3; i++)
+    if (false)
     {
-        markerMsg marker;
-        visualizationMarker(marker, velocity.linear.x,  velocity.angular.z, i);
-        marker_array.markers.push_back(marker);
-        marker.action = markerMsg::DELETEALL;
-    }
+        for (int i = 0; i < 3; i++)
+        {
+            markerMsg marker;
+            visualizationMarker(marker, velocity.linear.x, velocity.angular.z, i);
+            marker_array.markers.push_back(marker);
+            marker.action = markerMsg::DELETEALL;
+        }
 
-    pub.markers->publish(marker_array);
-    marker_array.markers.clear();
+        pub.markers->publish(marker_array);
+        marker_array.markers.clear();
+    }
 }
 
 int main(int argc, char **argv)
