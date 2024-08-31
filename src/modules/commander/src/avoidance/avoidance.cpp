@@ -121,7 +121,7 @@ void Avoidance::updateVelocity(double &linear_x, double &angular_z)
 
 float Avoidance::calculateError(float distance, int angle)
 {
-    float kForce = -0.1;
+    float kForce = -0.13;
     float error = kForce * cosf((DEG2RAD(angle))) * sinf((DEG2RAD(angle))) / distance;
 
     return error;
