@@ -1,10 +1,10 @@
 # Vehicle Control Software
 
-- Before
+---
 
 https://github.com/user-attachments/assets/59023c52-a4bc-4c01-aa8e-c8ea53fad5f9
 
-- After
+---
 
 https://github.com/user-attachments/assets/7a91cd33-7bcc-4e47-8490-6d33774c472e
 
