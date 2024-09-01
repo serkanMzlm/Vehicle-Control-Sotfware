@@ -4,14 +4,6 @@
 https://github.com/user-attachments/assets/59023c52-a4bc-4c01-aa8e-c8ea53fad5f9
 
 
-https://github.com/user-attachments/assets/4db96611-4f24-4ac1-9bd6-4becd97b4ef5
-
-
-
-https://github.com/user-attachments/assets/46e855ee-b142-498e-8d8d-28f4c4f88770
-
-
-
 https://github.com/user-attachments/assets/839a8e3e-33d8-476f-986f-d48e93390179
 
 
