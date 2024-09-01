@@ -83,9 +83,9 @@ void CommanderNode::odometryCallback(const odometryNavMsg::SharedPtr msg)
         return;
     }
 
-    state.position.x = msg->pose.pose.position.x / 10.0;
-    state.position.y = msg->pose.pose.position.y / 10.0;
-    state.position.z = msg->pose.pose.position.z / 10.0;
+    state.position.x = msg->pose.pose.position.x /*/ 10.0 */;
+    state.position.y = msg->pose.pose.position.y /*/ 10.0 */;
+    state.position.z = msg->pose.pose.position.z /*/ 10.0 */;
 
     state.quaternion.q[0] = msg->pose.pose.orientation.x;
     state.quaternion.q[1] = msg->pose.pose.orientation.y;
@@ -101,33 +101,32 @@ void CommanderNode::visualization()
     geometry_msgs::msg::TransformStamped t;
     pointCloudMsg data = ros_pc;
 
-    visualizationTf2(t, state, frame_id);
+    t.header.frame_id = frame_id;
+
+    visualizationTf2(t, state);
     tf_vehicle->sendTransform(t);
 
     visualizationPointCloud(data, state);
     data.header = t.header;
     pub.cloud->publish(data);
 
-    if (visualizationPath(pose_stamped, state.position, frame_id))
+    if (visualizationPath(pose_stamped, state.position))
     {
         vehicle_path.header = t.header;
         vehicle_path.poses.push_back(pose_stamped);
         pub.vehicle_path->publish(vehicle_path);
     }
 
-    if (false)
+    for (int i = 0; i < 3; i++)
     {
-        for (int i = 0; i < 3; i++)
-        {
-            markerMsg marker;
-            visualizationMarker(marker, velocity.linear.x, velocity.angular.z, i);
-            marker_array.markers.push_back(marker);
-            marker.action = markerMsg::DELETEALL;
-        }
-
-        pub.markers->publish(marker_array);
-        marker_array.markers.clear();
+        markerMsg marker;
+        visualizationMarker(marker, velocity.linear.x, velocity.angular.z, i, state, frame_id);
+        marker_array.markers.push_back(marker);
+        marker.action = markerMsg::DELETEALL;
     }
+
+    pub.markers->publish(marker_array);
+    marker_array.markers.clear();
 }
 
 int main(int argc, char **argv)

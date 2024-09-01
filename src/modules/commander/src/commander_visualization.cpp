@@ -1,10 +1,8 @@
 #include "commander_visualization.hpp"
 
-
-void visualizationTf2(geometry_msgs::msg::TransformStamped &t, State_t state, std::string frame_id)
+void visualizationTf2(geometry_msgs::msg::TransformStamped &t, State_t state)
 {
     t.header.stamp = rclcpp::Clock().now();
-    t.header.frame_id = frame_id;
     t.child_frame_id = "base_link";
 
     t.transform.translation.x = state.position.x;
@@ -17,7 +15,7 @@ void visualizationTf2(geometry_msgs::msg::TransformStamped &t, State_t state, st
     t.transform.rotation.w = state.quaternion.q[3];
 }
 
-bool visualizationPath(poseStampedMsg &pose_stamped, Position_t pose, std::string frame_id)
+bool visualizationPath(poseStampedMsg &pose_stamped, Position_t pose)
 {
     static float prev_pose[3] = {0.0, 0.0, 0.0};
 
@@ -26,7 +24,6 @@ bool visualizationPath(poseStampedMsg &pose_stamped, Position_t pose, std::strin
         return false;
     }
 
-    pose_stamped.header.frame_id = frame_id;
     pose_stamped.header.stamp = rclcpp::Clock().now();
     pose_stamped.pose.position.x = pose.x;
     pose_stamped.pose.position.y = pose.y;
@@ -39,10 +36,12 @@ bool visualizationPath(poseStampedMsg &pose_stamped, Position_t pose, std::strin
     return true;
 }
 
-void visualizationMarker(markerMsg &marker, float linear_x, float angular_z, int marker_id, std::string frame_id)
+void visualizationMarker(markerMsg &marker, float linear_x, float angular_z, int marker_id, State_t state, std::string frame_id)
 {
     pointMsg start_point;
     pointMsg end_point;
+    float start_p[3] = {0.0, 0.0, 0.0};
+    float end_p[3] = {0.0, 0.0, 0.0};
 
     marker.header.frame_id = frame_id;
     marker.ns = "marker_" + std::to_string(marker_id);
@@ -58,6 +57,23 @@ void visualizationMarker(markerMsg &marker, float linear_x, float angular_z, int
     marker.color.b = marker_id % 3 == 2 ? 1.0 : 0.0;
     calculateVector(linear_x, angular_z, start_point, end_point, marker_id);
 
+    start_p[0] = start_point.x;
+    start_p[1] = start_point.y;
+    start_p[2] = start_point.z;
+    end_p[0] = end_point.x;
+    end_p[1] = end_point.y;
+    end_p[2] = end_point.z;
+
+    transformation(start_p, state.orientation.angle, state.position.pose);
+    transformation(end_p, state.orientation.angle, state.position.pose);
+
+    start_point.x = start_p[0];
+    start_point.y = start_p[1];
+    start_point.z = start_p[2];
+    end_point.x = end_p[0];
+    end_point.y = end_p[1];
+    end_point.z = end_p[2];
+
     marker.points.push_back(start_point);
     marker.points.push_back(end_point);
 }
@@ -72,13 +88,13 @@ void visualizationPointCloud(pointCloudMsg &msg, State_t state)
         for (size_t col = 0; col < msg.width; ++col)
         {
             uint32_t index = row * msg.row_step + col * msg.point_step;
-            prev_data[0] = *(reinterpret_cast<float*>(&msg.data[index]));
-			prev_data[1] = *(reinterpret_cast<float*>(&msg.data[index + 4]));
-			prev_data[2] = *(reinterpret_cast<float*>(&msg.data[index + 8]));
+            prev_data[0] = *(reinterpret_cast<float *>(&msg.data[index]));
+            prev_data[1] = *(reinterpret_cast<float *>(&msg.data[index + 4]));
+            prev_data[2] = *(reinterpret_cast<float *>(&msg.data[index + 8]));
 
             control_flag = std::isinf(std::abs(prev_data[0])) || std::isnan(std::abs(prev_data[0])) ||
-                            std::isinf(std::abs(prev_data[1])) || std::isnan(std::abs(prev_data[1])) ||
-                            std::isinf(std::abs(prev_data[2])) || std::isnan(std::abs(prev_data[2]));
+                           std::isinf(std::abs(prev_data[1])) || std::isnan(std::abs(prev_data[1])) ||
+                           std::isinf(std::abs(prev_data[2])) || std::isnan(std::abs(prev_data[2]));
 
             if (!control_flag)
             {
