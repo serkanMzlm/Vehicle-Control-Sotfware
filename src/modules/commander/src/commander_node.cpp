@@ -20,6 +20,7 @@ void CommanderNode::initTopic()
     pub.joy = this->create_publisher<twistMsg>("cmd_vel", 10);
     pub.markers = this->create_publisher<markerArrayMsg>("marker_visulation", 100);
     pub.vehicle_path = this->create_publisher<navPathMsg>("vehicle_path", 100);
+    pub.cloud = this->create_publisher<pointCloudMsg>("pointcloud", 100);
 
     timer_.visual = this->create_wall_timer(std::chrono::milliseconds(200), std::bind(&CommanderNode::visualization, this));
 }
@@ -69,6 +70,7 @@ void CommanderNode::joyCallback(const joyMsg::SharedPtr msg)
 
 void CommanderNode::pointCloudCallback(const pointCloudMsg::SharedPtr msg)
 {
+    ros_pc = *msg;
     pcl_conversions::toPCL(*msg, pcl_pc);
     pcl::fromPCLPointCloud2(pcl_pc, pcl_xyz_pc);
     avoidance->updateHistogram(pcl_xyz_pc);
@@ -97,9 +99,14 @@ void CommanderNode::visualization()
 {
     geometry_msgs::msg::PoseStamped pose_stamped;
     geometry_msgs::msg::TransformStamped t;
+    pointCloudMsg data;
 
-    t = visualizationTf2(state, frame_id);
+    visualizationTf2(t, state, frame_id);
     tf_vehicle->sendTransform(t);
+
+    visualizationPointCloud(ros_pc, data, state, "world");
+    data.header = t.header;
+    pub.cloud->publish(data);
 
     if (visualizationPath(pose_stamped, state.position, frame_id))
     {

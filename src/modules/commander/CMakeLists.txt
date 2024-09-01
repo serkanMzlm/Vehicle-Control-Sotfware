@@ -29,6 +29,7 @@ find_package(Eigen3 3.3 REQUIRED)
 
 find_package(geometryToolsLib REQUIRED)
 find_package(mathToolsLib REQUIRED)
+find_package(filterToolsLib REQUIRED)
 
 FILE(GLOB_RECURSE SRC_FILE src/*.cpp)
 
@@ -47,23 +48,11 @@ ament_target_dependencies(
     nav_msgs
 )
 
-target_link_libraries(commander_node Eigen3::Eigen geometryToolsLib mathToolsLib)
+target_link_libraries(commander_node Eigen3::Eigen geometryToolsLib mathToolsLib filterToolsLib)
 
 install(TARGETS
   commander_node
   DESTINATION lib/${PROJECT_NAME}
 )
-
-if(BUILD_TESTING)
-  find_package(ament_lint_auto REQUIRED)
-  # the following line skips the linter which checks for copyrights
-  # comment the line when a copyright and license is added to all source files
-  set(ament_cmake_copyright_FOUND TRUE)
-  # the following line skips cpplint (only works in a git repo)
-  # comment the line when this package is in a git repo and when
-  # a copyright and license is added to all source files
-  set(ament_cmake_cpplint_FOUND TRUE)
-  ament_lint_auto_find_test_dependencies()
-endif()
 
 ament_package()

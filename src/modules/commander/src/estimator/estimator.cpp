@@ -1,11 +1,11 @@
 #include "estimator/estimator.hpp"
 
-EstimatorNode::EstimatorNode()
+Estimator::Estimator()
 {
     tictoc.tic();
 }
 
-void EstimatorNode::imuCallback(const ImuMsg::SharedPtr msg)
+void Estimator::imuCallback(const ImuMsg::SharedPtr msg)
 {
     imu.gx = msg->angular_velocity.x;
     imu.gy = msg->angular_velocity.y;
@@ -13,11 +13,11 @@ void EstimatorNode::imuCallback(const ImuMsg::SharedPtr msg)
     imu.ax = normalizeByGravity(msg->linear_acceleration.x);
     imu.ay = normalizeByGravity(msg->linear_acceleration.y);
     imu.az = normalizeByGravity(msg->linear_acceleration.z);
-    complementaryFilter(imu, static_cast<float>(tictoc.toc() / 1000)); // dt -> second
+    complementaryFilter(imu, 12.5); // dt -> second
     tictoc.tic();
 }
 
-float EstimatorNode::normalizeByGravity(float data)
+float Estimator::normalizeByGravity(float data)
 {
     return data / GRAVITY;
 }

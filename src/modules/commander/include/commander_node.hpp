@@ -17,6 +17,7 @@ typedef struct
     rclcpp::Publisher<markerArrayMsg>::SharedPtr markers;
     rclcpp::Publisher<navPathMsg>::SharedPtr vehicle_path;
     rclcpp::Publisher<twistMsg>::SharedPtr joy;
+    rclcpp::Publisher<pointCloudMsg>::SharedPtr cloud;
 } Pub_t;
 
 typedef struct
@@ -34,6 +35,8 @@ private:
 
     pcl::PCLPointCloud2 pcl_pc;
     pointXYZMsg pcl_xyz_pc;
+    pointCloudMsg ros_pc;
+
     twistMsg velocity;
     markerArrayMsg marker_array;
     navPathMsg vehicle_path;
