@@ -6,6 +6,15 @@ https://github.com/user-attachments/assets/59023c52-a4bc-4c01-aa8e-c8ea53fad5f9
 
 https://github.com/user-attachments/assets/4db96611-4f24-4ac1-9bd6-4becd97b4ef5
 
+
+
+https://github.com/user-attachments/assets/46e855ee-b142-498e-8d8d-28f4c4f88770
+
+
+
+https://github.com/user-attachments/assets/839a8e3e-33d8-476f-986f-d48e93390179
+
+
 This repository contains software written for ground vehicle control. The software is designed to be used both in the Gazebo Harmonic simulation environment and on a real vehicle. The vehicle attempts to avoid obstacles using mounted distance sensors (Lidar). To make the system more realistic, noise has been added to the sensors in the simulation environment. Future versions will include additions for artificial intelligence (AI) and image processing. The project is not finished yet, so keep your repository up to date.
 
 ###  ON THE [WIKI](https://github.com/serkanMzlm/Vehicle-Control-Sotfware/wiki) THE PAGE
