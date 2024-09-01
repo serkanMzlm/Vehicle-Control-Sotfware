@@ -1,14 +1,15 @@
 #include "commander_visualization.hpp"
 
+
 void visualizationTf2(geometry_msgs::msg::TransformStamped &t, State_t state, std::string frame_id)
 {
     t.header.stamp = rclcpp::Clock().now();
     t.header.frame_id = frame_id;
     t.child_frame_id = "base_link";
 
-    t.transform.translation.x = state.position.x / 10.0;
-    t.transform.translation.y = state.position.y / 10.0;
-    t.transform.translation.z = state.position.z / 10.0;
+    t.transform.translation.x = state.position.x;
+    t.transform.translation.y = state.position.y;
+    t.transform.translation.z = state.position.z;
 
     t.transform.rotation.x = state.quaternion.q[0];
     t.transform.rotation.y = state.quaternion.q[1];
@@ -27,9 +28,9 @@ bool visualizationPath(poseStampedMsg &pose_stamped, Position_t pose, std::strin
 
     pose_stamped.header.frame_id = frame_id;
     pose_stamped.header.stamp = rclcpp::Clock().now();
-    pose_stamped.pose.position.x = pose.x / 10.0;
-    pose_stamped.pose.position.y = pose.y / 10.0;
-    pose_stamped.pose.position.z = pose.z / 10.0;
+    pose_stamped.pose.position.x = pose.x;
+    pose_stamped.pose.position.y = pose.y;
+    pose_stamped.pose.position.z = pose.z;
 
     prev_pose[0] = pose.x;
     prev_pose[1] = pose.y;
@@ -61,10 +62,9 @@ void visualizationMarker(markerMsg &marker, float linear_x, float angular_z, int
     marker.points.push_back(end_point);
 }
 
-void visualizationPointCloud(pointCloudMsg msg, pointCloudMsg &corrected_data, State_t state, std::string frame_id)
+void visualizationPointCloud(pointCloudMsg &msg, State_t state)
 {
-    corrected_data = msg;
-    float* prev_data[3];
+    float prev_data[3];
     bool control_flag = false;
 
     for (size_t row = 0; row < msg.height; ++row)
@@ -72,18 +72,20 @@ void visualizationPointCloud(pointCloudMsg msg, pointCloudMsg &corrected_data, S
         for (size_t col = 0; col < msg.width; ++col)
         {
             uint32_t index = row * msg.row_step + col * msg.point_step;
-            prev_data[0] = (reinterpret_cast<float*>(&msg.data[index]));
-			prev_data[1] = (reinterpret_cast<float*>(&msg.data[index + 4]));
-			prev_data[2] = (reinterpret_cast<float*>(&msg.data[index + 8]));
+            prev_data[0] = *(reinterpret_cast<float*>(&msg.data[index]));
+			prev_data[1] = *(reinterpret_cast<float*>(&msg.data[index + 4]));
+			prev_data[2] = *(reinterpret_cast<float*>(&msg.data[index + 8]));
 
-            control_flag = std::isinf(std::abs(*prev_data[0])) ||
-                           std::isnan(std::abs(*prev_data[0]));
-            if (control_flag)
+            control_flag = std::isinf(std::abs(prev_data[0])) || std::isnan(std::abs(prev_data[0])) ||
+                            std::isinf(std::abs(prev_data[1])) || std::isnan(std::abs(prev_data[1])) ||
+                            std::isinf(std::abs(prev_data[2])) || std::isnan(std::abs(prev_data[2]));
+
+            if (!control_flag)
             {
-                transformation(*prev_data, state.orientation.angle, state.position.pose);
-                // *(reinterpret_cast<float *>(*msg.data[index])) = prev_data[0];
-                // *(reinterpret_cast<float *>(*msg.data[index + 4])) = prev_data[1];
-                // *(reinterpret_cast<float *>(*msg.data[index + 8])) = prev_data[2];
+                transformation(prev_data, state.orientation.angle, state.position.pose);
+                *(reinterpret_cast<float *>(&msg.data[index])) = prev_data[0];
+                *(reinterpret_cast<float *>(&msg.data[index + 4])) = prev_data[1];
+                *(reinterpret_cast<float *>(&msg.data[index + 8])) = prev_data[2];
             }
         }
     }

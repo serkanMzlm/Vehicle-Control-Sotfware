@@ -83,9 +83,9 @@ void CommanderNode::odometryCallback(const odometryNavMsg::SharedPtr msg)
         return;
     }
 
-    state.position.x = msg->pose.pose.position.x;
-    state.position.y = msg->pose.pose.position.y;
-    state.position.z = msg->pose.pose.position.z;
+    state.position.x = msg->pose.pose.position.x / 10.0;
+    state.position.y = msg->pose.pose.position.y / 10.0;
+    state.position.z = msg->pose.pose.position.z / 10.0;
 
     state.quaternion.q[0] = msg->pose.pose.orientation.x;
     state.quaternion.q[1] = msg->pose.pose.orientation.y;
@@ -99,12 +99,12 @@ void CommanderNode::visualization()
 {
     geometry_msgs::msg::PoseStamped pose_stamped;
     geometry_msgs::msg::TransformStamped t;
-    pointCloudMsg data;
+    pointCloudMsg data = ros_pc;
 
     visualizationTf2(t, state, frame_id);
     tf_vehicle->sendTransform(t);
 
-    visualizationPointCloud(ros_pc, data, state, "world");
+    visualizationPointCloud(data, state);
     data.header = t.header;
     pub.cloud->publish(data);
 
