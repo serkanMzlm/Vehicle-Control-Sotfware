@@ -48,9 +48,9 @@ void visualizationMarker(markerMsg &marker, float linear_x, float angular_z, int
     marker.type = markerMsg::ARROW;
     marker.id = marker_id;
     marker.pose.orientation.w = 1.0;
-    marker.scale.x = 0.04;
-    marker.scale.y = 0.1;
-    marker.scale.z = 0.1;
+    marker.scale.x = 0.2;
+    marker.scale.y = 0.5;
+    marker.scale.z = 0.5;
     marker.color.a = 1.0;
     marker.color.r = marker_id % 3 == 0 ? 1.0 : 0.0;
     marker.color.g = marker_id % 3 == 1 ? 1.0 : 0.0;
