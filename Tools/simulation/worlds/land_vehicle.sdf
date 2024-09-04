@@ -127,7 +127,7 @@
       <pose>0 0 20 0 3.14 0</pose>
       <uri>model://outdoor_camera</uri>
     </include>
-<!-- 
+
     <actor name="actor_walking">
       <skin>
         <filename>https://fuel.gazebosim.org/1.0/Mingfei/models/actor/tip/files/meshes/walk.dae</filename>
@@ -162,7 +162,7 @@
       </script>
       <pose>5 -3 0 0 0 1.57</pose>
     </actor>
-    <gravity>0 0 -9.8</gravity> -->
+    <gravity>0 0 -9.8</gravity>
     <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
     <atmosphere type='adiabatic' />
     <light name="sunUTC" type="directional">

@@ -18,6 +18,7 @@ typedef struct
     rclcpp::Publisher<navPathMsg>::SharedPtr vehicle_path;
     rclcpp::Publisher<twistMsg>::SharedPtr joy;
     rclcpp::Publisher<pointCloudMsg>::SharedPtr cloud;
+    rclcpp::Publisher<navGridCellsMsg>::SharedPtr grid_cells;
 } Pub_t;
 
 typedef struct
