@@ -38,4 +38,7 @@ public:
     float calculateError(float dist, int phi);
 };
 
+void pointcloudToLaserScan(sensor_msgs::msg::PointCloud2& pointcloud_msg, 
+                        sensor_msgs::msg::LaserScan& laser_scan_msg);
+
 #endif

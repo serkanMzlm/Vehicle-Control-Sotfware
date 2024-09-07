@@ -19,6 +19,7 @@ typedef struct
     rclcpp::Publisher<twistMsg>::SharedPtr joy;
     rclcpp::Publisher<pointCloudMsg>::SharedPtr cloud;
     rclcpp::Publisher<navGridCellsMsg>::SharedPtr grid_cells;
+    rclcpp::Publisher<laserScan>::SharedPtr laser_scan;
 } Pub_t;
 
 typedef struct
@@ -41,6 +42,7 @@ private:
     twistMsg velocity;
     markerArrayMsg marker_array;
     navPathMsg vehicle_path;
+    laserScan laser_msg;
 
     std::string frame_id;
     std::shared_ptr<Avoidance> avoidance;

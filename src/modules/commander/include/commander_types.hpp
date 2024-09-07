@@ -10,6 +10,7 @@
 #include <geometry_msgs/msg/twist.hpp>
 #include <geometry_msgs/msg/point.hpp>
 #include <sensor_msgs/msg/point_cloud2.hpp>
+#include <sensor_msgs/msg/laser_scan.hpp>
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <geometry_msgs/msg/transform_stamped.hpp>
 #include <visualization_msgs/msg/marker_array.hpp>
@@ -37,6 +38,7 @@ using markerArrayMsg = visualization_msgs::msg::MarkerArray;
 using markerMsg = visualization_msgs::msg::Marker;
 using pointMsg = geometry_msgs::msg::Point;
 using pointXYZMsg = pcl::PointCloud<pcl::PointXYZ>;
+using laserScan = sensor_msgs::msg::LaserScan;
 
 typedef enum
 {

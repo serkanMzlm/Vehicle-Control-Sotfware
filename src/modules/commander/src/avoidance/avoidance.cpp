@@ -1,3 +1,8 @@
+#include <pcl/point_types.h>
+#include <pcl/conversions.h>
+#include <pcl/filters/passthrough.h>
+#include <pcl_conversions/pcl_conversions.h>
+
 #include "avoidance/avoidance.hpp"
 #include "geometry_tools/transformation.hpp"
 #include "math_tools/math_operations.hpp"
@@ -59,7 +64,7 @@ void Avoidance::polarObstacleDensity(float *pose)
     Position_t spherical;
     cartesianToSpherical(pose, spherical.pose);
 
-    if(spherical.pose[RADIUS] > dist_limit || spherical.pose[RADIUS] <= vehicle_radius)
+    if (spherical.pose[RADIUS] > dist_limit || spherical.pose[RADIUS] <= vehicle_radius)
     {
         return;
     }
@@ -70,19 +75,21 @@ void Avoidance::polarObstacleDensity(float *pose)
 }
 
 void Avoidance::updateVelocity(double &linear_x, double &angular_z)
-{   
+{
     if (isEmpty())
     {
         return;
     }
 
-    if(linear_x > 0) direction_of_movement = 1;
-    if(linear_x < 0) direction_of_movement = -1;
+    if (linear_x > 0)
+        direction_of_movement = 1;
+    if (linear_x < 0)
+        direction_of_movement = -1;
 
-    for (int i = 0; i < static_cast<int>(fov); i ++)
+    for (int i = 0; i < static_cast<int>(fov); i++)
     {
         int phi_ = 0;
-        if(direction_of_movement == 1)
+        if (direction_of_movement == 1)
         {
             phi_ = wrapAngleTo360(i - (static_cast<int>(fov) / 2));
         }
@@ -93,7 +100,7 @@ void Avoidance::updateVelocity(double &linear_x, double &angular_z)
 
         for (int j = 80; j < 100; j++)
         {
-            if (getHistogramDist(j, phi_) > dist_limit || getHistogramDist(j, phi_) <= vehicle_radius )
+            if (getHistogramDist(j, phi_) > dist_limit || getHistogramDist(j, phi_) <= vehicle_radius)
             {
                 continue;
             }
@@ -125,4 +132,49 @@ float Avoidance::calculateError(float distance, int angle)
     float error = kForce * cosf((DEG2RAD(angle))) * sinf((DEG2RAD(angle))) / distance;
 
     return error;
+}
+
+void pointcloudToLaserScan(sensor_msgs::msg::PointCloud2 &pointcloud_msg,
+                          sensor_msgs::msg::LaserScan &laser_scan_msg)
+{
+    pcl::PCLPointCloud2 pcl_pc;
+    pcl::PointCloud<pcl::PointXYZ> cloud;
+
+    pcl_conversions::toPCL(pointcloud_msg, pcl_pc);
+    pcl::fromPCLPointCloud2(pcl_pc, cloud);
+
+    laser_scan_msg.header = pointcloud_msg.header;
+    laser_scan_msg.time_increment = 0.0;
+
+    int num_readings = static_cast<int>((laser_scan_msg.angle_max - laser_scan_msg.angle_min) / laser_scan_msg.angle_increment);
+    laser_scan_msg.ranges.assign(num_readings, std::numeric_limits<float>::infinity());
+    for (size_t i = 0; i < cloud.size(); i++) {
+        if (std::isinf(std::abs(cloud.points[i].x)) || std::isnan(std::abs(cloud.points[i].x)))
+        {
+            continue;
+        }
+
+        RCLCPP_INFO(rclcpp::get_logger("avoidance"), "1*");
+
+        float angle = std::atan2(cloud.points[i].y, cloud.points[i].x);
+        if (angle < laser_scan_msg.angle_min || angle > laser_scan_msg.angle_max) {
+            RCLCPP_INFO(rclcpp::get_logger("avoidance"), "1");
+            continue;
+        }
+
+        RCLCPP_INFO(rclcpp::get_logger("avoidance"), "3");
+        float range = std::sqrt(cloud.points[i].x * cloud.points[i].x + cloud.points[i].y * cloud.points[i].y);
+
+        if (range < laser_scan_msg.range_min || range > laser_scan_msg.range_max) {
+            RCLCPP_INFO(rclcpp::get_logger("avoidance"), "2");
+            continue;
+        }
+
+        int index = static_cast<int>((angle - laser_scan_msg.range_min) / laser_scan_msg.angle_increment);
+
+        if (range < laser_scan_msg.ranges[index]) {
+            laser_scan_msg.ranges[index] = range;
+            RCLCPP_INFO(rclcpp::get_logger("avoidance"), "----");
+        }
+    }
 }
