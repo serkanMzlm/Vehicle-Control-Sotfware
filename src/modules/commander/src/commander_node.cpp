@@ -21,7 +21,7 @@ void CommanderNode::initTopic()
     pub.markers = this->create_publisher<markerArrayMsg>("marker_visulation", 100);
     pub.vehicle_path = this->create_publisher<navPathMsg>("vehicle_path", 100);
     pub.cloud = this->create_publisher<pointCloudMsg>("pointcloud", 100);
-    pub.laser_scan = this->create_publisher<laserScan>("scan", 100);
+    // pub.laser_scan = this->create_publisher<laserScan>("scan", 100);
 
     timer_.visual = this->create_wall_timer(std::chrono::milliseconds(200), std::bind(&CommanderNode::visualization, this));
 }
@@ -51,14 +51,7 @@ void CommanderNode::declareParameters()
     avoidance->linear_limit = this->get_parameter("max_linear_velocity").as_double();
 
     tf_vehicle = std::make_shared<tf2_ros::StaticTransformBroadcaster>(this);
-    avoidance->init();
-
-    laser_msg.angle_min = 0.0;
-    laser_msg.angle_max = 6.28;
-    laser_msg.angle_increment = 0.0174533;
-    laser_msg.range_max = avoidance->sensor_rules[MAX_DIS];
-    laser_msg.range_min = avoidance->sensor_rules[MIN_DIS];
-    
+    avoidance->init();    
     printDisplay();
 }
 
@@ -117,9 +110,6 @@ void CommanderNode::visualization()
     visualizationPointCloud(data, state);
     data.header = t.header;
     pub.cloud->publish(data);
-
-    pointcloudToLaserScan(data, laser_msg);
-    pub.laser_scan->publish(laser_msg);
 
     if (visualizationPath(pose_stamped, state.position))
     {

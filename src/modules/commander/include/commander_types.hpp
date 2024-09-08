@@ -38,7 +38,7 @@ using markerArrayMsg = visualization_msgs::msg::MarkerArray;
 using markerMsg = visualization_msgs::msg::Marker;
 using pointMsg = geometry_msgs::msg::Point;
 using pointXYZMsg = pcl::PointCloud<pcl::PointXYZ>;
-using laserScan = sensor_msgs::msg::LaserScan;
+using laserScanMsg = sensor_msgs::msg::LaserScan;
 
 typedef enum
 {

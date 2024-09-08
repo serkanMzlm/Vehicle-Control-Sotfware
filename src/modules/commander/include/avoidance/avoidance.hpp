@@ -12,6 +12,7 @@ private:
     float error = 0.0f;
     float critical_zone;
     int direction_of_movement = 1; // 1 forward, -1 back
+    laserScanMsg
 
     rclcpp::Logger avoidance_logger = rclcpp::get_logger("avoidance");
 
@@ -37,8 +38,5 @@ public:
     void updateVelocity(double &linear_x, double &angular_z);
     float calculateError(float dist, int phi);
 };
-
-void pointcloudToLaserScan(sensor_msgs::msg::PointCloud2& pointcloud_msg, 
-                        sensor_msgs::msg::LaserScan& laser_scan_msg);
 
 #endif
