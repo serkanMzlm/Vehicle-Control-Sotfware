@@ -1,7 +1,7 @@
 **/install/**
 **/build/**
 **/log/**
-.vscode/settings.json
+.vscode
 src/include
 failed_packages.txt
 successful_packages.txt
