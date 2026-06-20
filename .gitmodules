@@ -1,0 +1,10 @@
+[submodule "src/lib"]
+	path = src/lib
+	url = https://github.com/serkanMzlm/OmniKit.git
+	branch = main
+
+[submodule "src/drivers"]
+	path = src/drivers
+	url = https://github.com/serkanMzlm/Drivers.git
+	branch = main
+

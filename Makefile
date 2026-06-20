@@ -81,6 +81,18 @@ quality: lint
 
 # =============================================================================
 
+.PHONY: submodule-init
+submodule-init:
+	@$(INFO) "Initializing submodules..."
+	@git submodule update --init --recursive
+	@$(OK) "Submodules initialized."
+
+.PHONY: submodule-update
+submodule-update:
+	@$(INFO) "Updating submodules to latest remote..."
+	@git submodule update --recursive --remote
+	@$(OK) "Submodules updated."
+
 .PHONY: prepare
 prepare:
 	@mkdir -p $(BUILD_DIR)
@@ -185,6 +197,10 @@ help:
 	@printf "$(PURPLE)========================================$(RESET)\n"
 	@printf "$(PURPLE)  $(PROJECT_NAME) — Available Targets$(RESET)\n"
 	@printf "$(PURPLE)========================================$(RESET)\n"
+	@printf "\n"
+	@printf "$(BLUE)  Submodules:$(RESET)\n"
+	@printf "    $(CYAN)submodule-init$(RESET)   Initialize and clone all submodules recursively\n"
+	@printf "    $(CYAN)submodule-update$(RESET) Pull latest changes from all submodule remotes\n"
 	@printf "\n"
 	@printf "$(BLUE)  Configuration:$(RESET)\n"
 	@printf "    $(CYAN)prepare$(RESET)        Create build and include directories\n"
