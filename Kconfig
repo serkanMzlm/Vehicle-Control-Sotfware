@@ -1,0 +1,373 @@
+mainmenu "Captain Project Configuration"
+
+# =============================================================================
+# VEHICLE
+# =============================================================================
+
+menu "Vehicle"
+
+choice
+	prompt "Vehicle Type"
+	default VEHICLE_GROUND
+
+config VEHICLE_GROUND
+	bool "Ground Vehicle"
+
+config VEHICLE_DRONE
+	bool "Drone (UAV)"
+
+endchoice
+
+endmenu
+
+# =============================================================================
+# CONTROL
+# =============================================================================
+
+menu "Control"
+
+choice
+	prompt "Control Method"
+	default CONTROL_PID
+
+config CONTROL_PID
+	bool "PID Controller"
+
+config CONTROL_LQR
+	bool "LQR Controller"
+
+config CONTROL_MPC
+	bool "MPC Controller"
+
+endchoice
+
+# --- PID ---------------------------------------------------------------------
+
+if CONTROL_PID
+
+menu "PID — Linear  (Speed / Thrust)"
+
+config PID_LINEAR_KP
+	string "Kp  Proportional Gain"
+	default "1.0"
+
+config PID_LINEAR_KI
+	string "Ki  Integral Gain"
+	default "0.01"
+
+config PID_LINEAR_KD
+	string "Kd  Derivative Gain"
+	default "0.1"
+
+config PID_LINEAR_MAX_OUTPUT
+	string "Maximum Output"
+	default "100.0"
+
+endmenu
+
+menu "PID — Angular  (Heading / Attitude)"
+
+config PID_ANGULAR_KP
+	string "Kp  Proportional Gain"
+	default "2.0"
+
+config PID_ANGULAR_KI
+	string "Ki  Integral Gain"
+	default "0.05"
+
+config PID_ANGULAR_KD
+	string "Kd  Derivative Gain"
+	default "0.2"
+
+config PID_ANGULAR_MAX_OUTPUT
+	string "Maximum Output"
+	default "50.0"
+
+endmenu
+
+if VEHICLE_DRONE
+
+menu "PID — Altitude  (Drone only)"
+
+config PID_ALTITUDE_KP
+	string "Kp  Proportional Gain"
+	default "3.0"
+
+config PID_ALTITUDE_KI
+	string "Ki  Integral Gain"
+	default "0.1"
+
+config PID_ALTITUDE_KD
+	string "Kd  Derivative Gain"
+	default "0.5"
+
+config PID_ALTITUDE_MAX_OUTPUT
+	string "Maximum Output"
+	default "80.0"
+
+endmenu
+
+endif  # VEHICLE_DRONE
+
+endif  # CONTROL_PID
+
+# --- LQR ---------------------------------------------------------------------
+
+if CONTROL_LQR
+
+menu "LQR Parameters"
+
+config LQR_Q_DIAG
+	string "Q Matrix Diagonal  (comma-separated)"
+	default "1.0,1.0,1.0,1.0"
+	help
+	  State cost weighting matrix — higher values penalise state error more.
+	  Number of entries must match the state vector dimension.
+
+config LQR_R_DIAG
+	string "R Matrix Diagonal  (comma-separated)"
+	default "1.0,1.0"
+	help
+	  Control cost weighting matrix — higher values penalise control effort more.
+	  Number of entries must match the control input dimension.
+
+config LQR_MAX_OUTPUT
+	string "Maximum Control Output"
+	default "100.0"
+
+endmenu
+
+endif  # CONTROL_LQR
+
+# --- MPC ---------------------------------------------------------------------
+
+if CONTROL_MPC
+
+menu "MPC Parameters"
+
+config MPC_HORIZON
+	int "Prediction Horizon  (steps)"
+	default 10
+	range 1 100
+
+config MPC_DT
+	string "Time Step  dt  (seconds)"
+	default "0.05"
+
+config MPC_Q_DIAG
+	string "State Cost  Q Diagonal  (comma-separated)"
+	default "1.0,1.0,1.0,1.0"
+
+config MPC_R_DIAG
+	string "Input Cost  R Diagonal  (comma-separated)"
+	default "0.1,0.1"
+
+config MPC_MAX_OUTPUT
+	string "Maximum Control Output"
+	default "100.0"
+
+endmenu
+
+endif  # CONTROL_MPC
+
+endmenu  # Control
+
+# =============================================================================
+# CONNECTION
+# =============================================================================
+
+menu "Connection"
+
+# --- UART --------------------------------------------------------------------
+
+menu "UART"
+
+config UART_ENABLED
+	bool "Enable UART"
+	default y
+
+if UART_ENABLED
+
+config UART_DEVICE
+	string "Device Path"
+	default "/dev/ttyUSB0"
+	help
+	  Serial port path  (e.g. /dev/ttyUSB0  /dev/ttyS0  /dev/ttyAMA0)
+
+choice
+	prompt "Baud Rate"
+	default UART_BAUD_115200
+
+config UART_BAUD_9600
+	bool "9600"
+
+config UART_BAUD_19200
+	bool "19200"
+
+config UART_BAUD_38400
+	bool "38400"
+
+config UART_BAUD_57600
+	bool "57600"
+
+config UART_BAUD_115200
+	bool "115200"
+
+config UART_BAUD_230400
+	bool "230400"
+
+config UART_BAUD_460800
+	bool "460800"
+
+config UART_BAUD_921600
+	bool "921600"
+
+endchoice
+
+endif  # UART_ENABLED
+
+endmenu  # UART
+
+# --- UDP ---------------------------------------------------------------------
+
+menu "UDP"
+
+config UDP_ENABLED
+	bool "Enable UDP"
+	default n
+
+if UDP_ENABLED
+
+config UDP_REMOTE_HOST
+	string "Remote Host / IP"
+	default "192.168.1.100"
+
+config UDP_REMOTE_PORT
+	int "Remote Port"
+	default 5005
+	range 1024 65535
+
+config UDP_BIND_PORT
+	int "Local Bind Port"
+	default 5006
+	range 1024 65535
+
+endif  # UDP_ENABLED
+
+endmenu  # UDP
+
+# --- TCP ---------------------------------------------------------------------
+
+menu "TCP"
+
+config TCP_ENABLED
+	bool "Enable TCP"
+	default n
+
+if TCP_ENABLED
+
+choice
+	prompt "TCP Mode"
+	default TCP_MODE_CLIENT
+
+config TCP_MODE_CLIENT
+	bool "Client"
+
+config TCP_MODE_SERVER
+	bool "Server"
+
+endchoice
+
+config TCP_HOST
+	string "Host / IP"
+	default "192.168.1.100"
+	depends on TCP_MODE_CLIENT
+
+config TCP_PORT
+	int "Port"
+	default 8080
+	range 1024 65535
+
+config TCP_BACKLOG
+	int "Listen Backlog  (server only)"
+	default 5
+	range 1 128
+	depends on TCP_MODE_SERVER
+
+endif  # TCP_ENABLED
+
+endmenu  # TCP
+
+endmenu  # Connection
+
+# =============================================================================
+# DEBUG
+# =============================================================================
+
+menu "Debug"
+
+config DEBUG_ENABLED
+	bool "Enable Debug Output"
+	default n
+
+if DEBUG_ENABLED
+
+choice
+	prompt "Debug Level"
+	default DEBUG_LEVEL_INFO
+
+config DEBUG_LEVEL_ERROR
+	bool "ERROR  — critical errors only"
+
+config DEBUG_LEVEL_WARN
+	bool "WARN   — errors and warnings"
+
+config DEBUG_LEVEL_INFO
+	bool "INFO   — general information"
+
+config DEBUG_LEVEL_VERBOSE
+	bool "VERBOSE — detailed trace output"
+
+endchoice
+
+config DEBUG_UART
+	bool "Log to UART"
+	default n
+	depends on UART_ENABLED
+
+config DEBUG_TIMESTAMP
+	bool "Prefix messages with timestamp"
+	default y
+
+endif  # DEBUG_ENABLED
+
+endmenu  # Debug
+
+# =============================================================================
+# BUILD
+# =============================================================================
+
+menu "Build"
+
+choice
+	prompt "C++ Standard"
+	default CPP_STD_17
+
+config CPP_STD_11
+	bool "C++11"
+
+config CPP_STD_14
+	bool "C++14"
+
+config CPP_STD_17
+	bool "C++17"
+
+config CPP_STD_20
+	bool "C++20"
+
+config CPP_STD_23
+	bool "C++23"
+
+endchoice
+
+endmenu  # Build

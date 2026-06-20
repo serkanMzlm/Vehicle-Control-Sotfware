@@ -1,0 +1,36 @@
+---
+# Clang-Tidy configuration file
+# Usage: clang-tidy <file> --config-file=.clang-tidy
+
+# Checks: comma-separated pattern string (must be a single string, NOT a YAML list)
+#   -*                              → disable all checks first
+#   clang-analyzer-*               → deep static analysis (null ptr, memory leaks, etc.)
+#   modernize-*                    → enforce modern C++ idioms (C++11/14/17)
+#   cert-*                         → CERT secure coding standard compliance
+#   cppcoreguidelines-*            → C++ Core Guidelines compliance
+#   bugprone-*                     → detect common bug-prone code patterns
+#   performance-*                  → flag performance anti-patterns
+#   readability-identifier-naming  → enforce naming conventions (configured below)
+#   readability-function-size      → flag overly long functions (see LineThreshold)
+#   -modernize-use-trailing-return-type → disable trailing return type enforcement (-> T)
+Checks: '-*,clang-analyzer-*,modernize-*,cert-*,cppcoreguidelines-*,bugprone-*,performance-*,readability-identifier-naming,readability-function-size,-modernize-use-trailing-return-type'
+
+# Treat bugprone-* warnings as errors; build stops on any match
+WarningsAsErrors: 'bugprone-*'
+
+CheckOptions:
+  # Warn if a function body exceeds 80 lines (readability-function-size)
+  - key: readability-function-size.LineThreshold
+    value: '80'
+  # Class names must be CamelCase (e.g. MyRobotClass)
+  - key: readability-identifier-naming.ClassCase
+    value: CamelCase
+  # Function names must be camelBack/lowerCamelCase (e.g. moveForward)
+  - key: readability-identifier-naming.FunctionCase
+    value: camelBack
+  # Variable names must be snake_case (e.g. wheel_speed)
+  - key: readability-identifier-naming.VariableCase
+    value: lower_case
+  # Constant names must be UPPER_CASE (e.g. MAX_SPEED)
+  - key: readability-identifier-naming.ConstantCase
+    value: UPPER_CASE

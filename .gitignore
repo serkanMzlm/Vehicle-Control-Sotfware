@@ -2,8 +2,6 @@
 **/build/**
 **/log/**
 .vscode
-src/include
+
 failed_packages.txt
 successful_packages.txt
-
-src/modules/commander_t

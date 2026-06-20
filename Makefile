@@ -1,117 +1,211 @@
-# ANSI color codes
-BLACK := \033[0;31
-RED := \033[0;31m
-GREEN := \033[0;32m
+PROJECT_NAME := Captain
+
+RED    := \033[0;31m
+GREEN  := \033[0;32m
 YELLOW := \033[0;33m
-BLUE := \033[0;34m
+BLUE   := \033[0;34m
 PURPLE := \033[0;35m
-CYAN := \033[0;36m
-WHITE := 033[0;37m
-RESET := \033[0m
+CYAN   := \033[0;36m
+RESET  := \033[0m
 
-# Target directories
-BUILD_DIR := src/drivers/build
-INSTALL_DIR := src/include
+INFO  = printf "$(CYAN)[INFO]$(RESET)  %s\n"
+OK    = printf "$(GREEN)[OK]$(RESET)    %s\n"
+WARN  = printf "$(YELLOW)[WARN]$(RESET)  %s\n"
+ERROR = printf "$(RED)[ERROR]$(RESET) %s\n"
 
-# CMake and Make options
-CMAKE_OPTIONS := -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$(abspath $(INSTALL_DIR))
-MAKE_OPTIONS := --no-print-directory
+BUILD_DIR    := build
+SRC_DIR      := src
+INCLUDE_DIR  := src/include
 
-# The file containing ROS2 packages
-TEXT_FILE := packages.txt
+CONFIG_DIR   := config
+DOTCONFIG    := $(BUILD_DIR)/.config
+CONFIG_H     := $(INCLUDE_DIR)/config.h
 
-# Command to read package names from the text file, ignoring lines starting with *
-READ_PACKAGES_CMD := grep -v '^*' $(TEXT_FILE)
+KCONFIG_FILE := Kconfig
 
-FAILED_PACKAGES_FILE = failed_packages.txt
-SUCCESSFUL_PACKAGES_FILE = successful_packages.txt
-VAR := $(shell date)
+CPP_FILES    := $(shell find $(SRC_DIR) $(TEST_DIR) -name "*.cpp" -o -name "*.hpp")
 
-.PHONY: all
-all: update_bashrc ${BUILD_DIR}/Makefile
-	@echo "$(GREEN)Building the library of project  in src/drivers...$(RESET)"
-	@$(MAKE) $(MAKE_OPTIONS) -C $(BUILD_DIR)
-	@echo "$(GREEN)Installing the library...$(RESET)"
-	@$(MAKE) $(MAKE_OPTIONS) -C $(BUILD_DIR) install
+CC     := g++
+CFLAGS := -I$(INCLUDE_DIR) -Wall -Wextra -Wpedantic
 
-$(BUILD_DIR)/Makefile:
-	@echo "$(BLUE)Creating build directory in src/drivers if not exists...$(RESET)"
-	@mkdir -p ${BUILD_DIR}
-	@echo "$(BLUE)Configuring the project with CMake in src/drivers...$(RESET)"
-	@cd $(BUILD_DIR) &&	cmake $(CMAKE_OPTIONS) .. || { echo "$(RED)CMake configuration failed!$(RESET)"; exit 1; }
+CONFIG_VARS := $(if $(wildcard $(DOTCONFIG)), \
+    $(shell grep -v '^\#' $(DOTCONFIG) | grep -v '^$$' | grep '='), \
+)
 
-.PHONY: update_bashrc
-update_bashrc:
-	@CURRENT_DIR=$$(pwd); \
-	MODEL_DIR=$$(pwd)/Tools/simulation/models; \
-	if grep -q "export VEHICLE_CONTRAL_SOFTWARE=" ~/.bashrc; then \
-		sed -i "s|^export VEHICLE_CONTRAL_SOFTWARE=.*|export VEHICLE_CONTRAL_SOFTWARE=$$CURRENT_DIR|" ~/.bashrc; \
+cfg = $(patsubst CONFIG_$1=%,%,$(filter CONFIG_$1=%,$(CONFIG_VARS)))
+
+ifeq ($(call cfg,CPP_STD_11),y)
+    CFLAGS += -std=c++11
+else ifeq ($(call cfg,CPP_STD_14),y)
+    CFLAGS += -std=c++14
+else ifeq ($(call cfg,CPP_STD_17),y)
+    CFLAGS += -std=c++17
+else ifeq ($(call cfg,CPP_STD_20),y)
+    CFLAGS += -std=c++20
+else ifeq ($(call cfg,CPP_STD_23),y)
+    CFLAGS += -std=c++23
+endif
+
+CPP_STD_FLAG    := $(filter -std=c++%,$(CFLAGS))
+CPP_STD_VERSION := $(patsubst -std=c++%,%,$(CPP_STD_FLAG))
+ifeq ($(CPP_STD_VERSION),)
+    CPP_STD_VERSION := 17
+endif
+
+CMAKE_CACHE := $(BUILD_DIR)/CMakeCache.txt
+
+# =============================================================================
+
+.PHONY: format-check
+format-check:
+	@clang-format --dry-run $(CPP_FILES)
+
+.PHONY: format
+format:
+	@clang-format -i $(CPP_FILES)
+
+.PHONY: lint
+lint:
+	@clang-tidy $(CPP_FILES) -- $(CPP_STD_FLAG) \
+	-I/usr/include/c++/11 \
+	-I/usr/include/x86_64-linux-gnu/c++/11
+
+.PHONY: lint-fix
+lint-fix:
+	@clang-tidy --fix $(CPP_FILES) -- $(CPP_STD_FLAG) \
+	-I/usr/include/c++/11 \
+	-I/usr/include/x86_64-linux-gnu/c++/11
+
+.PHONY: quality
+quality: lint
+
+# =============================================================================
+
+.PHONY: prepare
+prepare:
+	@mkdir -p $(BUILD_DIR)
+	@mkdir -p $(INCLUDE_DIR)
+
+.PHONY: config
+config: prepare
+	@if [ -f .config ]; then \
+		mv .config $(DOTCONFIG); \
+		$(INFO) "Existing .config moved to $(DOTCONFIG)"; \
+	elif [ -f $(DOTCONFIG) ]; then \
+		$(INFO) "Using existing $(DOTCONFIG)"; \
 	else \
-		echo "export VEHICLE_CONTRAL_SOFTWARE=$$CURRENT_DIR" >> ~/.bashrc; \
-	fi; \
-	if grep -q "export GZ_SIM_RESOURCE_PATH=.*$$MODEL_DIR" ~/.bashrc; then \
-		echo "$(YELLOW) GZ_SIM_RESOURCE_PATH already contains $$MODEL_DIR $(RESET)"; \
-	elif grep -q "export GZ_SIM_RESOURCE_PATH=" ~/.bashrc; then \
-		sed -i "s|^export GZ_SIM_RESOURCE_PATH=.*|export GZ_SIM_RESOURCE_PATH=$${GZ_SIM_RESOURCE_PATH}:$$MODEL_DIR|" ~/.bashrc; \
-	else \
-		echo "export GZ_SIM_RESOURCE_PATH=$${GZ_SIM_RESOURCE_PATH}:$$MODEL_DIR" >> ~/.bashrc; \
+		$(WARN) "No .config found — loading defconfig"; \
+		cp $(CONFIG_DIR)/defconfig $(DOTCONFIG); \
+		$(INFO) "$(DOTCONFIG) loaded from defconfig"; \
 	fi
-	@echo "$(GREEN)Updating .bashrc with current directory...$(RESET)"
-	@. ~/.bashrc
 
-.PHONY: all_clean
-all_clean: clean ros_clean
-	@echo "$(RED)Clean complete.$(RESET)"
-.PHONY: clean
-clean:
-	@echo "$(RED)Cleaning up src/drivers...$(RESET)"
-	@rm -rf $(BUILD_DIR)
-	@echo "$(RED)Clean complete.$(RESET)"
+.PHONY: menuconfig
+menuconfig: prepare
+	@$(INFO) "Opening menuconfig (requires kconfiglib)..."
+	@if [ -f $(DOTCONFIG) ]; then \
+		KCONFIG_CONFIG=$(DOTCONFIG) menuconfig $(KCONFIG_FILE); \
+	else \
+		cp $(CONFIG_DIR)/defconfig $(DOTCONFIG); \
+		KCONFIG_CONFIG=$(DOTCONFIG) menuconfig $(KCONFIG_FILE); \
+	fi
 
+.PHONY: config_header
+config_header: config
+	@$(INFO) "Generating $(CONFIG_H)..."
+	@echo "/* Generated by Makefile — DO NOT EDIT */" > $(CONFIG_H)
+	@echo "/* Source: $(DOTCONFIG) */"               >> $(CONFIG_H)
+	@echo "#pragma once"                             >> $(CONFIG_H)
+	@echo ""                                         >> $(CONFIG_H)
+	@if [ ! -f $(DOTCONFIG) ]; then \
+		$(ERROR) "$(DOTCONFIG) not found!"; \
+		exit 1; \
+	fi
+	@while IFS= read -r line || [ -n "$$line" ]; do \
+		case "$$line" in \
+			""|"#"*) \
+				continue ;; \
+			*=*) \
+				key=$${line%%=*}; \
+				val=$${line#*=}; \
+				case "$$val" in \
+					y)       echo "#define $$key 1"    >> $(CONFIG_H) ;; \
+					m)       echo "#define $$key 2"    >> $(CONFIG_H) ;; \
+					n)       echo "/* $$key is not set */" >> $(CONFIG_H) ;; \
+					\"*\"|0x*|0X*|*) \
+					         echo "#define $$key $$val" >> $(CONFIG_H) ;; \
+				esac ;; \
+		esac; \
+	done < $(DOTCONFIG)
+	@$(OK) "$(CONFIG_H) generated successfully."
 
-.PHONY: rebuild
-rebuild: clean all
+# =============================================================================
+
+.PHONY: configure
+configure: config_header
+	@$(INFO) "Configuring CMake  C++$(CPP_STD_VERSION)..."
+	@cmake -B $(BUILD_DIR) -S . \
+		-DCPP_STD=$(CPP_STD_VERSION) \
+		-DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+	@$(OK) "CMake configuration complete."
 
 .PHONY: build
-build:
-	@echo "$(GREEN)Building the project in src/drivers...$(RESET)"
-	@$(MAKE) $(MAKE_OPTIONS) -C $(BUILD_DIR)
-
-.PHONY: install
-install:
-	@echo "$(GREEN)Installing the project in src/drivers...$(RESET)"
-	@$(MAKE) $(MAKE_OPTIONS) -C $(BUILD_DIR) install
-
-.PHONY: ros_build
-ros_build:
-	@echo "$(PURPLE)ROS2 packages build process has started...$(RESET)"
-	@rm -f $(FAILED_PACKAGES_FILE) $(SUCCESSFUL_PACKAGES_FILE)
-	@$(READ_PACKAGES_CMD) | while read -r package; do \
-		echo "$(CYAN)Package: $$package$(RESET)"; \
-		if colcon build --packages-select $$package; then \
-			echo $$package >> $(SUCCESSFUL_PACKAGES_FILE); \
-		else \
-			echo "$(RED)Error: Build failed for package $$package$(RESET)"; \
-			echo $$package >> $(FAILED_PACKAGES_FILE); \
-		fi \
-	done
-	@bash -c 'echo "Press Enter to continue..."; read'
-	@clear
-	@echo "$(BLUE)================BUILD ANALYSIS================$(RESET)"; \
-	if [ -f $(FAILED_PACKAGES_FILE) ]; then \
-		FAILED_COUNT=$$(wc -l < $(FAILED_PACKAGES_FILE)); \
-		printf "$(RED)Number of failed packages: %d$(RESET)\n" $$FAILED_COUNT; \
-		cat $(FAILED_PACKAGES_FILE); \
-		printf "\n"; \
-	fi; \
-	if [ -f $(SUCCESSFUL_PACKAGES_FILE) ]; then \
-		SUCCESSFUL_COUNT=$$(wc -l < $(SUCCESSFUL_PACKAGES_FILE)); \
-		printf "$(GREEN)successful packages: %d$(RESET)\n" $$SUCCESSFUL_COUNT; \
-		cat $(SUCCESSFUL_PACKAGES_FILE); \
-		printf "\n"; \
+build: config_header
+	@if [ ! -f $(CMAKE_CACHE) ]; then \
+		$(WARN) "CMake cache not found — running configure first..."; \
+		cmake -B $(BUILD_DIR) -S . \
+			-DCPP_STD=$(CPP_STD_VERSION) \
+			-DCMAKE_EXPORT_COMPILE_COMMANDS=ON; \
 	fi
+	@$(INFO) "Building  C++$(CPP_STD_VERSION)..."
+	@cmake --build $(BUILD_DIR) -- --no-print-directory
+	@$(OK) "Build complete."
 
-.PHONY: ros_clean
-ros_clean:
-	@echo "$(RED)log, build, install directories deleted$(RESET)"
-	@rm -rf ./log ./build ./install
+# =============================================================================
+
+.PHONY: clean
+clean:
+	@$(WARN) "Cleaning build artifacts..."
+	@rm -rf $(BUILD_DIR)
+	@$(OK) "Clean complete."
+
+.PHONY: info
+info:
+	@printf "$(BLUE)========================================$(RESET)\n"
+	@printf "$(BLUE)  Project :$(RESET) $(PROJECT_NAME)\n"
+	@printf "$(BLUE)  Config  :$(RESET) $(DOTCONFIG)\n"
+	@printf "$(BLUE)  CC      :$(RESET) $(CC)\n"
+	@printf "$(BLUE)  CFLAGS  :$(RESET) $(CFLAGS)\n"
+	@printf "$(BLUE)----------------------------------------$(RESET)\n"
+	@printf "$(BLUE)  Binaries:$(RESET) $(if $(TARGETS),$(TARGETS),[none])\n"
+	@printf "$(BLUE)  Objects :$(RESET) $(if $(MODULE_OBJECTS),$(MODULE_OBJECTS),[none])\n"
+	@printf "$(BLUE)========================================$(RESET)\n"
+
+.PHONY: help
+help:
+	@printf "$(PURPLE)========================================$(RESET)\n"
+	@printf "$(PURPLE)  $(PROJECT_NAME) — Available Targets$(RESET)\n"
+	@printf "$(PURPLE)========================================$(RESET)\n"
+	@printf "\n"
+	@printf "$(BLUE)  Configuration:$(RESET)\n"
+	@printf "    $(CYAN)prepare$(RESET)        Create build and include directories\n"
+	@printf "    $(CYAN)config$(RESET)         Load .config into build dir (or apply defconfig)\n"
+	@printf "    $(CYAN)menuconfig$(RESET)     Open interactive Kconfig menu (requires kconfiglib)\n"
+	@printf "    $(CYAN)config_header$(RESET)  Generate config.h from .config\n"
+	@printf "\n"
+	@printf "$(BLUE)  Build:$(RESET)\n"
+	@printf "    $(CYAN)configure$(RESET)      Configure CMake with Kconfig parameters (no compile)\n"
+	@printf "    $(CYAN)build$(RESET)          Compile the project (auto-configures CMake if needed)\n"
+	@printf "    $(CYAN)clean$(RESET)          Remove all build artifacts\n"
+	@printf "\n"
+	@printf "$(BLUE)  Code Quality:$(RESET)\n"
+	@printf "    $(CYAN)format$(RESET)         Auto-format source files with clang-format\n"
+	@printf "    $(CYAN)format-check$(RESET)   Check formatting without modifying files\n"
+	@printf "    $(CYAN)lint$(RESET)           Run clang-tidy static analysis\n"
+	@printf "    $(CYAN)lint-fix$(RESET)       Run clang-tidy and apply suggested fixes\n"
+	@printf "    $(CYAN)quality$(RESET)        Run lint (alias)\n"
+	@printf "\n"
+	@printf "$(BLUE)  Info:$(RESET)\n"
+	@printf "    $(CYAN)info$(RESET)           Show project name, compiler, flags and active targets\n"
+	@printf "    $(CYAN)help$(RESET)           Show this help message\n"
+	@printf "\n"
+	@printf "$(PURPLE)========================================$(RESET)\n"
